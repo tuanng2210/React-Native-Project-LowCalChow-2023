@@ -25,7 +25,7 @@ function Handshake() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login Page</Text>
+      <Text style={styles.title}>Handshake</Text>
       <Button title="Handshake" onPress={handleHandshake} />
       {responseData ? (
         <View>
