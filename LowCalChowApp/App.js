@@ -20,11 +20,15 @@
 // });
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import LoginPage from './components/loginPage'; 
+// import LoginPage from './components/loginPage'; 
+import Handshake from './components/handshake';
+
 function App() {
   return (
     <View style={styles.container}>
-      <LoginPage />
+      {/* <LoginPage /> */}
+      <Handshake />
+
     </View>
   );
 }
