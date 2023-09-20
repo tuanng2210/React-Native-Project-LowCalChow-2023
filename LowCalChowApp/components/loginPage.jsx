@@ -33,7 +33,7 @@ function LoginPage({navigation}) {
 
       <Button 
         title="Sign Up"
-        onPress={() => navigation.navigate('Patron Account Creation')}
+        onPress={() => navigation.navigate('Restaurant Account Creation')}
       />
 
     </View>
