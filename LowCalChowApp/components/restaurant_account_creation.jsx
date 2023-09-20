@@ -114,7 +114,7 @@ function RestaurantAccountCreationPage({ navigation }) {
         disabled={!isFormValid}
         onPress={handleSubmit}
       >
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
       {Object.values(errors).map((error, index) => (
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
+    width: 100,
   },
   buttonText: {
     color: "#fff",
