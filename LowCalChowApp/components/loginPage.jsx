@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import axios from 'axios';
 
 function LoginPage({navigation}) {
   const [username, setUsername] = useState('');
@@ -33,7 +34,7 @@ function LoginPage({navigation}) {
 
       <Button 
         title="Sign Up"
-        onPress={() => navigation.navigate('Patron Account Creation')}
+        onPress={() => navigation.navigate('Restaurant Account Creation')}
       />
 
     </View>
