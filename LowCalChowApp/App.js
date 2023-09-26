@@ -26,6 +26,7 @@ import PatronAccountCreationPage from './components/patron_account_creation';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MenuCreate from './components/menuCreate';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +36,7 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
+        <Stack.Screen name = "Menu Creation" component={MenuCreate}/>
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>

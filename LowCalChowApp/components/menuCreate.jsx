@@ -5,14 +5,22 @@ function menuCreate({navigation}){
     const [mealName, setMealname] = useState('');
     const [description, setDescription] = useState('');
     const [foodPicture, setFoodPicture] = useState(null);
-    const [ingredientsArray, setIngredients] = useState('');
-    const [foodTagsArray, setFoodTags] = useState('');
-    const [allergiesArray, setAllergies] = useState('');
+    const [ingredientsArray, setIngredientsArray] = useState('');
+    const [ingredients, setIngredients] = useState('');
+    const [foodTagsArray, setFoodTagsArray] = useState('');
+    const [foodTags, setFootTags] = useState('');
+    const [allergiesArray, setAllergiesArray] = useState('');
+    const [allergies, setAllergies] = useState('');
     const onPictureChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setFoodPicture(URL.createObjectURL(event.target.files[0]));
         }
     }
+    function getArrayfromString(ingredients) {
+      var tempArray = ingredients.split(',');
+      return tempArray;
+    }
+
 
     return (
         <View style={styles.container}>
@@ -33,10 +41,10 @@ function menuCreate({navigation}){
           />
     
           {/* food picture upload hopefully */}
-          <div>
+          {/*<div>
             <input type="file" onchange={onPictureChange} className="filetype" />
             <img alt="preview image" src={foodPicture}/>
-          </div>
+          </div>*/}
           
     
           {/* todo: change to adding multiple ingredients*/}
@@ -44,7 +52,9 @@ function menuCreate({navigation}){
             style={styles.input}
             placeholder="Add ingredients"
             value={ingredients}
-            onChangeText={(text) => setIngredients(getArrayfromString(text))}
+            onChangeText={(text) => setIngredients(text)}
+            onEndEditing={(text) => setIngredientsArray(getArrayfromString(text))}
+           
           />
     
           {/* todo: change to adding multiple ingredients*/}
@@ -52,7 +62,8 @@ function menuCreate({navigation}){
             style={styles.input}
             placeholder="Add food tags"
             value={foodTags}
-            onChangeText={(text) => setFoodTags(getArrayfromString(text))}
+            onChangeText={(text) => setFoodTags(text)}
+            onEndEditing={(text) => setFoodTagsArray(getArrayfromString(text))}
           />
     
           {/* todo: change to adding multiple ingredients*/}
@@ -60,7 +71,8 @@ function menuCreate({navigation}){
             style={styles.input}
             placeholder="Add Allergies"
             value={allergies}
-            onChangeText={(text) => setAllergies(getArrayfromString(text))}
+            onChangeText={(text) => setAllergies(text)}
+            onEndEditing={(text) => setAllergiesArray(getArrayfromString(text))}
           />
     
           <Button title="Back to Menu" onPress={() => navigation.navigate('Menu?')}/>
@@ -68,10 +80,7 @@ function menuCreate({navigation}){
       );
     }
 
-    function getArrayfromString(ingredients) {
-        var ingredientsArray = ingredients.split(',');
-        return <ingredientsArray />;
-    }
+
     
     const styles = StyleSheet.create({
       container: {
