@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,13 +13,8 @@ function RestaurantAccountCreationPage({ navigation }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(() => {
-    validateForm();
-  }, [username, email, password]);
-
-  const validateForm = () => {
+  const handleSubmit = () => {
     let errors = {};
 
     if (!username) {
@@ -39,11 +34,8 @@ function RestaurantAccountCreationPage({ navigation }) {
     }
 
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  };
 
-  const handleSubmit = () => {
-    if (isFormValid) {
+    if (Object.keys(errors).length === 0) {
       // Create a data object with the form fields
       const data = {
         email: email,
@@ -109,30 +101,23 @@ function RestaurantAccountCreationPage({ navigation }) {
         onChangeText={(text) => setPassword(text)}
       />
 
-      <TouchableOpacity
-        style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
-      {Object.values(errors).map((error, index) => (
+      {Object.keys(errors).map((key, index) => (
         <Text key={index} style={styles.error}>
-          {error}
+          {errors[key]}
         </Text>
       ))}
 
-      <Button
-        title="Back to Login"
-        onPress={() => navigation.navigate("Login")}
-      />
+      <Button title="Back to Login" onPress={() => navigation.navigate("Login")} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -152,7 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: "green",
+    backgroundColor: "orange",
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: "center",
