@@ -6,8 +6,8 @@ function menuCreate({navigation}){
     const [description, setDescription] = useState('');
     const [foodPicture, setFoodPicture] = useState(null);
     const [ingredientsArray, setIngredients] = useState('');
-    const [foodTags, setFoodTags] = useState('');
-    const [allergies, setAllergies] = useState('');
+    const [foodTagsArray, setFoodTags] = useState('');
+    const [allergiesArray, setAllergies] = useState('');
     const onPictureChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setFoodPicture(URL.createObjectURL(event.target.files[0]));
@@ -52,7 +52,7 @@ function menuCreate({navigation}){
             style={styles.input}
             placeholder="Add food tags"
             value={foodTags}
-            onChangeText={(text) => setFoodTags(text)}
+            onChangeText={(text) => setFoodTags(getArrayfromString(text))}
           />
     
           {/* todo: change to adding multiple ingredients*/}
@@ -60,7 +60,7 @@ function menuCreate({navigation}){
             style={styles.input}
             placeholder="Add Allergies"
             value={allergies}
-            onChangeText={(text) => setAllergies(text)}
+            onChangeText={(text) => setAllergies(getArrayfromString(text))}
           />
     
           <Button title="Back to Menu" onPress={() => navigation.navigate('Menu?')}/>
