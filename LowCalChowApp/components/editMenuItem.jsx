@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+
 {/*
 TODO:
-Export to Database
-Get Pictures working for input
- */}
-function MenuCreate({navigation}){
+Import From Database
+Send to Database
+Fill in text fields with current information
+*/}
+
+function EditMenu({navigation}){
     const [mealName, setMealname] = useState('');
     const [description, setDescription] = useState('');
     const [foodPicture, setFoodPicture] = useState(null);
@@ -26,32 +29,24 @@ function MenuCreate({navigation}){
     }
     function submitMeal(){
       {/*submit to database here*/}
-      setAllergies('');
-      setAllergiesArray('');
-      setDescription('');
-      setFoodPicture(null);
-      setFoodTagsArray('');
-      setFoodTags('');
-      setIngredients('');
-      setIngredientsArray('');
-      setMealname('');
+      navigation.navigate('Menu');
     }
 
 
     return (
         <View style={styles.container}>
-          <Text style={styles.title}>Add Meal</Text>
+          <Text style={styles.title}>Edit Meal</Text>
     
           <TextInput
             style={styles.input}
-            placeholder="Meal Name"
+            placeholder="Current Meal Name"
             value={mealName}
             onChangeText={(text) => setMealname(text)}
           />
     
           <TextInput
             style={styles.input}
-            placeholder="Give a description for this meal."
+            placeholder="Current Description."
             value={description}
             onChangeText={(text) => setDescription(text)}
           />
@@ -66,7 +61,7 @@ function MenuCreate({navigation}){
           {/* todo: change to adding multiple ingredients*/}
           <TextInput
             style={styles.input}
-            placeholder="Add ingredients"
+            placeholder="Current ingredients"
             value={ingredients}
             onChangeText={(text) => setIngredients(text)}
             onEndEditing={(text) => setIngredientsArray(getArrayfromString(text))}
@@ -76,7 +71,7 @@ function MenuCreate({navigation}){
           {/* todo: change to adding multiple ingredients*/}
           <TextInput
             style={styles.input}
-            placeholder="Add food tags"
+            placeholder="Current tags"
             value={foodTags}
             onChangeText={(text) => setFoodTags(text)}
             onEndEditing={(text) => setFoodTagsArray(getArrayfromString(text))}
@@ -85,13 +80,13 @@ function MenuCreate({navigation}){
           {/* todo: change to adding multiple ingredients*/}
           <TextInput
             style={styles.input}
-            placeholder="Add Allergies"
+            placeholder="Current Allergies"
             value={allergies}
             onChangeText={(text) => setAllergies(text)}
             onEndEditing={(text) => setAllergiesArray(getArrayfromString(text))}
           />
     
-          <Button title="Back to Menu" onPress={() => navigation.navigate('Login')}/>
+          <Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>
           <Button title="Submit Meal" onPress={() => submitMeal()}/>
         </View>
         
@@ -140,5 +135,5 @@ function MenuCreate({navigation}){
       }
     });
     
-    export default MenuCreate;
+    export default EditMenu;
     
