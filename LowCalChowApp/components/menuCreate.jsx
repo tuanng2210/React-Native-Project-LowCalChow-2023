@@ -17,7 +17,7 @@ function menuCreate({navigation}){
         }
     }
     function getArrayfromString(ingredients) {
-      var tempArray = ingredients.split(',');
+      var tempArray = ingredients.toString().split(',');
       return tempArray;
     }
 
