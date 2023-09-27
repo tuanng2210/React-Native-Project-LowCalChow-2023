@@ -100,7 +100,7 @@ function LoginPage({ navigation }) {
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: "orange" }]} // Set the background color to orange
-        onPress={() => navigation.navigate("Restaurant Account Creation")}
+        onPress={() => navigation.navigate("Sign Up")}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
