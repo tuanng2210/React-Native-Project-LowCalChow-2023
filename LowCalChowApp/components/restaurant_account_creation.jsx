@@ -111,13 +111,16 @@ function RestaurantAccountCreationPage({ navigation }) {
         </Text>
       ))}
 
-      <Button title="Back to Login" onPress={() => navigation.navigate("Login")} />
+      <Button
+        title="Back to Login"
+        onPress={() => navigation.navigate("Login")}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

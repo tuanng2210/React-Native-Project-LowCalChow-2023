@@ -18,6 +18,27 @@ function LoginPage({ navigation }) {
   //   console.log('Password:', password);
   //   // You can add your authentication logic here
   // };
+  // const handleLogin = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8000/auth/login/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ username, password }),
+  //     });
+
+  //     if (response.status === 200) {
+  //       // Authentication successful
+  //       console.log("Authentication successful");
+  //     } else {
+  //       // Handle authentication error (e.g., show error message)
+  //       console.log("Authentication failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:8000/auth/login/", {
@@ -29,8 +50,22 @@ function LoginPage({ navigation }) {
       });
 
       if (response.status === 200) {
-        // Authentication successful
-        console.log("Authentication successful");
+        const data = await response.json();
+        const { user_type, tokens } = data;
+        const { access, refresh } = tokens;
+
+        // Store the access and refresh tokens securely
+        // You can use a library like AsyncStorage for React Native or localStorage for web
+
+        if (user_type === "restaurant") {
+          // Redirect to the restaurant homepage
+          navigation.navigate("RestaurantHomepage");
+        } else if (user_type === "customer") {
+          // Redirect to the customer homepage
+          // navigation.navigate("CustomerHomepage");
+        } else {
+          // Handle other user types or scenarios
+        }
       } else {
         // Handle authentication error (e.g., show error message)
         console.log("Authentication failed");
