@@ -21,9 +21,11 @@
 import React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import LoginPage from './components/loginPage'; 
+import SignUpPage from './components/SignUp';
 import Handshake from './components/handshake';
 import PatronAccountCreationPage from './components/patron_account_creation';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
+import RestaurantHomepage from './components/restaurantHomePage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -36,8 +38,10 @@ const App = () => {
     <NavigationContainer>      
       <Stack.Navigator>
         <Stack.Screen  name="Login" component={LoginPage}/>
+        <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
+        <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
       </Stack.Navigator>
     </NavigationContainer>
     
