@@ -86,7 +86,7 @@ function EditMenu({navigation}){
             onEndEditing={(text) => setAllergiesArray(getArrayfromString(text))}
           />
     
-          <Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>
+          {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
           <Button title="Submit Meal" onPress={() => submitMeal()}/>
         </View>
         
