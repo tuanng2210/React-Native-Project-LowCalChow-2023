@@ -20,6 +20,11 @@ function PatronAccountCreationPage({navigation}) {
   }, [username, firstName, lastName, email, password, confirmPassword, zip]);
 
   const validateForm = () => {
+    
+  }
+
+  const handleSubmit = () => {
+
     let errors = {};
 
     if(!username){
@@ -56,15 +61,47 @@ function PatronAccountCreationPage({navigation}) {
     }
 
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  }
+    
+    if(Object.keys(errors).length === 0){
 
-  const handleSubmit = () => {
-    if (isFormValid){
-      console.log("Form is valid.")
-    }
-    else{
-      console.log("Form has errors.")
+      const data = {
+        email: email,
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        zip: zip,
+        gender: gender,
+      }
+
+      // fetch("http://localhost:8000/auth/signup/patron/", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // })
+      //   .then((response) => response.json())
+      //   .then((responseData) => {
+      //     // Handle the API response here
+      //     console.log("API response:", responseData);
+
+      //     if (responseData.message === "success") {
+      //       // The signup was successful, you can navigate to a success screen or perform other actions
+      //       const { email, username, user_type } = responseData.content;
+      //       console.log("User details:", { email, username, user_type });
+      //       navigation.navigate("SuccessScreen");
+      //     } else {
+      //       // Handle any error messages returned by the API
+      //       console.log("Message :", responseData.message);
+      //       // You can display an error message to the user if needed
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error:", error);
+      //   });
+    } else {
+      console.log("Form has errors.");
     }
   };
 
@@ -139,23 +176,20 @@ function PatronAccountCreationPage({navigation}) {
       </Picker>
 
 
-      <TouchableOpacity
-        style={[styles.button, {opacity : isFormValid ? 1 : 0.5}]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
+      {Object.keys(errors).map((key, index) => (
+        <Text key={index} style={styles.error}>
+          {errors[key]}
+        </Text>
+      ))}
 
-      {Object.values(errors).map((error, index) => (
-                <Text key={index} style={styles.error}>
-                    {error}
-                </Text>
-            ))}
-
-
-      <Button title="Back to Login" onPress={() => navigation.navigate('Login')}/>
+      <Button
+        title="Back to Login"
+        onPress={() => navigation.navigate("Login")}
+      />
     </View>
   );
 }
@@ -181,12 +215,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: 'green',
+    backgroundColor: "orange",
     borderRadius: 8,
     paddingVertical: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
+    width: 100,
 },
   buttonText: {
       color: '#fff',
