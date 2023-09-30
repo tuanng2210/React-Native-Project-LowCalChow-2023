@@ -41,34 +41,38 @@ function PatronHomepage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ff7f50",
-    flexDirection: "column",
+    flexDirection: "row-reverse",
+  },
+  navbar: {
+   flex: 1,
+   alignItems: "center",
+   justifyContent: "center",
+   padding: 20,
   },
   navbarItem: {
     backgroundColor: "#ff7f50",
     borderRadius: 8,
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    marginBottom: 12,
+    paddingHorizontal: 10,
     flexDirection: "row", // Align icon and text horizontally
   },
   navbarText: {
-    flex: 1,
+    flex: 2,
     color: "#000000",
     fontSize: 18,
     fontWeight: "bold",
+    flexDirection: "row",
     marginLeft: 10,
-    flexDirection: "column",
   },
   mainContent: {
-    flex: 2,
+    flex: 3,
     padding: 20,
-    backgroundColor: "##ffe4b5",
+    backgroundColor: "#ff7f50",
   },
   title: {
-    flex: 1,
+    flex: 3,
     fontSize: 24,
-    backgroundColor: "#fff",
+    backgroundColor: "#ff7f50",
     fontWeight: "bold",
   },
 },
