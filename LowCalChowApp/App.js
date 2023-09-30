@@ -27,6 +27,7 @@ import PatronProfileCreationPage from './components/patronProfileCreationPage';
 import PatronAccountCreationPage from './components/patron_account_creation';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
 import RestaurantHomepage from './components/restaurantHomePage';
+import PatronHomepage from './components/patronHomepage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -44,6 +45,8 @@ const App = () => {
         <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
+        <Stack.Screen  name="Patron Homepage" component={PatronHomepage}/>
+
       </Stack.Navigator>
     </NavigationContainer>
     

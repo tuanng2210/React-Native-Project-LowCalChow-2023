@@ -10,35 +10,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 function LoginPage({ navigation }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const handleLogin = () => {
-  //   console.log('Username:', username);
-  //   console.log('Password:', password);
-  //   // You can add your authentication logic here
-  // };
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/auth/login/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ username, password }),
-  //     });
-
-  //     if (response.status === 200) {
-  //       // Authentication successful
-  //       console.log("Authentication successful");
-  //     } else {
-  //       // Handle authentication error (e.g., show error message)
-  //       console.log("Authentication failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:8000/auth/login/", {
@@ -46,23 +20,24 @@ function LoginPage({ navigation }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.status === 200) {
         const data = await response.json();
         const { user_type, tokens } = data;
         const { access, refresh } = tokens;
+        console.log("Authentication successful");
 
         // Store the access and refresh tokens securely
         // You can use a library like AsyncStorage for React Native or localStorage for web
 
         if (user_type === "restaurant") {
           // Redirect to the restaurant homepage
-          navigation.navigate("RestaurantHomepage");
-        } else if (user_type === "customer") {
+          navigation.navigate("Restaurant Homepage");
+        } else if (user_type === "patron") {
           // Redirect to the customer homepage
-          // navigation.navigate("CustomerHomepage");
+          navigation.navigate("Patron Homepage");
         } else {
           // Handle other user types or scenarios
         }
@@ -80,9 +55,9 @@ function LoginPage({ navigation }) {
       <Text style={styles.title}>Login Page</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
