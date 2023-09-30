@@ -10,7 +10,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 function LoginPage({ navigation }) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
@@ -20,68 +20,44 @@ function LoginPage({ navigation }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
-      console.log("Response:", response); // Log the entire response
-
       if (response.status === 200) {
-        // Authentication successful
-        console.log("Authentication successful");
-      } else {
         const data = await response.json();
-        console.log("Authentication failed - Status:", response.status);
-        console.log("Error Message:", data.error); // Adjust this based on your server's response structure
+        const { user_type, tokens } = data;
+        const { access, refresh } = tokens;
+        console.log("Authentication successful");
+
+        // Store the access and refresh tokens securely
+        // You can use a library like AsyncStorage for React Native or localStorage for web
+
+        if (user_type === "restaurant") {
+          // Redirect to the restaurant homepage
+          navigation.navigate("Restaurant Homepage");
+        } else if (user_type === "patron") {
+          // Redirect to the customer homepage
+          navigation.navigate("Patron Homepage");
+        } else {
+          // Handle other user types or scenarios
+        }
+      } else {
+        // Handle authentication error (e.g., show error message)
+        console.log("Authentication failed");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/auth/login/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ username, password }),
-  //     });
-
-  //     if (response.status === 200) {
-  //       const data = await response.json();
-  //       const { user_type, tokens } = data;
-  //       const { access, refresh } = tokens;
-
-  //       // Store the access and refresh tokens securely
-  //       // You can use a library like AsyncStorage for React Native or localStorage for web
-
-  //       if (user_type === "restaurant") {
-  //         // Redirect to the restaurant homepage
-  //         navigation.navigate("RestaurantHomepage");
-  //       } else if (user_type === "customer") {
-  //         // Redirect to the customer homepage
-  //         // navigation.navigate("CustomerHomepage");
-  //       } else {
-  //         // Handle other user types or scenarios
-  //       }
-  //     } else {
-  //       // Handle authentication error (e.g., show error message)
-  //       console.log("Authentication failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login Page</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
