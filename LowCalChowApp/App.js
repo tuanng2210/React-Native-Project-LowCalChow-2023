@@ -23,6 +23,7 @@ import { Button, StyleSheet, View } from 'react-native';
 import LoginPage from './components/loginPage'; 
 import SignUpPage from './components/SignUp';
 import Handshake from './components/handshake';
+import PatronProfileCreationPage from './components/patronProfileCreationPage';
 import PatronAccountCreationPage from './components/patron_account_creation';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
 import RestaurantHomepage from './components/restaurantHomePage';
@@ -40,6 +41,7 @@ const App = () => {
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
+        <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
       </Stack.Navigator>

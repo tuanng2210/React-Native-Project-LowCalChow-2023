@@ -8,20 +8,7 @@ function PatronAccountCreationPage({navigation}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState('');
-  const [zip, setZip] = useState('');
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  useEffect(() => {
-    validateForm();
-  }, [username, firstName, lastName, email, password, confirmPassword, zip]);
-
-  const validateForm = () => {
-    
-  }
 
   const handleSubmit = () => {
 
@@ -29,10 +16,6 @@ function PatronAccountCreationPage({navigation}) {
 
     if(!username){
       errors.username = "Username is required."
-    }
-
-    if(!firstName){
-      errors.firstName = "First name is required."
     }
     
     if(!email){
@@ -56,10 +39,6 @@ function PatronAccountCreationPage({navigation}) {
       errors.confirmPassword = "Passwords do not match."
     }
 
-    if(!zip){
-      errors.zip = "Zipcode is required."
-    }
-
     setErrors(errors);
     
     if(Object.keys(errors).length === 0){
@@ -67,39 +46,35 @@ function PatronAccountCreationPage({navigation}) {
       const data = {
         email: email,
         username: username,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        zip: zip,
-        gender: gender,
+        password: password
       }
 
-      // fetch("http://localhost:8000/auth/signup/patron/", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(data),
-      // })
-      //   .then((response) => response.json())
-      //   .then((responseData) => {
-      //     // Handle the API response here
-      //     console.log("API response:", responseData);
+      fetch("http://localhost:8000/auth/signup/patron/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          // Handle the API response here
+          console.log("API response:", responseData);
 
-      //     if (responseData.message === "success") {
-      //       // The signup was successful, you can navigate to a success screen or perform other actions
-      //       const { email, username, user_type } = responseData.content;
-      //       console.log("User details:", { email, username, user_type });
-      //       navigation.navigate("SuccessScreen");
-      //     } else {
-      //       // Handle any error messages returned by the API
-      //       console.log("Message :", responseData.message);
-      //       // You can display an error message to the user if needed
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error:", error);
-      //   });
+          if (responseData.message === "success") {
+            // The signup was successful, you can navigate to a success screen or perform other actions
+            const { email, username, user_type } = responseData.content;
+            console.log("User details:", { email, username, user_type });
+            navigation.navigate("Patron Profile Creation Page");
+          } else {
+            // Handle any error messages returned by the API
+            console.log("Message :", responseData.message);
+            // You can display an error message to the user if needed
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     } else {
       console.log("Form has errors.");
     }
@@ -115,20 +90,6 @@ function PatronAccountCreationPage({navigation}) {
         placeholder="Username"
         value={username}
         onChangeText={(text) => setUsername(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={(text) => setFirstName(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={(text) => setLastName(text)}
       />
 
       <TextInput
@@ -153,28 +114,6 @@ function PatronAccountCreationPage({navigation}) {
         value={confirmPassword}
         onChangeText={(text) => setConfirmPassword(text)}
       />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Zipcode"
-        value={zip}
-        onChangeText={(text) => setZip(text)}
-      />
-
-      <Text>Gender:</Text>
-      <Picker
-        selectedValue = {gender}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setGender(itemValue)
-        }>
-
-        <Picker.Item label="Female" value="female" />
-        <Picker.Item label="Male" value="male" />
-        <Picker.Item label="Other" value="other"/>
-
-      </Picker>
-
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
