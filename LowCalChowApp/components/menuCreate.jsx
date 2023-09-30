@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { MultipleSelectList } from 'react-native-dropdown-select-list';
+
 {/*
 TODO:
 Export to Database
 Get Pictures working for input
  */}
 function MenuCreate({navigation}){
+    const ingredientTags = ('');
+    const foodTypeTags =('');
+    const cookStyleTags = ('');
+    const allergyTags = ('');
+    const tasteTags = ('');
     const [mealName, setMealname] = useState('');
     const [description, setDescription] = useState('');
     const [foodPicture, setFoodPicture] = useState(null);
     const [ingredientsArray, setIngredientsArray] = useState('');
     const [ingredients, setIngredients] = useState('');
+    const [ingredSelect, setIngredSelect] = useState('');
+    const [foodTypeSelect, setfoodTypeSelect] = useState('');
+    const [cookStyleSelect, setcookStyleSelect] = useState('');
+    const [allergiesSelect, setallergiesSelect] = useState('');
+    const [tasteSelect, setTasteSelect] = useState('');
     const [foodTagsArray, setFoodTagsArray] = useState('');
     const [foodTags, setFoodTags] = useState('');
     const [allergiesArray, setAllergiesArray] = useState('');
@@ -36,6 +48,74 @@ function MenuCreate({navigation}){
       setIngredientsArray('');
       setMealname('');
     }
+    {/*Send data to backend to add menu item */}
+    const handleUpdateMeal = async () => {
+      const data = {
+        item_name: mealName,
+        price: mealPrice,
+        calories: mealCalories,
+        food_type_tags: foodTypeTags,
+        taste_tags: tasteTags,
+        cook_style_tags: cookStyleTags,
+        menu_restriction_tag: restrictionTags,
+        menu_allergy_tag: allergyTags,
+        ingredients_tag: ingredientTags,
+        time_of_day_available: timeOfDayAvailable,
+        is_modifable: true
+      }
+      try{
+        const response = await fetch("http://localhost:8000/restaurants/" + restID + "/", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({data}),
+      });
+        if (response.status === 200) {
+          const data = await.response.json();
+
+        }
+      }catch (error) {
+        console.error("Error:", error);
+
+    }
+    {/*get the tags to put in drop down lists for menu create */}
+    const handlegetfoodTags = async () => {
+      try{
+        const response = await fetch("http://localhost:8000/restaurants/foodtypetags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+        
+      });
+      if (response.status === 200) {
+        foodTags = await response.json();
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+    };
+
+    const handlegetingredTags = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/restaurants/ingredienttags", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        if (response.status === 200) {
+          ingredientTags = await response.json();
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+    };
+   
+
+
 
 
     return (
@@ -63,7 +143,7 @@ function MenuCreate({navigation}){
           </div>*/}
           
     
-          {/* todo: change to adding multiple ingredients*/}
+          {/* todo: change to adding multiple ingredients
           <TextInput
             style={styles.input}
             placeholder="Add ingredients"
@@ -71,6 +151,14 @@ function MenuCreate({navigation}){
             onChangeText={(text) => setIngredients(text)}
             onEndEditing={(text) => setIngredientsArray(getArrayfromString(text))}
            
+          />
+          */}
+          <MultipleSelectList 
+            ingredSelect={(val) => setIngredSelect(val)} 
+            data={ingredientTags} 
+            save="value"
+            onSelect={() => alert(ingredSelect)} 
+            label="Ingredients"
           />
     
           {/* todo: change to adding multiple ingredients*/}
