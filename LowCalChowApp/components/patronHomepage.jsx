@@ -9,25 +9,25 @@ const Stack = createNativeStackNavigator();
 function PatronHomepage({ navigation }) {
   return (
     <View style={styles.container}>
-      <View style={styles.sidebar}>
+      <View style={styles.navbar}>
         <TouchableOpacity
-          style={styles.sidebarItem}
+          style={styles.navbarItem}
           onPress={() => navigation.navigate("Search")}
         >
           <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.sidebarText}>Search</Text>
+          <Text style={styles.navbarText}>Search</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sidebarItem}
+        <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Favorites")}
         >
           <Icon name="heart" size={24} color="#000000" />
-          <Text style={styles.sidebarText}>Favorites</Text>
+          <Text style={styles.navbarText}>Favorites</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sidebarItem}
+        <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Favorites")}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.sidebarText}>Settings</Text>
+          <Text style={styles.navbarText}>Settings</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
@@ -40,16 +40,11 @@ function PatronHomepage({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "row",
+    backgroundColor: "#ff7f50",
+    flexDirection: "column",
   },
-  sidebar: {
-    width: 175,
-    backgroundColor: "#00fa9a",
-    padding: 20,
-  },
-  sidebarItem: {
-    backgroundColor: "#00fa9a",
+  navbarItem: {
+    backgroundColor: "#ff7f50",
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -57,22 +52,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     flexDirection: "row", // Align icon and text horizontally
   },
-  sidebarText: {
+  navbarText: {
+    flex: 1,
     color: "#000000",
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 10,
-    flexDirection: "row",
+    flexDirection: "column",
   },
   mainContent: {
-    flex: 1,
+    flex: 2,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "##ffe4b5",
   },
   title: {
     flex: 1,
     fontSize: 24,
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#fff",
     fontWeight: "bold",
   },
 },
