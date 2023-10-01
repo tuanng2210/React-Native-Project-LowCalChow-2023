@@ -5,11 +5,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
+  const windowWidth = Dimensions.get("window").width;
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -23,6 +25,7 @@ function RestaurantHomepage({ navigation, route }) {
 
   //   fetchData();
   // }, []);
+
   useEffect(() => {
     // Dummy data for restaurants
     const dummyRestaurants = [
@@ -35,6 +38,10 @@ function RestaurantHomepage({ navigation, route }) {
     setRestaurants(dummyRestaurants);
   }, []);
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.restaurantItem}>
       <Text style={styles.restaurantName}>{item.name}</Text>
@@ -44,7 +51,7 @@ function RestaurantHomepage({ navigation, route }) {
   return (
     <View style={styles.container}>
       {/* Sidebar */}
-      <View style={styles.sidebar}>
+      <View style={[styles.sidebar, windowWidth < 600 && styles.smallSidebar]}>
         {/* Home */}
         <TouchableOpacity
           style={[
@@ -54,7 +61,9 @@ function RestaurantHomepage({ navigation, route }) {
           onPress={() => navigation.navigate("Restaurant Homepage")}
         >
           <MaterialIcons name="home" size={24} color="#fff" />
-          <Text style={styles.sidebarItemText}>Home</Text>
+          {windowWidth >= 600 && (
+            <Text style={styles.sidebarItemText}>Home</Text>
+          )}
         </TouchableOpacity>
 
         {/* Analytics */}
@@ -67,7 +76,9 @@ function RestaurantHomepage({ navigation, route }) {
           onPress={() => navigation.navigate("Restaurant Analytics Overview")}
         >
           <MaterialIcons name="analytics" size={24} color="#fff" />
-          <Text style={styles.sidebarItemText}>Analytics</Text>
+          {windowWidth >= 600 && (
+            <Text style={styles.sidebarItemText}>Analytics</Text>
+          )}
         </TouchableOpacity>
 
         {/* Add more sidebar items as needed */}
@@ -184,6 +195,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
+  },
+  smallSidebar: {
+    width: 100,
   },
 });
 
