@@ -11,6 +11,7 @@ import {
 function RestaurantAccountCreationPage({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
 
@@ -31,6 +32,12 @@ function RestaurantAccountCreationPage({ navigation }) {
       errors.password = "Password is required.";
     } else if (password.length < 6) {
       errors.password = "Password must be at least 6 characters.";
+    }
+
+    if (!confirmPassword) {
+      errors.confirmPassword = "You must confirm your password.";
+    } else if (confirmPassword != password) {
+      errors.confirmPassword = "Passwords do not match.";
     }
 
     setErrors(errors);
@@ -99,6 +106,14 @@ function RestaurantAccountCreationPage({ navigation }) {
         secureTextEntry={true}
         value={password}
         onChangeText={(text) => setPassword(text)}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        secureTextEntry={true}
+        value={confirmPassword}
+        onChangeText={(text) => setConfirmPassword(text)}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
