@@ -29,7 +29,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MenuCreate from './components/menuCreate';
 import MenuPage from './components/menu';
 import EditMenuPage from './components/editMenuItem';
-import RestaurantHomepage from './components/sampleRestaurantHomePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +37,6 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
-        <Stack.Screen name="Restaurant Homepage" component={RestaurantHomepage}/>
         <Stack.Screen name="Menu" component={MenuPage}/>
         <Stack.Screen name="Edit Menu" component={EditMenuPage}/>
         <Stack.Screen name="Menu Creation" component={MenuCreate}/>
