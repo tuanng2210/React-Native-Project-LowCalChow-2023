@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 
-function MenuCreate({navigation}){
-    const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzYyMDQ2LCJpYXQiOjE2OTYzNTQ4NDYsImp0aSI6ImZlNTkxZTc3NTU2YzRlMjFhZWQ0YjY1MjNjMjQ4NTRmIiwidXNlcl9pZCI6Mn0.8JBkg-45yBxHFHQQJKhYEvZAaiUfqB_VUXbdJDq9zIk";
-    const restID = 1;
+function MenuCreate({route, navigation}){
+    
+    const access = route.params.accessToken;
+    const restID = route.params.restIDToken;
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
     const [cookStyleTags, setcookStyleTags] = useState([]);
@@ -32,33 +33,11 @@ function MenuCreate({navigation}){
     const [restrictionSelect, setrestrictionSelect] = useState([]);
     const [timeOfDayAvailable, setTOD] = useState([]);
     
-    {/*const onPictureChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            setFoodPicture(URL.createObjectURL(event.target.files[0]));
-        }
-    }*/}
-
-    /* USELESS FUNCTION I THINK BUT KEEPING INCASE NOT
-    function getArrayfromString(ingredients) {
-      var tempArray = ingredients.toString().split(',');
-      return tempArray;
-    } */
 
     function submitMeal(){
       {/*submit to database here then reset the page*/}
       handleUpdateMeal();
-
-      setMealname('');
-      setDescription('');
-      setPrice('');
-      setCalories('');
-      setIngredSelect([]);
-      setfoodTypeSelect('');
-      setallergiesSelect('');
-      setcookStyleSelect('');
-      settasteSelect('');
-      setrestrictionSelect('');
-      setTOD('');
+      navigation.navigate('Menu', {accessToken: access, restIDToken: restID});
 
     }
     
@@ -227,6 +206,7 @@ function MenuCreate({navigation}){
     }, []); 
 
     return (
+      <ScrollView style = {{ flex: 1}}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text style={styles.title}>Add Meal</Text>
@@ -239,19 +219,13 @@ function MenuCreate({navigation}){
             onChangeText={(text) => setMealname(text)}
           />
     
-          {/*Meal Description*/}
+          {/* Meal Description
           <TextInput
             style={styles.input}
             placeholder="Give a description for this meal."
             value={description}
             onChangeText={(text) => setDescription(text)}
-          />
-    
-          {/* food picture upload hopefully */}
-          {/*<div>
-            <input type="file" onchange={onPictureChange} className="filetype" />
-            <img alt="preview image" src={foodPicture}/>
-          </div>*/}
+          /> */}
 
           {/*Meal Price*/}
           <TextInput
@@ -348,7 +322,7 @@ function MenuCreate({navigation}){
         </View>
         
         </SafeAreaView>
- 
+        </ScrollView>
       );
     }
 

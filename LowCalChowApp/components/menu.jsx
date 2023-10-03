@@ -1,21 +1,55 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import MenuComponent from './menuItemComponent';
 
-function MenuPage({navigation}){
+function MenuPage({route, navigation}){
 
-    return(
+  const [menuItems, setmenuItems]=useState([]);
+  //const RestID = route.params.restIDToken;
+  //const access = route.params.accessToken;
+  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzcwMTI2LCJpYXQiOjE2OTYzNjI5MjYsImp0aSI6IjY2OGQ0Y2MxYzYzNzQxYWI4ZWY1NmFlZTRiM2MxZjE3IiwidXNlcl9pZCI6Mn0.zlT6Ir5uOmOtfbOUROqxLZ6uoUujWMzHvOGki1h-LF4";
+  const RestID = 1;
 
+  const handlegetMenuItems = async () => {
+    try{
+      const response = await fetch(`http://localhost:8000/restaurants/${RestID}/menuitems/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + access,
+      },
+    });
+
+    if (response.ok) 
+    {
+      const data = await response.json();
+      setmenuItems(data);
+    } 
+  }catch (error) {
+    console.error("Error:", error);
+  }
+} 
+useEffect (() => {
+  handlegetMenuItems();
+}, []); 
+  
+  return(
+   <ScrollView style = {{ flex: 1}}>
+      <SafeAreaView style={{ flex: 1}}>
         <View style={styles.container}>
             <Text style={styles.title}>Menu</Text>
 
+            <MenuComponent menuItems={menuItems} accessToken={access} restIDToken={RestID}/>
 
-            <Button title="Add Menu Item" onPress={() => navigation.navigate('Menu Creation')}/>
-            <Button title="Edit Menu Item" onPress={() => navigation.navigate('Edit Menu')}/>
+            <Button title="Add Menu Item" onPress={() => navigation.navigate('Menu Creation', {accessToken: access, restIDToken: RestID})}/>
+            {/*<Button title="Edit Menu Item" onPress={() => navigation.navigate('Edit Menu')}/>*/}
 
 
 
 
         </View>
+      </SafeAreaView>
+     </ScrollView>
         );
     }
     const styles = StyleSheet.create({

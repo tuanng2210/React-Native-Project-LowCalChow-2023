@@ -1,98 +1,370 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 
-{/*
-TODO:
-Import From Database
-Send to Database
-Fill in text fields with current information
-*/}
+function EditMenu({route, navigation}){
+    const mealID = route.params.id;
 
-function EditMenu({navigation}){
-    const [mealName, setMealname] = useState('');
+    const access = route.params.accessToken;
+
+    const restID = route.params.restIDToken;
+
+    const [ingredientTags, setIngredientTags] =useState([]);
+    const [foodTypeTags, setfoodTypeTags] =useState([]);
+    const [cookStyleTags, setcookStyleTags] = useState([]);
+    const [allergyTags, setallergyTags] = useState([]);
+    const [tasteTags, settasteTags] = useState([]);
+    const timeOfDay = [
+      { label: 'Breakfast', value: 'Breakfast' },
+      { label: 'Lunch', value: 'Lunch' },
+      { label: 'Dinner', value: 'Dinner' },
+      { label: 'Anytime', value: 'Anytime' },
+    ];
+  
+    const [restrictionTags, setrestrictionTags] = useState('');
+
+    const [mealName, setMealName] = useState('');
     const [description, setDescription] = useState('');
-    const [foodPicture, setFoodPicture] = useState(null);
-    const [ingredientsArray, setIngredientsArray] = useState('');
-    const [ingredients, setIngredients] = useState('');
-    const [foodTagsArray, setFoodTagsArray] = useState('');
-    const [foodTags, setFoodTags] = useState('');
-    const [allergiesArray, setAllergiesArray] = useState('');
-    const [allergies, setAllergies] = useState('');
-    const onPictureChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            setFoodPicture(URL.createObjectURL(event.target.files[0]));
-        }
-    }
-    function getArrayfromString(ingredients) {
-      var tempArray = ingredients.toString().split(',');
-      return tempArray;
-    }
+    const [mealCalories, setCalories] = useState('');
+    const [mealPrice, setPrice] = useState('');
+
+    const [ingredSelect, setIngredSelect] = useState([]);
+    const [foodTypeSelect, setfoodTypeSelect] = useState([]);
+    const [cookStyleSelect, setcookStyleSelect] = useState([]);
+    const [allergiesSelect, setallergiesSelect] = useState([]);
+    const [tasteSelect, settasteSelect] = useState([]);
+    const [restrictionSelect, setrestrictionSelect] = useState([]);
+    const [timeOfDayAvailable, setTOD] = useState([]);
+    
+
     function submitMeal(){
-      {/*submit to database here*/}
+      {/*submit to database here then reset the page*/}
+      handleUpdateMeal();
       navigation.navigate('Menu');
+
+    }
+    {/*Gets current meal info to be updated*/}
+    const handlegetMeal = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+ 
+          setCalories(data.calories);
+          setcookStyleSelect(data.cook_style_tags);
+          setfoodTypeSelect(data.food_type_tag);
+          setIngredSelect(data.ingredients_tag);
+          setMealName(data.item_name);
+          setallergiesSelect(data.menu_allergy_tag);
+          setrestrictionSelect(data.menu_restriction_tag);
+          setPrice(data.price);
+          settasteSelect(data.taste_tags);
+          setTOD(data.time_of_day_available);
+
+
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+
+    } 
+    useEffect (() => {
+      handlegetMeal();
+    }, []); 
+
+    {/*Send data to backend to add menu item */}
+    const handleUpdateMeal = async () => {
+      const data = {
+        "item_name": mealName,
+        "price": mealPrice,
+        "calories": mealCalories,
+        "food_type_tag": foodTypeSelect,
+        "taste_tags": tasteSelect,
+        "cook_style_tags": cookStyleSelect,
+        "menu_restriction_tag": restrictionSelect,
+        "menu_allergy_tag": allergiesSelect,
+        "ingredients_tag": ingredSelect,
+        "time_of_day_available": timeOfDayAvailable,
+        "is_modifable": true
+      }
+      console.log(data);
+      try{
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+        body: JSON.stringify(data),
+      });
+        if (response.status === 200) {
+          const data = await response.json();
+
+        }
+      }catch (error) {
+        console.error("Error:", error);
+
+    }
+  } 
+    {/*get the tags to put in drop down lists for menu create */}
+      const handlegetfoodTags = async () => {
+        try{
+          const response = await fetch("http://localhost:8000/restaurants/foodtypetags/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+          
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          const formTags = data.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setfoodTypeTags(formTags);  
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+
+      try {
+        const response = await fetch("http://localhost:8000/restaurants/ingredienttags/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          const formTags = data.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setIngredientTags(formTags);  
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+
+      try{
+        const response = await fetch("http://localhost:8000/restaurants/cookstyletags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+        
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setcookStyleTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
     }
 
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/tastetags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        settasteTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/restrictiontags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setrestrictionTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/allergytags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setallergyTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    } 
+    useEffect (() => {
+      handlegetfoodTags();
+    }, []); 
 
     return (
+      <ScrollView style = {{ flex: 1}}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text style={styles.title}>Edit Meal</Text>
+          <Text style={styles.title}>Add Meal</Text>
     
+          {/*Meal Name*/}
           <TextInput
             style={styles.input}
-            placeholder="Current Meal Name"
+            placeholder={`${mealName}`}
             value={mealName}
-            onChangeText={(text) => setMealname(text)}
+            onChangeText={(text) => setMealName(text)}
           />
     
+          {/* Meal Description
           <TextInput
             style={styles.input}
-            placeholder="Current Description."
+            placeholder={`${description}`}
             value={description}
             onChangeText={(text) => setDescription(text)}
+          /> */}
+
+          {/*Meal Price*/}
+          <TextInput
+            style={styles.input}
+            placeholder="{mealPrice}"
+            value={mealPrice}
+            onChangeText={(text) => setPrice(text)}
           />
-    
-          {/* food picture upload hopefully */}
-          {/*<div>
-            <input type="file" onchange={onPictureChange} className="filetype" />
-            <img alt="preview image" src={foodPicture}/>
-          </div>*/}
+
+          {/*Meal Calories*/}
+          <TextInput
+            style={styles.input}
+            placeholder="{mealCalories}"
+            value={mealCalories}
+            onChangeText={(text) => setCalories(text)}
+          />
           
     
-          {/* todo: change to adding multiple ingredients*/}
-          <TextInput
-            style={styles.input}
-            placeholder="Current ingredients"
-            value={ingredients}
-            onChangeText={(text) => setIngredients(text)}
-            onEndEditing={(text) => setIngredientsArray(getArrayfromString(text))}
-           
+          {/*Ingredients*/}
+          <Text style={styles.normText}>Ingredients</Text>
+
+          <MultipleSelectList 
+            setSelected={(val) => setIngredSelect(val)} 
+            data={ingredientTags} 
+            save="key"
+            //onSelect={() => alert(ingredSelect)} 
+            label="Ingredients"
+            defaultOption={ingredSelect}
           />
     
-          {/* todo: change to adding multiple ingredients*/}
-          <TextInput
-            style={styles.input}
-            placeholder="Current tags"
-            value={foodTags}
-            onChangeText={(text) => setFoodTags(text)}
-            onEndEditing={(text) => setFoodTagsArray(getArrayfromString(text))}
+        
+
+          {/*Food Type*/}
+          <Text style={styles.normText}>Type of food</Text>
+
+          <SelectList 
+            setSelected={(val) => setfoodTypeSelect(val)} 
+            data={foodTypeTags} 
+            save="key"
+            
+          />
+
+          {/*Cook Style*/}
+          <Text style={styles.normText}>Cooking Style</Text>
+
+          <SelectList 
+            setSelected={(val) => setcookStyleSelect(val)} 
+            data={cookStyleTags} 
+            save="key"
+          />
+
+          {/*Allergies*/}
+          <Text style={styles.normText}>Allergies</Text>
+
+          <MultipleSelectList 
+            setSelected={(val) => setallergiesSelect(val)} 
+            data={allergyTags} 
+            save="key"
+            //onSelect={() => alert(allergiesSelect)} 
+            label="Allergies"
+          />
+          {/*Taste*/}
+          <Text style={styles.normText}>Taste Tags</Text>
+
+          <MultipleSelectList 
+            setSelected={(val) => settasteSelect(val)} 
+            data={tasteTags} 
+            save="key"
+            //onSelect={() => alert(foodTypeSelect)} 
+            label="Taste Tags"
+          />
+          {/*Restrictions*/}
+          <Text style={styles.normText}>Dietary Restrictions</Text>
+
+          <MultipleSelectList 
+            setSelected={(val) => setrestrictionSelect(val)} 
+            data={restrictionTags} 
+            save="key"
+            //onSelect={() => alert(foodTypeSelect)} 
+            label="Restriction types"
+          />
+          {/*Time Of Day Available*/}
+          <Text style={styles.normText}>When is this Meal Available?</Text>
+
+          <SelectList 
+            setSelected={(val) => setTOD(val)} 
+            data={timeOfDay} 
+            save="key"
+            defaultOption={timeOfDayAvailable}
           />
     
-          {/* todo: change to adding multiple ingredients*/}
-          <TextInput
-            style={styles.input}
-            placeholder="Current Allergies"
-            value={allergies}
-            onChangeText={(text) => setAllergies(text)}
-            onEndEditing={(text) => setAllergiesArray(getArrayfromString(text))}
-          />
+          
     
           {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
           <Button title="Submit Meal" onPress={() => submitMeal()}/>
         </View>
         
+        </SafeAreaView>
+        </ScrollView>
+ 
       );
     }
-
 
     
     const styles = StyleSheet.create({
@@ -104,6 +376,10 @@ function EditMenu({navigation}){
       },
       title: {
         fontSize: 24,
+        marginBottom: 16,
+      },
+      normText: {
+        fontSize: 16,
         marginBottom: 16,
       },
       input: {
@@ -134,6 +410,5 @@ function EditMenu({navigation}){
           marginBottom: 12,
       }
     });
-    
     export default EditMenu;
     
