@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 
 function MenuCreate({navigation}){
-    const ingredientTags = ('');
-    const foodTypeTags =('');
-    const cookStyleTags = ('');
-    const allergyTags = ('');
-    const tasteTags = ('');
+    const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzYyMDQ2LCJpYXQiOjE2OTYzNTQ4NDYsImp0aSI6ImZlNTkxZTc3NTU2YzRlMjFhZWQ0YjY1MjNjMjQ4NTRmIiwidXNlcl9pZCI6Mn0.8JBkg-45yBxHFHQQJKhYEvZAaiUfqB_VUXbdJDq9zIk";
+    const restID = 1;
+    const [ingredientTags, setIngredientTags] =useState([]);
+    const [foodTypeTags, setfoodTypeTags] =useState([]);
+    const [cookStyleTags, setcookStyleTags] = useState([]);
+    const [allergyTags, setallergyTags] = useState([]);
+    const [tasteTags, settasteTags] = useState([]);
     const timeOfDay = [
       { label: 'Breakfast', value: 'Breakfast' },
       { label: 'Lunch', value: 'Lunch' },
@@ -15,20 +17,20 @@ function MenuCreate({navigation}){
       { label: 'Anytime', value: 'Anytime' },
     ];
   
-    const restrictionTags = ('');
+    const [restrictionTags, setrestrictionTags] = useState('');
 
     const [mealName, setMealname] = useState('');
     const [description, setDescription] = useState('');
-    const [mealCalories, setCalories] = useState('');
+    const [mealCalories, setCalories] = useState();
     const [mealPrice, setPrice] = useState('');
 
     const [ingredSelect, setIngredSelect] = useState([]);
-    const [foodTypeSelect, setfoodTypeSelect] = useState('');
-    const [cookStyleSelect, setcookStyleSelect] = useState('');
+    const [foodTypeSelect, setfoodTypeSelect] = useState([]);
+    const [cookStyleSelect, setcookStyleSelect] = useState([]);
     const [allergiesSelect, setallergiesSelect] = useState([]);
     const [tasteSelect, settasteSelect] = useState([]);
     const [restrictionSelect, setrestrictionSelect] = useState([]);
-    const [timeOfDayAvailable, setTOD] = useState('');
+    const [timeOfDayAvailable, setTOD] = useState([]);
     
     {/*const onPictureChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -50,7 +52,7 @@ function MenuCreate({navigation}){
       setDescription('');
       setPrice('');
       setCalories('');
-      setIngredSelect('');
+      setIngredSelect([]);
       setfoodTypeSelect('');
       setallergiesSelect('');
       setcookStyleSelect('');
@@ -59,29 +61,32 @@ function MenuCreate({navigation}){
       setTOD('');
 
     }
+    
     {/*Send data to backend to add menu item */}
     const handleUpdateMeal = async () => {
       const data = {
-        item_name: mealName,
-        price: mealPrice,
-        calories: mealCalories,
-        food_type_tags: foodTypeSelect,
-        taste_tags: tasteSelect,
-        cook_style_tags: cookStyleSelect,
-        menu_restriction_tag: restrictionSelect,
-        menu_allergy_tag: allergiesSelect,
-        ingredients_tag: ingredSelect,
-        time_of_day_available: timeOfDayAvailable.Value(),
-        is_modifable: true
+        "item_name": mealName,
+        "price": mealPrice,
+        "calories": mealCalories,
+        "food_type_tag": foodTypeSelect,
+        "taste_tags": tasteSelect,
+        "cook_style_tags": cookStyleSelect,
+        "menu_restriction_tag": restrictionSelect,
+        "menu_allergy_tag": allergiesSelect,
+        "ingredients_tag": ingredSelect,
+        "time_of_day_available": timeOfDayAvailable,
+        "is_modifable": true
       }
+      console.log(data);
       try{
-        const response = await fetch("http://localhost:8000/restaurants/" + restID + "/", {
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/`, {
         method: "POST",
 
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
         },
-        body: JSON.stringify({data}),
+        body: JSON.stringify(data),
       });
         if (response.status === 200) {
           const data = await response.json();
@@ -91,132 +96,135 @@ function MenuCreate({navigation}){
         console.error("Error:", error);
 
     }
-  }
+  } 
     {/*get the tags to put in drop down lists for menu create */}
-    const handlegetfoodTags = async () => {
-      try{
-        const response = await fetch("http://localhost:8000/restaurants/foodtypetags/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-        
-      });
-      if (response.status === 200) {
-        const data = await response.json();
-        foodTypeTags = data.map(item => ({
-          value: item.id,
-          label: item.title,
-        }));
-      }
-    }catch (error) {
-      console.error("Error:", error);
-    }
-
-    /*try {
-      const response = await fetch("http://localhost:8000/restaurants/ingredienttags", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      if (response.status === 200) {
-        const data = await response.json();
-        const ingredientTags = data.map(item => ({
-          value: item.id,
-          label: item.title,
-        }));
-      }
-    }catch (error) {
-      console.error("Error:", error);
-    }
-
-    try{
-      const response = await fetch("http://localhost:8000/restaurants/cookstyletags/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-      
-    });
-    if (response.status === 200) {
-      const data = await response.json();
-        const cookStyleTags = data.map(item => ({
-          value: item.id,
-          label: item.title,
-        }));
-    }
-  }catch (error) {
-    console.error("Error:", error);
-  }
-
-  try {
-    const response = await fetch("http://localhost:8000/restaurants/tastetags", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    if (response.status === 200) {
-      tasteTags = await response.json();
-    }
-  }catch (error) {
-    console.error("Error:", error);
-  }
-
-  try {
-    const response = await fetch("http://localhost:8000/restaurants/restrictiontags", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    if (response.status === 200) {
-      restrictionTags = await response.json();
-    }
-  }catch (error) {
-    console.error("Error:", error);
-  }
-
-  try {
-    const response = await fetch("http://localhost:8000/restaurants/allergytags", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    if (response.status === 200) {
-      allergyTags = await response.json();
-    }
-  }catch (error) {
-    console.error("Error:", error);
-  }*/
-
-  handlegetfoodTags();
-  
-
-    };
-
-      /*const handlegetingredTags = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/restaurants/ingredienttags", {
+      const handlegetfoodTags = async () => {
+        try{
+          const response = await fetch("http://localhost:8000/restaurants/foodtypetags/", {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+          
         });
         if (response.status === 200) {
-          ingredientTags = await response.json();
+          const data = await response.json();
+          const formTags = data.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setfoodTypeTags(formTags);  
         }
       }catch (error) {
         console.error("Error:", error);
       }
-    }; */
-  
-   
 
+      try {
+        const response = await fetch("http://localhost:8000/restaurants/ingredienttags/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+          const formTags = data.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setIngredientTags(formTags);  
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
 
+      try{
+        const response = await fetch("http://localhost:8000/restaurants/cookstyletags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+        
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setcookStyleTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
 
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/tastetags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        settasteTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/restrictiontags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setrestrictionTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/allergytags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setallergyTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    } 
+    useEffect (() => {
+      handlegetfoodTags();
+    }, []); 
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -268,8 +276,8 @@ function MenuCreate({navigation}){
           <MultipleSelectList 
             setSelected={(val) => setIngredSelect(val)} 
             data={ingredientTags} 
-            save="value"
-            onSelect={() => alert(ingredSelect)} 
+            save="key"
+            //onSelect={() => alert(ingredSelect)} 
             label="Ingredients"
           />
     
@@ -281,7 +289,7 @@ function MenuCreate({navigation}){
           <SelectList 
             setSelected={(val) => setfoodTypeSelect(val)} 
             data={foodTypeTags} 
-            save="Type of food"
+            save="key"
             
           />
 
@@ -291,7 +299,7 @@ function MenuCreate({navigation}){
           <SelectList 
             setSelected={(val) => setcookStyleSelect(val)} 
             data={cookStyleTags} 
-            save="Cooking Style"
+            save="key"
           />
 
           {/*Allergies*/}
@@ -300,28 +308,28 @@ function MenuCreate({navigation}){
           <MultipleSelectList 
             setSelected={(val) => setallergiesSelect(val)} 
             data={allergyTags} 
-            save="value"
-            onSelect={() => alert(allergiesSelect)} 
+            save="key"
+            //onSelect={() => alert(allergiesSelect)} 
             label="Allergies"
           />
           {/*Taste*/}
           <Text style={styles.normText}>Taste Tags</Text>
 
           <MultipleSelectList 
-            setSelected={(val) => setfoodTypeSelect(val)} 
+            setSelected={(val) => settasteSelect(val)} 
             data={tasteTags} 
-            save="value"
-            onSelect={() => alert(foodTypeSelect)} 
+            save="key"
+            //onSelect={() => alert(foodTypeSelect)} 
             label="Taste Tags"
           />
           {/*Restrictions*/}
           <Text style={styles.normText}>Dietary Restrictions</Text>
 
           <MultipleSelectList 
-            setSelected={(val) => setfoodTypeSelect(val)} 
+            setSelected={(val) => setrestrictionSelect(val)} 
             data={restrictionTags} 
-            save="value"
-            onSelect={() => alert(foodTypeSelect)} 
+            save="key"
+            //onSelect={() => alert(foodTypeSelect)} 
             label="Restriction types"
           />
           {/*Time Of Day Available*/}
@@ -330,7 +338,7 @@ function MenuCreate({navigation}){
           <SelectList 
             setSelected={(val) => setTOD(val)} 
             data={timeOfDay} 
-            save="value"
+            save="key"
           />
     
           
