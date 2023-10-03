@@ -12,6 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 function RestaurantAnalyticsOverview({ navigation, route }) {
   const [analyticsData, setAnalyticsData] = useState([]);
   const windowWidth = Dimensions.get("window").width;
+  const { access } = route.params;
 
   useEffect(() => {
     // Fetch analytics data from API or other data source
@@ -42,7 +43,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
             styles.sidebarItem,
             route.name === "Restaurant Homepage" && styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Homepage")}
+          onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
           <MaterialIcons name="home" size={24} color="#fff" />
           {windowWidth >= 600 && (
@@ -57,7 +58,9 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
             route.name === "Restaurant Analytics Overview" &&
               styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Analytics Overview")}
+          onPress={() =>
+            navigation.navigate("Restaurant Analytics Overview", { access })
+          }
         >
           <MaterialIcons name="analytics" size={24} color="#fff" />
           {windowWidth >= 600 && (
