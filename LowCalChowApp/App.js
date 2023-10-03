@@ -22,11 +22,11 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
+        <Stack.Screen  name="Login" component={LoginPage}/>
+        <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen name="Menu" component={MenuPage}/>
         <Stack.Screen name="Edit Menu" component={EditMenuPage}/>
         <Stack.Screen name="Menu Creation" component={MenuCreate}/>
-        <Stack.Screen  name="Login" component={LoginPage}/>
-        <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
         <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
