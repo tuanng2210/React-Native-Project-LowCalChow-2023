@@ -35,7 +35,6 @@ useEffect (() => {
   if(isFocused)
   {
     handlegetMenuItems();
-    console.log("hello hello hello hello");
   }
 
 }, [isFocused]); 

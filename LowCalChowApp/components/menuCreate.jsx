@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
+import MenuPage from './menu';
 
 function MenuCreate({route, navigation}){
     
     const access = route.params.accessToken;
     const restID = route.params.restIDToken;
+
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
     const [cookStyleTags, setcookStyleTags] = useState([]);
@@ -69,7 +71,6 @@ function MenuCreate({route, navigation}){
       });
         if (response.status === 200) {
           const data = await response.json();
-
         }
       }catch (error) {
         console.error("Error:", error);
