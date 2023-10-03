@@ -8,26 +8,14 @@ function PatronAccountCreationPage({navigation}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState('');
-  const [zip, setZip] = useState('');
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(() => {
-    validateForm();
-  }, [username, firstName, lastName, email, password, confirmPassword, zip]);
+  const handleSubmit = () => {
 
-  const validateForm = () => {
     let errors = {};
 
     if(!username){
       errors.username = "Username is required."
-    }
-
-    if(!firstName){
-      errors.firstName = "First name is required."
     }
     
     if(!email){
@@ -51,20 +39,44 @@ function PatronAccountCreationPage({navigation}) {
       errors.confirmPassword = "Passwords do not match."
     }
 
-    if(!zip){
-      errors.zip = "Zipcode is required."
-    }
-
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  }
+    
+    if(Object.keys(errors).length === 0){
 
-  const handleSubmit = () => {
-    if (isFormValid){
-      console.log("Form is valid.")
-    }
-    else{
-      console.log("Form has errors.")
+      const data = {
+        email: email,
+        username: username,
+        password: password
+      }
+
+      fetch("http://localhost:8000/auth/signup/patron/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          // Handle the API response here
+          console.log("API response:", responseData);
+
+          if (responseData.message === "success") {
+            // The signup was successful, you can navigate to a success screen or perform other actions
+            const { email, username, user_type } = responseData.content;
+            console.log("User details:", { email, username, user_type });
+            navigation.navigate("Patron Profile Creation Page");
+          } else {
+            // Handle any error messages returned by the API
+            console.log("Message :", responseData.message);
+            // You can display an error message to the user if needed
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      console.log("Form has errors.");
     }
   };
 
@@ -78,20 +90,6 @@ function PatronAccountCreationPage({navigation}) {
         placeholder="Username"
         value={username}
         onChangeText={(text) => setUsername(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={(text) => setFirstName(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={(text) => setLastName(text)}
       />
 
       <TextInput
@@ -117,45 +115,20 @@ function PatronAccountCreationPage({navigation}) {
         onChangeText={(text) => setConfirmPassword(text)}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Zipcode"
-        value={zip}
-        onChangeText={(text) => setZip(text)}
-      />
-
-      <Text>Gender:</Text>
-      <Picker
-        selectedValue = {gender}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setGender(itemValue)
-        }>
-
-        <Picker.Item label="Female" value="female" />
-        <Picker.Item label="Male" value="male" />
-        <Picker.Item label="Other" value="other"/>
-
-      </Picker>
-
-
-      <TouchableOpacity
-        style={[styles.button, {opacity : isFormValid ? 1 : 0.5}]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
+      {Object.keys(errors).map((key, index) => (
+        <Text key={index} style={styles.error}>
+          {errors[key]}
+        </Text>
+      ))}
 
-      {Object.values(errors).map((error, index) => (
-                <Text key={index} style={styles.error}>
-                    {error}
-                </Text>
-            ))}
-
-
-      <Button title="Back to Login" onPress={() => navigation.navigate('Login')}/>
+      <Button
+        title="Back to Login"
+        onPress={() => navigation.navigate("Login")}
+      />
     </View>
   );
 }
@@ -181,12 +154,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: 'green',
+    backgroundColor: "orange",
     borderRadius: 8,
     paddingVertical: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
+    width: 100,
 },
   buttonText: {
       color: '#fff',

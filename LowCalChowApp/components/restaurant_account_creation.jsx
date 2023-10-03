@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,15 +11,11 @@ import {
 function RestaurantAccountCreationPage({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(() => {
-    validateForm();
-  }, [username, email, password]);
-
-  const validateForm = () => {
+  const handleSubmit = () => {
     let errors = {};
 
     if (!username) {
@@ -38,12 +34,15 @@ function RestaurantAccountCreationPage({ navigation }) {
       errors.password = "Password must be at least 6 characters.";
     }
 
-    setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  };
+    if (!confirmPassword) {
+      errors.confirmPassword = "You must confirm your password.";
+    } else if (confirmPassword != password) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
 
-  const handleSubmit = () => {
-    if (isFormValid) {
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
       // Create a data object with the form fields
       const data = {
         email: email,
@@ -109,17 +108,21 @@ function RestaurantAccountCreationPage({ navigation }) {
         onChangeText={(text) => setPassword(text)}
       />
 
-      <TouchableOpacity
-        style={[styles.button, { opacity: isFormValid ? 1 : 0.5 }]}
-        disabled={!isFormValid}
-        onPress={handleSubmit}
-      >
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        secureTextEntry={true}
+        value={confirmPassword}
+        onChangeText={(text) => setConfirmPassword(text)}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
-      {Object.values(errors).map((error, index) => (
+      {Object.keys(errors).map((key, index) => (
         <Text key={index} style={styles.error}>
-          {error}
+          {errors[key]}
         </Text>
       ))}
 
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: "green",
+    backgroundColor: "orange",
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: "center",
