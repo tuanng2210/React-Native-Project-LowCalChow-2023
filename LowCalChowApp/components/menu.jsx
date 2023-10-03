@@ -7,6 +7,7 @@ function MenuPage({route, navigation}){
   const isFocused = useIsFocused();
 
   const [menuItems, setmenuItems]=useState([]);
+  // SWITCH THE LINES BELOW IF YOU PASS THE VALUES PLEASE
   //const RestID = route.params.restIDToken;
   //const access = route.params.accessToken;
   const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2Mzc5MTQxLCJpYXQiOjE2OTYzNzE5NDEsImp0aSI6IjdmMzI5YzcxNDE0NzQ0ZDRhYzM1MTUyYjcwZjc4NzU2IiwidXNlcl9pZCI6Mn0.mMoaY5qdev87yks7n_47rcYRLeyCs87U0y4Y-n8Xg-I";
