@@ -12,31 +12,43 @@ import { MaterialIcons } from "@expo/vector-icons";
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const windowWidth = Dimensions.get("window").width;
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("https://localhost:8000/restaurants/");
-  //       setRestaurants(response.data); // Update restaurants state with fetched data
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+  const { access } = route.params;
 
   useEffect(() => {
-    // Dummy data for restaurants
-    const dummyRestaurants = [
-      { id: 1, name: "Restaurant A" },
-      { id: 2, name: "Restaurant B" },
-      { id: 3, name: "Restaurant C" },
-      // Add more dummy restaurants as needed
-    ];
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/restaurants/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${access}`
+          }
+        });
 
-    setRestaurants(dummyRestaurants);
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurants(data); // Update restaurants state with fetched data
+        } else {
+          setError("Error fetching data");
+        }
+      } catch (error) {
+        setError("Error fetching data");
+      } 
+    };
+
+    fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   // Dummy data for restaurants
+  //   const dummyRestaurants = [
+  //     { id: 1, name: "Restaurant A" },
+  //     { id: 2, name: "Restaurant B" },
+  //     { id: 3, name: "Restaurant C" },
+  //     // Add more dummy restaurants as needed
+  //   ];
+
+  //   setRestaurants(dummyRestaurants);
+  // }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
