@@ -27,6 +27,7 @@ import PatronProfileCreationPage from './components/patronProfileCreationPage';
 import PatronAccountCreationPage from './components/patron_account_creation';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
 import RestaurantHomepage from './components/restaurantHomePage';
+import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -38,12 +39,13 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
+        <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
-        <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
+        <Stack.Screen  name="Patron Preference Creation Page" component={PatronPreferenceCreationPage}/>
       </Stack.Navigator>
     </NavigationContainer>
     
