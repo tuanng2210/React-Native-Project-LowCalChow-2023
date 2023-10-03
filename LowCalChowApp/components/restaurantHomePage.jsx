@@ -20,8 +20,8 @@ function RestaurantHomepage({ navigation, route }) {
         const response = await fetch("http://localhost:8000/restaurants/", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${access}`
-          }
+            Authorization: `Bearer ${access}`,
+          },
         });
 
         if (response.ok) {
@@ -32,7 +32,7 @@ function RestaurantHomepage({ navigation, route }) {
         }
       } catch (error) {
         setError("Error fetching data");
-      } 
+      }
     };
 
     fetchData();
@@ -70,7 +70,7 @@ function RestaurantHomepage({ navigation, route }) {
             styles.sidebarItem,
             route.name === "Restaurant Homepage" && styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Homepage")}
+          onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
           <MaterialIcons name="home" size={24} color="#fff" />
           {windowWidth >= 600 && (
@@ -85,7 +85,9 @@ function RestaurantHomepage({ navigation, route }) {
             route.name === "Restaurant Analytics Overview" &&
               styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Analytics Overview")}
+          onPress={() =>
+            navigation.navigate("Restaurant Analytics Overview", { access })
+          }
         >
           <MaterialIcons name="analytics" size={24} color="#fff" />
           {windowWidth >= 600 && (
