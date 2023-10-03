@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import MenuComponent from './menuItemComponent';
+import {useIsFocused} from '@react-navigation/native';
 
 function MenuPage({route, navigation}){
+  const isFocused = useIsFocused();
 
   const [menuItems, setmenuItems]=useState([]);
   //const RestID = route.params.restIDToken;
   //const access = route.params.accessToken;
-  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2MzcwMTI2LCJpYXQiOjE2OTYzNjI5MjYsImp0aSI6IjY2OGQ0Y2MxYzYzNzQxYWI4ZWY1NmFlZTRiM2MxZjE3IiwidXNlcl9pZCI6Mn0.zlT6Ir5uOmOtfbOUROqxLZ6uoUujWMzHvOGki1h-LF4";
+  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2Mzc5MTQxLCJpYXQiOjE2OTYzNzE5NDEsImp0aSI6IjdmMzI5YzcxNDE0NzQ0ZDRhYzM1MTUyYjcwZjc4NzU2IiwidXNlcl9pZCI6Mn0.mMoaY5qdev87yks7n_47rcYRLeyCs87U0y4Y-n8Xg-I";
   const RestID = 1;
-
+  
   const handlegetMenuItems = async () => {
     try{
       const response = await fetch(`http://localhost:8000/restaurants/${RestID}/menuitems/`, {
@@ -30,8 +32,13 @@ function MenuPage({route, navigation}){
   }
 } 
 useEffect (() => {
-  handlegetMenuItems();
-}, []); 
+  if(isFocused)
+  {
+    handlegetMenuItems();
+    console.log("hello hello hello hello");
+  }
+
+}, [isFocused]); 
   
   return(
    <ScrollView style = {{ flex: 1}}>
