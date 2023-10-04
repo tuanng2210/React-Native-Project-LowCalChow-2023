@@ -5,9 +5,9 @@ import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-lis
 function EditMenu({route, navigation}){
     const mealID = route.params.id;
 
-    const access = route.params.accessToken;
+    const access = route.params.access;
 
-    const restID = route.params.restIDToken;
+    const restID = route.params.restaurantId;
 
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
@@ -40,7 +40,7 @@ function EditMenu({route, navigation}){
     function submitMeal(){
       {/*submit to database here then reset the page*/}
       handleUpdateMeal();
-      navigation.navigate('Menu');
+      navigation.navigate('Menu', {access: access, restaurantId: restID});
 
     }
     {/*Gets current meal info to be updated*/}
@@ -249,6 +249,8 @@ function EditMenu({route, navigation}){
           <Text style={styles.title}>Add Meal</Text>
     
           {/*Meal Name*/}
+          <Text style={styles.label}>Meal Name:</Text>
+
           <TextInput
             style={styles.input}
             placeholder={`${mealName}`}
@@ -265,6 +267,8 @@ function EditMenu({route, navigation}){
           /> */}
 
           {/*Meal Price*/}
+          <Text style={styles.label}>Price of meal:</Text>
+
           <TextInput
             style={styles.input}
             placeholder="{mealPrice}"
@@ -273,6 +277,7 @@ function EditMenu({route, navigation}){
           />
 
           {/*Meal Calories*/}
+          <Text style={styles.label}>Meal's Calories:</Text>
           <TextInput
             style={styles.input}
             placeholder="{mealCalories}"
@@ -291,6 +296,8 @@ function EditMenu({route, navigation}){
             //onSelect={() => alert(ingredSelect)} 
             label="Ingredients"
             defaultOption={ingredSelect}
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
     
         
@@ -302,7 +309,8 @@ function EditMenu({route, navigation}){
             setSelected={(val) => setfoodTypeSelect(val)} 
             data={foodTypeTags} 
             save="key"
-            
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
 
           {/*Cook Style*/}
@@ -312,6 +320,8 @@ function EditMenu({route, navigation}){
             setSelected={(val) => setcookStyleSelect(val)} 
             data={cookStyleTags} 
             save="key"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
 
           {/*Allergies*/}
@@ -323,6 +333,8 @@ function EditMenu({route, navigation}){
             save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Allergies"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Taste*/}
           <Text style={styles.normText}>Taste Tags</Text>
@@ -333,6 +345,8 @@ function EditMenu({route, navigation}){
             save="key"
             //onSelect={() => alert(foodTypeSelect)} 
             label="Taste Tags"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Restrictions*/}
           <Text style={styles.normText}>Dietary Restrictions</Text>
@@ -343,6 +357,8 @@ function EditMenu({route, navigation}){
             save="key"
             //onSelect={() => alert(foodTypeSelect)} 
             label="Restriction types"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Time Of Day Available*/}
           <Text style={styles.normText}>When is this Meal Available?</Text>
@@ -352,12 +368,17 @@ function EditMenu({route, navigation}){
             data={timeOfDay} 
             save="key"
             defaultOption={timeOfDayAvailable}
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
     
           
     
           {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
-          <Button title="Submit Meal" onPress={() => submitMeal()}/>
+          <Button title="Update Meal" 
+           onPress={() => submitMeal()}
+           style={styles.button}
+          />
         </View>
         
         </SafeAreaView>
@@ -378,12 +399,17 @@ function EditMenu({route, navigation}){
         fontSize: 24,
         marginBottom: 16,
       },
+      label: {
+        fontSize: 18,
+        textAlign: 'left',
+        marginBottom: 6,
+    },
       normText: {
         fontSize: 16,
         marginBottom: 16,
       },
       input: {
-        width: '100%',
+        width: '60%',
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
@@ -392,7 +418,7 @@ function EditMenu({route, navigation}){
         marginBottom: 12,
       },
       button: {
-        backgroundColor: 'green',
+        backgroundColor: '44E342',
         borderRadius: 8,
         paddingVertical: 10,
         alignItems: 'center',

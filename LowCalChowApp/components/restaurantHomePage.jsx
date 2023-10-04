@@ -8,13 +8,13 @@ import {
   Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const windowWidth = Dimensions.get("window").width;
   const { access } = route.params;
-  const isFocused =  useIsFocused();
+  const isFocused = useIsFocused();
 
   // useEffect(() => {
   //   const fetchRestaurants = async () => {
@@ -60,18 +60,25 @@ function RestaurantHomepage({ navigation, route }) {
     }
   };
 
-  useEffect (() => {
-    if(isFocused)
-    {
+  useEffect(() => {
+    if (isFocused) {
       fetchRestaurants();
     }
-  
   }, [isFocused]);
 
   const renderItem = ({ item }) => (
-    <View style={styles.restaurantItem}>
-      <Text style={styles.restaurantName}>{item.name}</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Restaurant Dashboard", {
+          restaurantId: item.id,
+          access,
+        })
+      }
+    >
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>{item.name}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
