@@ -7,8 +7,8 @@ const MenuComponent = ({menuItems, accessToken, restIDToken}) => {
   const RestID = restIDToken;
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Edit Menu', {id: item.id, accessToken: access, restIDToken: RestID})}>
-        <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+      <TouchableOpacity onPress={() => navigation.navigate('Edit Menu', {id: item.id, access: access, restaurantId: RestID})}>
+        <View style={{ padding: 16, borderWidth: 1, borderBottomColor: '#ccc', margin: 2, borderRadius: 15, backgroundColor: '#FECA83' }}>
           <Text>{item.item_name}</Text>
         </View>
       </TouchableOpacity>

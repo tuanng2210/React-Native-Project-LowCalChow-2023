@@ -7,11 +7,8 @@ function MenuPage({route, navigation}){
   const isFocused = useIsFocused();
 
   const [menuItems, setmenuItems]=useState([]);
-  // SWITCH THE LINES BELOW IF YOU PASS THE VALUES PLEASE
-  //const RestID = route.params.restIDToken;
-  //const access = route.params.accessToken;
-  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk2Mzc5MTQxLCJpYXQiOjE2OTYzNzE5NDEsImp0aSI6IjdmMzI5YzcxNDE0NzQ0ZDRhYzM1MTUyYjcwZjc4NzU2IiwidXNlcl9pZCI6Mn0.mMoaY5qdev87yks7n_47rcYRLeyCs87U0y4Y-n8Xg-I";
-  const RestID = 1;
+  const RestID = route.params.restaurantId;
+  const access = route.params.access;
   
   const handlegetMenuItems = async () => {
     try{
@@ -48,7 +45,7 @@ useEffect (() => {
 
             <MenuComponent menuItems={menuItems} accessToken={access} restIDToken={RestID}/>
 
-            <Button title="Add Menu Item" onPress={() => navigation.navigate('Menu Creation', {accessToken: access, restIDToken: RestID})}/>
+            <Button title="Add Menu Item" onPress={() => navigation.navigate('Menu Creation', {access: access, restaurantId: RestID})}/>
             {/*<Button title="Edit Menu Item" onPress={() => navigation.navigate('Edit Menu')}/>*/}
 
 
