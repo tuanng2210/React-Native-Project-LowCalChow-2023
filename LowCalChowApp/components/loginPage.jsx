@@ -37,7 +37,7 @@ function LoginPage({ navigation }) {
           navigation.navigate("Restaurant Homepage", {access});
         } else if (user_type === "patron") {
           // Redirect to the customer homepage
-          navigation.navigate("Patron Homepage");
+          navigation.navigate("Patron Homepage", {access});
         } else {
           // Handle other user types or scenarios
         }
