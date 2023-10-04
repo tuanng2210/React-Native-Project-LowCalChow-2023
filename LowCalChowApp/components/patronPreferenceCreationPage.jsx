@@ -1,30 +1,73 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, CheckBox } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-
+import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import { useRoute } from "@react-navigation/native";
 
 
 
 function PatronPreferenceCreationPage({navigation}) {
 
-  const [isSelected, setSelection] = useState(false);
+
 
   const route = useRoute()
   const data = route.params?.data
 
-  const [errors, setErrors] = useState({});
+  const restrictionsTags = [
+    { label: 'Kosher', value: 'Kosher' },
+    { label: 'Gluten-free', value: 'Gluten-free' },
+    { label: 'Halal', value: 'Halal' },
+  ];
 
-  console.log(data);
+  const allergyTags = [
+    { label: 'Eggs', value: 'Eggs' },
+    { label: 'Nuts', value: 'Nuts' },
+    { label: 'Shellfish', value: 'Shellfish' },
+  ];
+
+  const tasteTags = [
+    { label: 'Sweet', value: 'Sweet' },
+    { label: 'Spicy', value: 'Spicy' },
+    { label: 'Umami', value: 'Umami' },
+    { label: 'Salty', value: 'Salty' },
+    { label: 'Sour', value: 'Sour' },
+    { label: 'Herbaceous', value: 'Herbaceous' },
+  ];
+
+  const [errors, setErrors] = useState({});
+  const [restrictions, setRestrictions] = useState({});
+  const [allergies, setAllergies] = useState({});
+  const [taste, setTaste] = useState({});
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Let's pick your preferences</Text>
 
-      <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
+      <Text>Dietary Restrictions?</Text>
+      <MultipleSelectList 
+            setSelected={({val}) => setRestrictions({val})} 
+            data={restrictionsTags} 
+            save="key"
+            //onSelect={() => alert(allergiesSelect)} 
+            label="Restrictions"
+      />
+
+      <Text>Allergies?</Text>
+      <MultipleSelectList 
+            setSelected={({val}) => setAllergies({val})} 
+            data={allergyTags} 
+            save="key"
+            //onSelect={() => alert(allergiesSelect)} 
+            label="Allergy"
+      />
+
+    <Text>Taste Preferences?</Text>
+      <MultipleSelectList 
+            setSelected={({val}) => setTaste({val})} 
+            data={tasteTags} 
+            save="key"
+            //onSelect={() => alert(allergiesSelect)} 
+            label="Taste"
       />
 
       <Button

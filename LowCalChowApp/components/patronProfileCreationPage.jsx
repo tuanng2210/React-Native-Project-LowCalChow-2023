@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import { CheckBox } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 
 function PatronProfileCreationPage({navigation}) {
@@ -11,6 +12,7 @@ function PatronProfileCreationPage({navigation}) {
   const [zip, setZip] = useState('');
   const [gender, setGender] = useState('');
   const [pricePref, setPricePref] = useState('');
+  //const [date, setDate] = useState('');
   const [errors, setErrors] = useState({});
 
 
@@ -113,6 +115,11 @@ function PatronProfileCreationPage({navigation}) {
         <Picker.Item label="Other" value="other"/>
 
       </Picker>
+
+      {/* <RNDateTimePicker 
+        onChange={this.setDate}
+        value={new Date()}
+      /> */}
 
       <TouchableOpacity style={styles.button} onPress={nextPage}>
         <Text style={styles.buttonText}>Submit</Text>

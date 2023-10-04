@@ -39,13 +39,13 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
-        <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
         <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
         <Stack.Screen  name="Patron Preference Creation Page" component={PatronPreferenceCreationPage}/>
+        <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
       </Stack.Navigator>
     </NavigationContainer>
     
