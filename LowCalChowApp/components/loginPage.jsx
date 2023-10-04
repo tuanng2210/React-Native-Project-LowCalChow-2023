@@ -34,7 +34,7 @@ function LoginPage({ navigation }) {
 
         if (user_type === "restaurant") {
           // Redirect to the restaurant homepage
-          navigation.navigate("Restaurant Homepage");
+          navigation.navigate("Restaurant Homepage", {access});
         } else if (user_type === "patron") {
           // Redirect to the customer homepage
           navigation.navigate("Patron Homepage");

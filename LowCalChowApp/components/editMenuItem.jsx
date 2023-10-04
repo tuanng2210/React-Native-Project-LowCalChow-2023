@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
-import MenuPage from './menu';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 
-function MenuCreate({route, navigation}){
-    
+function EditMenu({route, navigation}){
+    const mealID = route.params.id;
+
     const access = route.params.accessToken;
+
     const restID = route.params.restIDToken;
 
     const [ingredientTags, setIngredientTags] =useState([]);
@@ -22,9 +23,9 @@ function MenuCreate({route, navigation}){
   
     const [restrictionTags, setrestrictionTags] = useState('');
 
-    const [mealName, setMealname] = useState('');
+    const [mealName, setMealName] = useState('');
     const [description, setDescription] = useState('');
-    const [mealCalories, setCalories] = useState();
+    const [mealCalories, setCalories] = useState('');
     const [mealPrice, setPrice] = useState('');
 
     const [ingredSelect, setIngredSelect] = useState([]);
@@ -39,10 +40,44 @@ function MenuCreate({route, navigation}){
     function submitMeal(){
       {/*submit to database here then reset the page*/}
       handleUpdateMeal();
-      navigation.navigate('Menu', {accessToken: access, restIDToken: restID});
+      navigation.navigate('Menu');
 
     }
-    
+    {/*Gets current meal info to be updated*/}
+    const handlegetMeal = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const data = await response.json();
+ 
+          setCalories(data.calories);
+          setcookStyleSelect(data.cook_style_tags);
+          setfoodTypeSelect(data.food_type_tag);
+          setIngredSelect(data.ingredients_tag);
+          setMealName(data.item_name);
+          setallergiesSelect(data.menu_allergy_tag);
+          setrestrictionSelect(data.menu_restriction_tag);
+          setPrice(data.price);
+          settasteSelect(data.taste_tags);
+          setTOD(data.time_of_day_available);
+
+
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+
+    } 
+    useEffect (() => {
+      handlegetMeal();
+    }, []); 
+
     {/*Send data to backend to add menu item */}
     const handleUpdateMeal = async () => {
       const data = {
@@ -60,8 +95,8 @@ function MenuCreate({route, navigation}){
       }
       console.log(data);
       try{
-        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/`, {
-        method: "POST",
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+        method: "PUT",
 
         headers: {
           "Content-Type": "application/json",
@@ -71,6 +106,7 @@ function MenuCreate({route, navigation}){
       });
         if (response.status === 200) {
           const data = await response.json();
+
         }
       }catch (error) {
         console.error("Error:", error);
@@ -215,15 +251,15 @@ function MenuCreate({route, navigation}){
           {/*Meal Name*/}
           <TextInput
             style={styles.input}
-            placeholder="Meal Name"
+            placeholder={`${mealName}`}
             value={mealName}
-            onChangeText={(text) => setMealname(text)}
+            onChangeText={(text) => setMealName(text)}
           />
     
           {/* Meal Description
           <TextInput
             style={styles.input}
-            placeholder="Give a description for this meal."
+            placeholder={`${description}`}
             value={description}
             onChangeText={(text) => setDescription(text)}
           /> */}
@@ -231,7 +267,7 @@ function MenuCreate({route, navigation}){
           {/*Meal Price*/}
           <TextInput
             style={styles.input}
-            placeholder="Enter the meal's price"
+            placeholder="{mealPrice}"
             value={mealPrice}
             onChangeText={(text) => setPrice(text)}
           />
@@ -239,7 +275,7 @@ function MenuCreate({route, navigation}){
           {/*Meal Calories*/}
           <TextInput
             style={styles.input}
-            placeholder="How many calories is this meal?"
+            placeholder="{mealCalories}"
             value={mealCalories}
             onChangeText={(text) => setCalories(text)}
           />
@@ -254,6 +290,7 @@ function MenuCreate({route, navigation}){
             save="key"
             //onSelect={() => alert(ingredSelect)} 
             label="Ingredients"
+            defaultOption={ingredSelect}
           />
     
         
@@ -314,6 +351,7 @@ function MenuCreate({route, navigation}){
             setSelected={(val) => setTOD(val)} 
             data={timeOfDay} 
             save="key"
+            defaultOption={timeOfDayAvailable}
           />
     
           
@@ -324,6 +362,7 @@ function MenuCreate({route, navigation}){
         
         </SafeAreaView>
         </ScrollView>
+ 
       );
     }
 
@@ -371,6 +410,5 @@ function MenuCreate({route, navigation}){
           marginBottom: 12,
       }
     });
-    
-    export default MenuCreate;
+    export default EditMenu;
     

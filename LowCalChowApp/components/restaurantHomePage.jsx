@@ -8,39 +8,65 @@ import {
   Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useIsFocused} from '@react-navigation/native';
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const windowWidth = Dimensions.get("window").width;
+  const { access } = route.params;
+  const isFocused =  useIsFocused();
 
   // useEffect(() => {
-  //   const fetchData = async () => {
+  //   const fetchRestaurants = async () => {
   //     try {
-  //       const response = await axios.get("https://localhost:8000/restaurants/");
-  //       setRestaurants(response.data); // Update restaurants state with fetched data
+  //       const response = await fetch("http://localhost:8000/restaurants/", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${access}`,
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setRestaurants(data); // Update restaurants state with fetched data
+  //       } else {
+  //         setError("Error fetching data");
+  //       }
   //     } catch (error) {
-  //       console.error("Error fetching data:", error);
+  //       setError("Error fetching data");
   //     }
   //   };
 
-  //   fetchData();
+  //   fetchRestaurants();
   // }, []);
 
-  useEffect(() => {
-    // Dummy data for restaurants
-    const dummyRestaurants = [
-      { id: 1, name: "Restaurant A" },
-      { id: 2, name: "Restaurant B" },
-      { id: 3, name: "Restaurant C" },
-      // Add more dummy restaurants as needed
-    ];
+  const fetchRestaurants = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      });
 
-    setRestaurants(dummyRestaurants);
-  }, []);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+      if (response.ok) {
+        const data = await response.json();
+        setRestaurants(data); // Update restaurants state with fetched data
+      } else {
+        setError("Error fetching data");
+      }
+    } catch (error) {
+      setError("Error fetching data");
+    }
   };
+
+  useEffect (() => {
+    if(isFocused)
+    {
+      fetchRestaurants();
+    }
+  
+  }, [isFocused]);
 
   const renderItem = ({ item }) => (
     <View style={styles.restaurantItem}>
@@ -58,7 +84,7 @@ function RestaurantHomepage({ navigation, route }) {
             styles.sidebarItem,
             route.name === "Restaurant Homepage" && styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Homepage")}
+          onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
           <MaterialIcons name="home" size={24} color="#fff" />
           {windowWidth >= 600 && (
@@ -73,7 +99,9 @@ function RestaurantHomepage({ navigation, route }) {
             route.name === "Restaurant Analytics Overview" &&
               styles.activeSidebarItem,
           ]}
-          onPress={() => navigation.navigate("Restaurant Analytics Overview")}
+          onPress={() =>
+            navigation.navigate("Restaurant Analytics Overview", { access })
+          }
         >
           <MaterialIcons name="analytics" size={24} color="#fff" />
           {windowWidth >= 600 && (
@@ -97,10 +125,14 @@ function RestaurantHomepage({ navigation, route }) {
             keyExtractor={(item) => item.id.toString()} // Assuming each restaurant object has a unique ID
           />
         </View>
-        {/* Add Restaurant Button
-        <TouchableOpacity style={styles.addButton} onPress={() => {}}>
-            <MaterialIcons name="add" size={24} color="#fff" />
-          </TouchableOpacity> */}
+
+        {/* Add Restaurant Button */}
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate("Add Restaurant")}
+        >
+          <MaterialIcons name="add" size={24} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -160,14 +192,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  addButton: {
-    backgroundColor: "#FF9800",
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    marginTop: 20,
-  },
   activeSidebarItem: {
     backgroundColor: "#FFC107", // Change the background color for active item
   },
@@ -183,6 +207,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: "#FF9800",
+    margin: 30,
     width: 70,
     height: 50,
     borderRadius: 25, // Make it a circle
