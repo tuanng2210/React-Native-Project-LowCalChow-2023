@@ -3,8 +3,38 @@ import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useIsFocused } from "@react-navigation/native"; 
 
+const isFocused = useIsFocused();
 const Stack = createNativeStackNavigator();
+const [profile, setprofile] = useState([]);
+const { access } = route.params;
+
+const fetchProfile = async () => {
+  try {
+    const response = await fetch("http://localhost:8000/patrons/", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setProfile(data); // Update profile with fetched data
+    } else {
+      setError("Error fetching data");
+    }
+  } catch (error) {
+    setError("Error fetching data");
+  }
+};
+
+useEffect(() => {
+  if (isFocused) {
+    fetchProfile();
+  }
+}, [isFocused]);
 
 function PatronSettingsPage({ }) {
     return (
