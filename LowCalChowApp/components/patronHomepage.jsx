@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useIsFocused } from "@react-navigation/native";
+
 
 const Stack = createNativeStackNavigator();
 

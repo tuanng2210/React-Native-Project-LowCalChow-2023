@@ -1,8 +1,13 @@
-import React from "react";
-import { View, Keyboard, Button, TextInput, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Keyboard, Button, TextInput, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-function Search({ }) {
+const Stack = createNativeStackNavigator();
+
+function Search({ navigation, route }) {
+    const { access } = route.params;
     return (
         <View style={styles.mainContent}>
             <View style={styles.container}>
@@ -87,8 +92,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#d9dbda",
         borderRadius: 15,
         alignItems: "center",
-      },
-      searchBar__clicked: {
+    },
+    searchBar__clicked: {
         padding: 10,
         flexDirection: "row",
         width: "80%",
@@ -96,11 +101,11 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignItems: "center",
         justifyContent: "space-evenly",
-      },
-      input: {
+    },
+    input: {
         fontSize: 20,
         marginLeft: 10,
         width: "90%",
-      },
+    },
 });
 export default Search;
