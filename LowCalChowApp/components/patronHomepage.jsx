@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-
 const Stack = createNativeStackNavigator();
 
 function PatronHomepage({ navigation, route }) {
@@ -21,10 +20,10 @@ function PatronHomepage({ navigation, route }) {
           <Text style={styles.navbarText}>Search</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navbarItem}
-          onPress={() => navigation.navigate("Favorites",{access})}
+          onPress={() => navigation.navigate("Bookmark",{access})}
         >
-          <Icon name="heart" size={24} color="#000000" />
-          <Text style={styles.navbarText}>Favorites</Text>
+          <Icon name="bookmark" size={25} color="#000000" />
+          <Text style={styles.navbarText}>Bookmarks</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Settings Page",{access})}

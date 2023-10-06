@@ -42,6 +42,9 @@ function PatronSettingsPage({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
+        <View style={styles.navbar}>
+          <Text style={styles.navbarText}>Settings</Text>
+        </View>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Edit", { access })}>
           <Icon name="edit" size={40} color="#000000" />
@@ -49,7 +52,7 @@ function PatronSettingsPage({ navigation, route }) {
         </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
-        <Text style={styles.title}>LowCalChow Settings</Text>
+        <Text style={styles.title}>LowCalChow</Text>
         <Text style={styles.mainText}>Name: {profile.name}
         </Text>
         <Text style={styles.mainText}>Gender: {profile.gender}
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#ff7f50",
     padding: 10,
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
-    alignItems: "left",
+    alignItems: "center",
   },
   title: {
     fontSize: 30,

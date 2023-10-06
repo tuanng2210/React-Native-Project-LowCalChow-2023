@@ -3,15 +3,20 @@ import { View, Keyboard, Button, TextInput, Text, TouchableOpacity, StyleSheet }
 import { Feather, Entypo } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Stack = createNativeStackNavigator();
 
 function Search({ navigation, route }) {
     const { access } = route.params;
+
     return (
-        <View style={styles.mainContent}>
-            <View style={styles.container}>
-                <Text style={styles.mainHeading}>Search Page</Text>
+        <View style={styles.container}>
+           <View style={styles.navbar}>
+                <Text style={styles.navbarText}>Search</Text>
+            </View>
+            <View style={styles.mainContent}>
+                <Text style={styles.title}>LowCalChow</Text>
             </View>
         </View>
     );
@@ -67,16 +72,8 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
 };
 const styles = StyleSheet.create({
     container: {
-        margin: 15,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        width: "90%",
-    },
-    mainHeading: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+        flex: 1,
+        flexDirection: "column",
     },
     mainContent: {
         flex: 1,
@@ -84,6 +81,28 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         justifyContent: "top",
         alignItems: "center",
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    navbar: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#ff7f50",
+        padding: 10
+    },
+    navbarItem: {
+        backgroundColor: "#ff7f50",
+        alignItems: "left",
+        flexDirection: "row", // Align icon and text horizontally
+    },
+    navbarText: {
+        color: "#000000",
+        fontSize: 30,
+        fontWeight: "bold",
+        marginLeft: 10,
     },
     searchBar__unclicked: {
         padding: 10,
