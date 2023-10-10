@@ -121,7 +121,7 @@ function PatronProfileCreationPage({navigation}) {
         value={new Date()}
       /> */}
 
-      <TouchableOpacity style={styles.button} onPress={nextPage}>
+      <TouchableOpacity style={styles.button} onPress={() => nextPage}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 

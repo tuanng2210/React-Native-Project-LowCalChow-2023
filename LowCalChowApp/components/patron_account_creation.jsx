@@ -63,8 +63,6 @@ function PatronAccountCreationPage({navigation}) {
 
           if (responseData.message === "success") {
             // The signup was successful, you can navigate to a success screen or perform other actions
-            const { email, username, user_type } = responseData.content;
-            console.log("User details:", { email, username, user_type });
             navigation.navigate("Patron Profile Creation Page");
           } else {
             // Handle any error messages returned by the API

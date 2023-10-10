@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import { useRoute } from "@react-navigation/native";
@@ -8,36 +8,121 @@ import { useRoute } from "@react-navigation/native";
 
 function PatronPreferenceCreationPage({navigation}) {
 
-
-
   const route = useRoute()
-  const data = route.params?.data
+  data = route.params?.data
 
   const restrictionsTags = [
-    { label: 'Kosher', value: 'Kosher' },
-    { label: 'Gluten-free', value: 'Gluten-free' },
-    { label: 'Halal', value: 'Halal' },
+    { label: 'Vegan', value: 1 },
+    { label: 'Vegitarian', value: 2 },
+    { label: 'Halal', value: 3 },
+    { label: 'Kosher', value: 4 },
+    { label: 'Keto', value: 5 },
+    { label: 'Pescetarian', value: 6 },
+    { label: 'Dairy-free', value: 7 },
+    { label: 'Paleo', value: 8 },
   ];
 
   const allergyTags = [
-    { label: 'Eggs', value: 'Eggs' },
-    { label: 'Nuts', value: 'Nuts' },
-    { label: 'Shellfish', value: 'Shellfish' },
+    { label: 'Milk', value: 1 },
+    { label: 'Sesame', value: 2 },
+    { label: 'Soybeans', value: 3 },
+    { label: 'Wheat', value: 4 },
+    { label: 'Peanuts', value: 5 },
+    { label: 'Tree-nuts', value: 6 },
+    { label: 'Eggs', value: 7 },
+    { label: 'Shellfish', value: 8 },
+    { label: 'Fish', value: 9 },
+    { label: 'Celiac', value: 10 },
   ];
 
   const tasteTags = [
-    { label: 'Sweet', value: 'Sweet' },
-    { label: 'Spicy', value: 'Spicy' },
-    { label: 'Umami', value: 'Umami' },
-    { label: 'Salty', value: 'Salty' },
-    { label: 'Sour', value: 'Sour' },
-    { label: 'Herbaceous', value: 'Herbaceous' },
+    { label: 'Sweet', value: 2 },
+    { label: 'Spicy', value: 3 },
+    { label: 'Umami', value: 4 },
+    { label: 'Salty', value: 1 },
+    { label: 'Sour', value: 5 },
+    { label: 'Bitter', value: 6 },
   ];
 
   const [errors, setErrors] = useState({});
   const [restrictions, setRestrictions] = useState({});
   const [allergies, setAllergies] = useState({});
   const [taste, setTaste] = useState({});
+
+  const handleSubmit = () => {
+
+    auth_data = {
+      email: data.email,
+      password: data.password
+    }
+
+    data = {
+      data,
+      patron_restriction_tag: restrictions,
+      patron_allergy_tag: allergies,
+      patron_taste_tag: taste
+    }
+
+
+    console.log(data);
+
+
+    //create access token
+    fetch("http://localhost:8000/auth/jwt/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(auth_data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        // Handle the API response here
+        console.log("API response:", responseData);
+
+        if (responseData.message === "success") {
+          // The signup was successful, you can navigate to a success screen or perform other actions
+          const {refresh, access} = responseData.content;
+          console.log("Access token:", { access });
+        } else {
+          // Handle any error messages returned by the API
+          console.log("Message :", responseData.message);
+          // You can display an error message to the user if needed
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+
+    // fetch("http://localhost:8000/auth/signup/patron/", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseData) => {
+    //     // Handle the API response here
+    //     console.log("API response:", responseData);
+
+    //     if (responseData.message === "success") {
+    //       // The signup was successful, you can navigate to a success screen or perform other actions
+    //       const { email, username, user_type } = responseData.content;
+    //       console.log("User details:", { email, username, user_type });
+    //       navigation.navigate("Patron Homepage");
+    //     } else {
+    //       // Handle any error messages returned by the API
+    //       console.log("Message :", responseData.message);
+    //       // You can display an error message to the user if needed
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+ 
+  };
 
   return (
     <View style={styles.container}>
@@ -48,8 +133,9 @@ function PatronPreferenceCreationPage({navigation}) {
             setSelected={({val}) => setRestrictions({val})} 
             data={restrictionsTags} 
             save="key"
-            //onSelect={() => alert(allergiesSelect)} 
             label="Restrictions"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
       />
 
       <Text>Allergies?</Text>
@@ -59,6 +145,8 @@ function PatronPreferenceCreationPage({navigation}) {
             save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Allergy"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
       />
 
     <Text>Taste Preferences?</Text>
@@ -68,7 +156,13 @@ function PatronPreferenceCreationPage({navigation}) {
             save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Taste"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
       />
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
 
       <Button
         title="Back"
@@ -89,15 +183,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
   },
-  output: {
-    width: '90%',
-    height: 30,
+  input: {
+    width: '100%',
+    height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
     marginBottom: 12,
   },
+  button: {
+    backgroundColor: "orange",
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 12,
+    width: 100,
+},
+  buttonText: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 16,
+  },
+  error: {
+      color: 'red',
+      fontSize: 20,
+      marginBottom: 12,
+  }
 });
 
 export default PatronPreferenceCreationPage;

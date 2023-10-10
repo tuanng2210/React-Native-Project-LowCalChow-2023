@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import { useRoute } from "@react-navigation/native";
 
 function PatronProfileEditPage({navigation}) {
 
-
+  const route = useRoute()
+  access = route.params?.access
 
   const [userData, setUserData] = useState({});
 
+  
+
 
   const [errors, setErrors] = useState({});
+
 
   const handleSubmit = () => {
 
