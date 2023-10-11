@@ -41,7 +41,6 @@ const App = () => {
         <Stack.Screen name="Bookmark" component={Bookmark} />
         <Stack.Screen name="Restaurant Analytics Overview" component={RestaurantAnalytics} />
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
-
       </Stack.Navigator>
     </NavigationContainer>
 

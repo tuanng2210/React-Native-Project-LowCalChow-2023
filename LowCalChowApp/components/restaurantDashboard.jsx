@@ -1,64 +1,19 @@
-// import React, { useEffect, useState } from "react";
-// import { View, Text } from "react-native";
-// import { useRoute } from "@react-navigation/native";
-
-// function RestaurantDashboard() {
-//   const route = useRoute();
-//   const { restaurantId, access } = route.params;
-//   const [restaurantData, setRestaurantData] = useState(null);
-// //   const { access } = route.params;
-
-//   useEffect(() => {
-//     // Fetch restaurant data based on restaurantId
-//     const fetchRestaurantData = async () => {
-//       try {
-//         const response = await fetch(
-//           `http://localhost:8000/restaurants/${restaurantId}/`,
-//           {
-//             method: "GET",
-//             headers: {
-//               Authorization: `Bearer ${access}`,
-//             },
-//           }
-//         );
-
-//         if (response.ok) {
-//           const data = await response.json();
-//           setRestaurantData(data); // Update restaurantData state with fetched data
-//         } else {
-//           // Handle error
-//         }
-//       } catch (error) {
-//         // Handle error
-//       }
-//     };
-
-//     fetchRestaurantData();
-//   }, [restaurantId]);
-
-//   if (!restaurantData) {
-//     return <Text>Loading...</Text>;
-//   }
-
-//   return (
-//     <View>
-//       <Text>Restaurant Dashboard for {restaurantData.name}</Text>
-//       {/* Render restaurant dashboard content */}
-//     </View>
-//   );
-// }
-
-// export default RestaurantDashboard;
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 
 function RestaurantDashboard() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { restaurantId } = route.params;
+  const { access, restaurantId } = route.params;
   const [restaurantData, setRestaurantData] = useState(null);
-  const { access } = route.params;
 
   useEffect(() => {
     const fetchRestaurantData = async () => {
@@ -87,14 +42,6 @@ function RestaurantDashboard() {
     fetchRestaurantData();
   }, [restaurantId]);
 
-  const handleMenuPress = () => {
-    // Navigate to MenuItems screen and pass access token and restaurant ID as params
-    navigation.navigate("Menu", {
-      access: access,
-      restaurantId: restaurantId,
-    });
-  };
-
   if (!restaurantData) {
     return (
       <View style={styles.container}>
@@ -105,10 +52,36 @@ function RestaurantDashboard() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Restaurant Dashboard for {restaurantData.name}</Text>
-      <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
-        <Text style={styles.buttonText}>Menu Items</Text>
-      </TouchableOpacity>
+      <View style={styles.navBar}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.navItem}
+        >
+          <Icon name="home" size={30} color="#ffffff" />
+          <Text style={styles.navText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Menu", { access, restaurantId })}
+          style={styles.navItem}
+        >
+          <Icon name="restaurant-menu" size={30} color="#ffffff" />
+          <Text style={styles.navText}>Menu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Settings")}
+          style={styles.navItem}
+        >
+          <Icon name="settings" size={30} color="#ffffff" />
+          <Text style={styles.navText}>Settings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Analytics")}
+          style={styles.navItem}
+        >
+          <Icon name="analytics" size={30} color="#ffffff" />
+          <Text style={styles.navText}>Analytics</Text>
+        </TouchableOpacity>
+      </View>
       {/* Render other restaurant dashboard content */}
     </View>
   );
@@ -117,24 +90,23 @@ function RestaurantDashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#f5f5f5",
   },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  menuButton: {
-    backgroundColor: "#4CAF50",
+  navBar: {
+    flexDirection: "row",
+    backgroundColor: "#FFA500", // Orange color
     padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
+    justifyContent: "space-around",
+    alignItems: "center",
   },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
+  navItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  navText: {
+    marginLeft: 8,
+    fontSize: 18,
+    color: "#ffffff",
   },
 });
 
