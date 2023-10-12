@@ -10,6 +10,7 @@ import {
   TextInput,
   Button as RNButton,
 } from "react-native";
+import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -17,6 +18,7 @@ function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const [rating, setRating] = useState("");
   const [tags, setTags] = useState([]);
+  const [tagSelect, setTagSelect] = useState([]);
   const [priceLevel, setPriceLevel] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
@@ -59,9 +61,35 @@ function RestaurantHomepage({ navigation, route }) {
     }
   };
 
+  const fetchRestTags = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/restaurants/resttags/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map((item) => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setTags(formTags);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     if (isFocused) {
       fetchRestaurants();
+      fetchRestTags();
     }
   }, [isFocused]);
 
@@ -90,20 +118,17 @@ function RestaurantHomepage({ navigation, route }) {
   );
 
   const handleAddRestaurant = () => {
-    // Open the modal
     setModalVisible(true);
   };
 
   const confirmAddRestaurant = async () => {
     try {
-      // Close the modal
       setModalVisible(false);
 
-      // Prepare the restaurant data to be sent in the request
       const newRestaurantData = {
         name: newRestaurantName,
         rating: rating,
-        tags: tags.length > 0 ? tags : null,
+        tags: tagSelect,
         price_level: priceLevel,
         phone_number: phoneNumber,
         website: website,
@@ -128,15 +153,24 @@ function RestaurantHomepage({ navigation, route }) {
         console.log("Restaurant added successfully.");
         fetchRestaurants();
       } else {
-        console.error("Error adding restaurant");
+        console.error(response.json());
       }
     } catch (error) {
       console.error("Error adding restaurant", error);
     }
+    setNewRestaurantName("");
+    setRating("");
+    setTagSelect("");
+    setPriceLevel("");
+    setPhoneNumber("");
+    setWebsite("");
+    setStreetName("");
+    setCity("");
+    setState("");
+    setZipCode("");
   };
 
   const handleViewRestaurant = (restaurant) => {
-    // Navigate to the Restaurant Dashboard screen
     navigation.navigate("Restaurant Dashboard", {
       restaurantId: restaurant.id,
       access,
@@ -258,13 +292,14 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="Rating"
             />
 
-            <TextInput
-              style={styles.input}
-              value={tags.join(", ")}
-              onChangeText={(text) =>
-                setTags(text.split(", ").map((tag) => tag.trim()))
-              }
-              placeholder="Tags (comma-separated)"
+            <MultipleSelectList
+              setSelected={(val) => setTagSelect(val)}
+              data={tags}
+              save="key"
+              //onSelect={() => alert(ingredSelect)}
+              label="Tags"
+              boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 45 }}
+              dropdownStyles={{ backgroundColor: "#FECA83" }}
             />
 
             <TextInput
