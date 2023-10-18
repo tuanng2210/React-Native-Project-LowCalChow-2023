@@ -1,63 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import { useRoute } from "@react-navigation/native";
 
 function PatronProfileEditPage({navigation}) {
 
-
+  const route = useRoute()
+  //const access = route.params?.access
+  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3NjE0NTE5LCJpYXQiOjE2OTc2MDczMTksImp0aSI6ImI3OGE5MjM4YTMxZjQyNjFhMWQxM2E4NWFhZmRmYWYyIiwidXNlcl9pZCI6Mn0.RPzbtMVmEZ7QFR9tG0xE6OS8zP4sYqaJKT5bOK8WBOw"
 
   const [userData, setUserData] = useState({});
-
-
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
+  const [currentUserName, setCurrentUserName] = useState({});
+  const [currentGender, setCurrentGender] = useState({});
+  const [currentPrice, setCurrentPrice] = useState({});
+  const [currentZip, setCurrentZip] = useState({});
+  const [currentRestrictions, setCurrentRestrictions] = useState({});
+  const [currentAllergies, setCurrentAllergies] = useState({});
+  const [currentTastes, setCurrentTastes] = useState({});
+  const [currentCalorieLimit, setCurrentCalorieLimit] = useState({});
 
-    let errors = {};
 
-    setErrors(errors);
-    
-    if(Object.keys(errors).length === 0){
-
-      const data = {
-
-      }
-
-    //   fetch("http://localhost:8000/auth/signup/patron/", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((responseData) => {
-    //       // Handle the API response here
-    //       console.log("API response:", responseData);
-
-    //       if (responseData.message === "success") {
-    //         // The signup was successful, you can navigate to a success screen or perform other actions
-    //         const { email, username, user_type } = responseData.content;
-    //         console.log("User details:", { email, username, user_type });
-    //         navigation.navigate("Patron Profile Creation Page");
-    //       } else {
-    //         // Handle any error messages returned by the API
-    //         console.log("Message :", responseData.message);
-    //         // You can display an error message to the user if needed
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error:", error);
-    //     });
-    } else {
-      console.log("Form has errors.");
+  fetch("http://localhost:8000/patrons/1/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": ("Bearer " + access)
     }
-  };
+  })
+    .then((response) => response.json())
+    .then((responseData) => {
+      
+    
+      setCurrentUserName(responseData.name);
+      setCurrentGender(responseData.gender);
+      setCurrentPrice(responseData.price_preference);
+      setCurrentZip(responseData.zipcode);
+      setCurrentRestrictions(responseData.patron_restriction_tag);
+      setCurrentAllergies(responseData.patron_allergy_tag);
+      setCurrentTastes(responseData.patron_taste_tag);
+      setCurrentCalorieLimit(responseData.calorie_limit);
 
+      //WARNING: API does not have a response message. Raise issue with back-end.
+      // if (responseData.message === "success") {
+
+      // } else {
+      //   // Handle any error messages returned by the API
+      //   console.log("Message :", responseData);
+      //   // You can display an error message to the user if needed
+      // }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Patron Profile Edit</Text>
+      <Text>{currentUserName}</Text>
     </View>
   );
 }
