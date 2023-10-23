@@ -58,7 +58,7 @@ function PatronSettingsPage({ navigation, route }) {
         <Text style={styles.title}>Settings</Text>
         <TouchableOpacity
           style={styles.navbarItem}
-          onPress={() => navigation.navigate("PatronHomepage", { access })}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
         >
           <Icon name="home" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
@@ -76,7 +76,7 @@ function PatronSettingsPage({ navigation, route }) {
         <Text style={styles.title}>LowCalChow</Text>
         <TouchableOpacity 
         style={styles.mainText}
-          onPress={() => navigation.navigate("PatronProfileEditPage", { access })}>
+          onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
           <Icon name="edit" size={30} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>

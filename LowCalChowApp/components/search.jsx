@@ -29,7 +29,7 @@ function Search({ navigation, route }) {
         <Text style={styles.title}>Search</Text>
         <TouchableOpacity
           style={styles.navbarItem}
-          onPress={() => navigation.navigate("PatronHomepage", { access })}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
         >
           <Icon name="home" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
