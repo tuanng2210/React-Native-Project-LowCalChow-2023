@@ -1,40 +1,49 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useIsFocused } from "@react-navigation/native";
-
 const Stack = createNativeStackNavigator();
+
 
 function PatronHomepage({ navigation, route }) {
   const { access } = route.params;
 
   return (
+
     <View style={styles.container}>
       <View style={styles.navbar}>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", {access})}
-        >
-          <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}>Search</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.navbarItem}
-          onPress={() => navigation.navigate("Favorites",{access})}
-        >
-          <Icon name="heart" size={24} color="#000000" />
-          <Text style={styles.navbarText}>Favorites</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Settings Page",{access})}
+          onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}>Settings</Text>
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Bookmark", { access })}
+        >
+          <Icon name="bookmark" size={25} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>LowCalChow</Text>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("PatronHomepage", { access })}
+        >
+          <Icon name="home" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.mainContent}>
-        <Text style={styles.title}>LowCalChow</Text>
+      <View style={styles.bottomTab}>
+        
       </View>
     </View>
   );
@@ -46,12 +55,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
+  bottomTab: {
+    flexDirection: "row",
+    height: 10,
+    backgroundColor: "#ff7f50",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingTop: 10,
+  },
+
   navbar: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#ff7f50",
-    padding: 10
+    padding: 10,
   },
   navbarItem: {
     backgroundColor: "#ff7f50",
@@ -65,7 +83,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   mainContent: {
-    flex: 1,
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
