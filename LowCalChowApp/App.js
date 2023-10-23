@@ -16,6 +16,7 @@ import MenuPage from './components/menu';
 import EditMenuPage from './components/editMenuItem';
 import RestaurantDashboard from './components/restaurantDashboard';
 import PatronSettingsPage from './components/patronSettingsPage';
+import PatronProfileEditPage from './components/patronProfileEditPage';
 import Search from './components/search';
 import Bookmark from './components/bookmark';
 
@@ -39,6 +40,7 @@ const App = () => {
         <Stack.Screen name="Patron Settings Page" component={PatronSettingsPage} />
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="Bookmark" component={Bookmark} />
+        <Stack.Screen name="Patron Profile Edit Page" component={PatronProfileEditPage} />
         <Stack.Screen name="Restaurant Analytics Overview" component={RestaurantAnalytics} />
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
       </Stack.Navigator>

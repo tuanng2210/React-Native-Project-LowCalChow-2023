@@ -40,19 +40,46 @@ function PatronSettingsPage({ navigation, route }) {
   }, [isFocused]);
 
   return (
-    <View style={styles.container}>
+    <View style = {styles.container}>
       <View style={styles.navbar}>
-        <View style={styles.navbar}>
-          <Text style={styles.navbarText}>Settings</Text>
-        </View>
         <TouchableOpacity style={styles.navbarItem}
-          onPress={() => navigation.navigate("Edit", { access })}>
-          <Icon name="edit" size={40} color="#000000" />
-          <Text style={styles.navbarText}>Edit</Text>
+          onPress={() => navigation.navigate("Patron Settings Page", { access })}
+        >
+          <Icon name="gear" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Bookmark", { access })}
+        >
+          <Icon name="bookmark" size={25} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Settings</Text>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("PatronHomepage", { access })}
+        >
+          <Icon name="home" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.mainContent}>
+    <View style={styles.mainContent}>
+    
         <Text style={styles.title}>LowCalChow</Text>
+        <TouchableOpacity 
+        style={styles.mainText}
+          onPress={() => navigation.navigate("PatronProfileEditPage", { access })}>
+          <Icon name="edit" size={30} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
         <Text style={styles.mainText}>Name: {profile.name}
         </Text>
         <Text style={styles.mainText}>Gender: {profile.gender}
@@ -66,9 +93,10 @@ function PatronSettingsPage({ navigation, route }) {
         <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
         </Text>
       </View>
-    </View>
+      </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -10,15 +10,43 @@ function Bookmark({ navigation, route }) {
     const { access } = route.params;
 
     return (
+
         <View style={styles.container}>
             <View style={styles.navbar}>
+                <TouchableOpacity style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Patron Settings Page", { access })}
+                >
+                    <Icon name="gear" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Bookmark", { access })}
+                >
+                    <Icon name="bookmark" size={25} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
                 <Text style={styles.navbarText}>Bookmarks</Text>
+                <TouchableOpacity
+                    style={styles.navbarItem}
+                    onPress={() => navigation.navigate("PatronHomepage", { access })}
+                >
+                    <Icon name="home" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Search", { access })}
+                >
+                    <Icon name="search" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
             </View>
-            <View style={styles.mainContent}>
-                <Text style={styles.title}>LowCalChow</Text>
+            <View style={styles.bottomTab}>
+
             </View>
         </View>
-    )
+    );
 };
 const styles = StyleSheet.create({
     container: {
@@ -27,7 +55,7 @@ const styles = StyleSheet.create({
     },
     navbar: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
         backgroundColor: "#ff7f50",
         padding: 10

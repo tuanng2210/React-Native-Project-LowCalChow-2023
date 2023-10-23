@@ -42,9 +42,6 @@ function PatronHomepage({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.bottomTab}>
-        
-      </View>
     </View>
   );
 }
@@ -54,14 +51,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-  },
-  bottomTab: {
-    flexDirection: "row",
-    height: 10,
-    backgroundColor: "#ff7f50",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingTop: 10,
   },
 
   navbar: {
