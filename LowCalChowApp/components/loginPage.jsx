@@ -28,6 +28,7 @@ function LoginPage({ navigation }) {
         const { user_type, tokens } = data;
         const { access, refresh } = tokens;
         console.log("Authentication successful");
+        console.log(access)
 
         // Store the access and refresh tokens securely
         // You can use a library like AsyncStorage for React Native or localStorage for web
@@ -37,7 +38,10 @@ function LoginPage({ navigation }) {
           navigation.navigate("Restaurant Homepage", {access});
         } else if (user_type === "patron") {
           // Redirect to the customer homepage
-          navigation.navigate("Patron Homepage");
+          navigation.navigate("Patron Homepage", {access});
+          } else if (user_type === "admin") {
+        // Redirect to the admin homepage
+        navigation.navigate("Admin Homepage", {access});
         } else {
           // Handle other user types or scenarios
         }

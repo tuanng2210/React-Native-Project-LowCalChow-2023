@@ -4,12 +4,13 @@ import {Picker} from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
 
+
 function PatronProfileEditPage({navigation}) {
 
   const route = useRoute()
-  //const access = route.params?.access
-  const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4Mjc2MTEyLCJpYXQiOjE2OTgyNjg5MTIsImp0aSI6ImJkMzExMjNhOWUxNDQ5ZGJhZjU0YjA3NTZiN2Y2YjNlIiwidXNlcl9pZCI6Mn0.eC-u3IKXyuwubCs4o1cNYGfPLSMsxsKNihYp5DajXOA"
+  const access = route.params?.access
 
+  const { access } = route.params;
 
   const [userData, setUserData] = useState({});
 

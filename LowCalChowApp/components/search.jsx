@@ -1,16 +1,77 @@
-import React from "react";
-import { View, Keyboard, Button, TextInput, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Keyboard, Button, TextInput, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-function Search({ }) {
+const Stack = createNativeStackNavigator();
+
+function Search({ navigation, route }) {
+    const { access } = route.params;
+    const [searchPhrase, setSearchPhrase] = useState("");
+    const [clicked, setClicked] = useState(false);
     return (
-        <View style={styles.mainContent}>
-            <View style={styles.container}>
-                <Text style={styles.mainHeading}>Search Page</Text>
+        <View style={styles.container}>
+            <View style={styles.navbar}>
+                <TouchableOpacity style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Patron Settings Page", { access })}
+                >
+                    <Icon name="gear" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Bookmark", { access })}
+                >
+                    <Icon name="bookmark" size={25} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+                <Text style={styles.title}>Search</Text>
+                <TouchableOpacity
+                    style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Patron Homepage", { access })}
+                >
+                    <Icon name="home" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.navbarItem}
+                    onPress={() => navigation.navigate("Search", { access })}
+                >
+                    <Icon name="search" size={24} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
             </View>
+            <View style={styles.mainContent}>
+                {!clicked && <Text style={styles.title}>Search for a Meal Item</Text>}
+                <SearchBar
+                    searchPhrase={searchPhrase}
+                    setSearchPhrase={setSearchPhrase}
+                    clicked={clicked}
+                    setClicked={setClicked}
+                />
+                {/*{!clicked && <Text style={styles.title}> Quick Search </Text>}
+                <SearchBar
+                    searchPhrase={searchPhrase}
+                    setSearchPhrase={setSearchPhrase}
+                    clicked={clicked}
+                    setClicked={setClicked}
+                />
+                <Text style={styles.title}>Advanced Search</Text>*/}
+            </View>
+        </View>
+
+    );
+};
+const AdvancedSearch = ({ }) => {
+    return (
+        <View style={styles.container}>
+
         </View>
     );
 };
+
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
     return (
         <View style={styles.container}>
@@ -21,14 +82,12 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
                         : styles.searchBar__unclicked
                 }
             >
-                {/* search Icon */}
                 <Feather
                     name="search"
                     size={20}
                     color="black"
                     style={{ marginLeft: 1 }}
                 />
-                {/* Input field */}
                 <TextInput
                     style={styles.input}
                     placeholder="Search"
@@ -38,14 +97,12 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
                         setClicked(true);
                     }}
                 />
-                {/* cross Icon, depending on whether the search bar is clicked or not */}
                 {clicked && (
                     <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
                         setSearchPhrase("")
                     }} />
                 )}
             </View>
-            {/* cancel button, depending on whether the search bar is clicked or not */}
             {clicked && (
                 <View>
                     <Button
@@ -60,35 +117,51 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
         </View>
     );
 };
+
+
+
 const styles = StyleSheet.create({
     container: {
-        margin: 15,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        width: "90%",
-    },
-    mainHeading: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+        flex: 1,
+        flexDirection: "column",
     },
     mainContent: {
-        flex: 1,
         padding: 20,
         backgroundColor: "#fff",
         justifyContent: "top",
         alignItems: "center",
     },
+    title: {
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    navbar: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        backgroundColor: "#ff7f50",
+        padding: 10
+    },
+    navbarItem: {
+        backgroundColor: "#ff7f50",
+        alignItems: "left",
+        flexDirection: "row", // Align icon and text horizontally
+    },
+    navbarText: {
+        color: "#000000",
+        fontSize: 30,
+        fontWeight: "bold",
+        marginLeft: 10,
+    },
     searchBar__unclicked: {
         padding: 10,
         flexDirection: "row",
         width: "95%",
-        backgroundColor: "#d9dbda",
+        backgroundColor: "#f0f8ff",
         borderRadius: 15,
         alignItems: "center",
-      },
-      searchBar__clicked: {
+    },
+    searchBar__clicked: {
         padding: 10,
         flexDirection: "row",
         width: "80%",
@@ -96,11 +169,11 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignItems: "center",
         justifyContent: "space-evenly",
-      },
-      input: {
+    },
+    input: {
         fontSize: 20,
         marginLeft: 10,
         width: "90%",
-      },
+    },
 });
 export default Search;
