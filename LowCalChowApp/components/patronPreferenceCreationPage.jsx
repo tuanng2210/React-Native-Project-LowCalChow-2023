@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import { useRoute } from "@react-navigation/native";
@@ -264,9 +263,6 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 40,
-  input: {
-    width: '100%',
-    height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
@@ -291,7 +287,7 @@ const styles = StyleSheet.create({
       color: 'red',
       fontSize: 20,
       marginBottom: 12,
-  }
+  },
   button: {
     backgroundColor: "orange",
     borderRadius: 8,

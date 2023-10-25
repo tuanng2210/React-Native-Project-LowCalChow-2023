@@ -10,8 +10,6 @@ function PatronProfileEditPage({navigation}) {
   const route = useRoute()
   const access = route.params?.access
 
-  const { access } = route.params;
-
   const [userData, setUserData] = useState({});
 
   
