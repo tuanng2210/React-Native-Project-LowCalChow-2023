@@ -1,13 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const Stack = createNativeStackNavigator();
+function bmInputhandler(){
+    setAnotherBmItem();
+}
+function addBmItem(){
+    setBmItem((currentBmItem) => [
+        ...currentBmItem,
+        anotherBmItem,
+      ]);
+};
 
 function Bookmark({ navigation, route }) {
     const { access } = route.params;
+    const isFocused = useIsFocused();
+    const [bmItem, setBmItem] = useState ([]);
+
+    const fetchBmItem = async () => {
+        try {
+          const response = await fetch("http://localhost:8000/restaurants/1/menuitems/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setBmItem(data.length > 0 ? data[0] : {}); 
+          } else {
+            setError("Error fetching data");
+          }
+        } catch (error) {
+          setError("Error fetching data");
+        }
+      };
+    
+      useEffect(() => {
+        if (isFocused) {
+          fetchBmItem();
+        }
+      }, [isFocused]);
 
     return (
 
@@ -42,8 +78,10 @@ function Bookmark({ navigation, route }) {
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.bottomTab}>
-
+            <View style={styles.mainContent}>
+               {/* {bmItem.map((bmItem)=> <Text key = {bmItem}>{bmItem.id}</Text> )}*/}
+               <Text style={styles.mainContent}>Item 1: {bmItem.item_name}
+               </Text>
             </View>
         </View>
     );

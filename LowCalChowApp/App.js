@@ -21,6 +21,7 @@ import Search from './components/search';
 import Bookmark from './components/bookmark';
 import AdminHomepage from './components/AdminHomepage';
 
+import Settings from './components/settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ const App = () => {
         <Stack.Screen name="Restaurant Analytics Overview" component={RestaurantAnalytics} />
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
         <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
+        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     </NavigationContainer>
 

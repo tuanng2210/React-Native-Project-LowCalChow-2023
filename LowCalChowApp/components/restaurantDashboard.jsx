@@ -68,7 +68,7 @@ function RestaurantDashboard() {
           <Text style={styles.navText}>Menu</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Settings")}
+          onPress={() => navigation.navigate("Settings", { access, restaurantId })}
           style={styles.navItem}
         >
           <Icon name="settings" size={30} color="#ffffff" />

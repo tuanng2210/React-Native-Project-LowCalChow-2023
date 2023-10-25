@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-function PatronProfileEditPage({navigation}) {
+function PatronProfileEditPage({navigation, route}) {
 
-
+  const { access } = route.params;
 
   const [userData, setUserData] = useState({});
 
