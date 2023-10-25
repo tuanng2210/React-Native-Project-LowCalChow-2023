@@ -73,7 +73,7 @@ function PatronProfileCreationPage({navigation}) {
 
       const data = {
         name: firstName + " " + lastName,
-        price_preferences: pricePref,
+        price_preference: pricePref,
         gender: gender,
         zipcode: zip,
         dob: dob
@@ -137,9 +137,9 @@ function PatronProfileCreationPage({navigation}) {
         }>
 
         <Picker.Item label="Gender" value=""/>
-        <Picker.Item label="Female" value="female" />
-        <Picker.Item label="Male" value="male" />
-        <Picker.Item label="Other" value="other"/>
+        <Picker.Item label="Female" value="Female" />
+        <Picker.Item label="Male" value="Male" />
+        <Picker.Item label="Other" value="Other"/>
 
       </Picker>
       
