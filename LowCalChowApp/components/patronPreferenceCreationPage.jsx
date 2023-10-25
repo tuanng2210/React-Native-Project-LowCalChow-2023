@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import { useRoute } from "@react-navigation/native";
@@ -202,6 +203,8 @@ function PatronPreferenceCreationPage({navigation}) {
             save="value"
             //onSelect={() => alert(allergiesSelect)} 
             label="Restrictions"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
       />
 
       <Text>Allergies?</Text>
@@ -211,6 +214,8 @@ function PatronPreferenceCreationPage({navigation}) {
             save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Allergy"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
       />
 
     <Text>Taste Preferences?</Text>
@@ -259,12 +264,34 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 40,
+  input: {
+    width: '100%',
+    height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
     marginBottom: 12,
   },
+  button: {
+    backgroundColor: "orange",
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 12,
+    width: 100,
+},
+  buttonText: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 16,
+  },
+  error: {
+      color: 'red',
+      fontSize: 20,
+      marginBottom: 12,
+  }
   button: {
     backgroundColor: "orange",
     borderRadius: 8,

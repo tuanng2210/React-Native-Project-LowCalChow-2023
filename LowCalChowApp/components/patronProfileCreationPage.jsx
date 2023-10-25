@@ -172,7 +172,7 @@ function PatronProfileCreationPage({navigation}) {
       </View>
       
 
-      <TouchableOpacity style={styles.button} onPress={nextPage}>
+      <TouchableOpacity style={styles.button} onPress={() => nextPage}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 

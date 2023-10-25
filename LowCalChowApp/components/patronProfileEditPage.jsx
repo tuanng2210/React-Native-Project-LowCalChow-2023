@@ -11,7 +11,11 @@ function PatronProfileEditPage({navigation}) {
   const access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk4Mjc2MTEyLCJpYXQiOjE2OTgyNjg5MTIsImp0aSI6ImJkMzExMjNhOWUxNDQ5ZGJhZjU0YjA3NTZiN2Y2YjNlIiwidXNlcl9pZCI6Mn0.eC-u3IKXyuwubCs4o1cNYGfPLSMsxsKNihYp5DajXOA"
 
 
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
+
+  
+
+
   const [errors, setErrors] = useState({});
 
   const [currentUserName, setCurrentUserName] = useState({});

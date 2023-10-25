@@ -6,6 +6,7 @@ import Handshake from './components/handshake';
 import PatronProfileCreationPage from './components/patronProfileCreationPage';
 import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import PatronAccountCreationPage from './components/patron_account_creation';
+import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import PatronProfileEditPage from './components/patronProfileEditPage';
 import RestaurantAccountCreationPage from './components/restaurant_account_creation';
 import RestaurantHomepage from './components/restaurantHomePage';
@@ -39,7 +40,6 @@ const App = () => {
         <Stack.Screen  name="Patron Homepage" component={PatronHomepage}/>
         <Stack.Screen  name="Restaurant Analytics Overview" component={RestaurantAnalytics}/>
         <Stack.Screen  name="Restaurant Dashboard" component={RestaurantDashboard}/>
-
 
       </Stack.Navigator>
     </NavigationContainer>
