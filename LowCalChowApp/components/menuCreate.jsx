@@ -58,7 +58,7 @@ function MenuCreate({route, navigation}){
         "time_of_day_available": timeOfDayAvailable,
         "is_modifable": true
       }
-      console.log(data);
+
       try{
         const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/`, {
         method: "POST",

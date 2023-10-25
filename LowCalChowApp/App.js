@@ -15,6 +15,7 @@ import MenuCreate from './components/menuCreate';
 import MenuPage from './components/menu';
 import EditMenuPage from './components/editMenuItem';
 import RestaurantDashboard from './components/restaurantDashboard';
+import viewMenuItem from './components/patronViewMenuItem';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,9 +26,9 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Sign Up" component={SignUpPage}/>
-        <Stack.Screen name="Menu" component={MenuPage}/>
-        <Stack.Screen name="Edit Menu" component={EditMenuPage}/>
-        <Stack.Screen name="Menu Creation" component={MenuCreate}/>
+        <Stack.Screen  name="Menu" component={MenuPage}/>
+        <Stack.Screen  name="Edit Menu" component={EditMenuPage}/>
+        <Stack.Screen  name="Menu Creation" component={MenuCreate}/>
         <Stack.Screen  name="Patron Account Creation" component={PatronAccountCreationPage}/>
         <Stack.Screen  name="Patron Profile Creation Page" component={PatronProfileCreationPage}/>
         <Stack.Screen  name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
@@ -35,6 +36,7 @@ const App = () => {
         <Stack.Screen  name="Patron Homepage" component={PatronHomepage}/>
         <Stack.Screen  name="Restaurant Analytics Overview" component={RestaurantAnalytics}/>
         <Stack.Screen  name="Restaurant Dashboard" component={RestaurantDashboard}/>
+        <Stack.Screen  name="View Menu Item" compoent={viewMenuItem}/>
 
       </Stack.Navigator>
     </NavigationContainer>
