@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MenuCreate from './components/menuCreate';
 import MenuPage from './components/menu';
 import EditMenuPage from './components/editMenuItem';
+import RestaurantDashboard from './components/restaurantDashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ const App = () => {
         <Stack.Screen  name="Restaurant Homepage" component={RestaurantHomepage}/>
         <Stack.Screen  name="Patron Homepage" component={PatronHomepage}/>
         <Stack.Screen  name="Restaurant Analytics Overview" component={RestaurantAnalytics}/>
+        <Stack.Screen  name="Restaurant Dashboard" component={RestaurantDashboard}/>
 
       </Stack.Navigator>
     </NavigationContainer>

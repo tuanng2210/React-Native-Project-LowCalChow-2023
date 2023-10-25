@@ -5,8 +5,8 @@ import MenuPage from './menu';
 
 function MenuCreate({route, navigation}){
     
-    const access = route.params.accessToken;
-    const restID = route.params.restIDToken;
+    const access = route.params.access;
+    const restID = route.params.restaurantId;
 
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
@@ -39,7 +39,7 @@ function MenuCreate({route, navigation}){
     function submitMeal(){
       {/*submit to database here then reset the page*/}
       handleUpdateMeal();
-      navigation.navigate('Menu', {accessToken: access, restIDToken: restID});
+      navigation.navigate('Menu', {access: access, restaurantId: restID});
 
     }
     
@@ -213,6 +213,8 @@ function MenuCreate({route, navigation}){
           <Text style={styles.title}>Add Meal</Text>
     
           {/*Meal Name*/}
+          <Text style={styles.label}>Meal Name:</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Meal Name"
@@ -229,6 +231,8 @@ function MenuCreate({route, navigation}){
           /> */}
 
           {/*Meal Price*/}
+          <Text style={styles.label}>Price of meal:</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Enter the meal's price"
@@ -237,6 +241,7 @@ function MenuCreate({route, navigation}){
           />
 
           {/*Meal Calories*/}
+          <Text style={styles.label}>Meal's calories:</Text>
           <TextInput
             style={styles.input}
             placeholder="How many calories is this meal?"
@@ -254,6 +259,8 @@ function MenuCreate({route, navigation}){
             save="key"
             //onSelect={() => alert(ingredSelect)} 
             label="Ingredients"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
     
         
@@ -265,7 +272,8 @@ function MenuCreate({route, navigation}){
             setSelected={(val) => setfoodTypeSelect(val)} 
             data={foodTypeTags} 
             save="key"
-            
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
 
           {/*Cook Style*/}
@@ -275,6 +283,8 @@ function MenuCreate({route, navigation}){
             setSelected={(val) => setcookStyleSelect(val)} 
             data={cookStyleTags} 
             save="key"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
 
           {/*Allergies*/}
@@ -286,6 +296,8 @@ function MenuCreate({route, navigation}){
             save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Allergies"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Taste*/}
           <Text style={styles.normText}>Taste Tags</Text>
@@ -296,6 +308,8 @@ function MenuCreate({route, navigation}){
             save="key"
             //onSelect={() => alert(foodTypeSelect)} 
             label="Taste Tags"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Restrictions*/}
           <Text style={styles.normText}>Dietary Restrictions</Text>
@@ -306,6 +320,8 @@ function MenuCreate({route, navigation}){
             save="key"
             //onSelect={() => alert(foodTypeSelect)} 
             label="Restriction types"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
           {/*Time Of Day Available*/}
           <Text style={styles.normText}>When is this Meal Available?</Text>
@@ -314,6 +330,8 @@ function MenuCreate({route, navigation}){
             setSelected={(val) => setTOD(val)} 
             data={timeOfDay} 
             save="key"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
           />
     
           
@@ -338,6 +356,11 @@ function MenuCreate({route, navigation}){
       title: {
         fontSize: 24,
         marginBottom: 16,
+      },
+      label: {
+        fontSize: 18,
+        textAlign: 'left',
+        marginBottom: 6,
       },
       normText: {
         fontSize: 16,
