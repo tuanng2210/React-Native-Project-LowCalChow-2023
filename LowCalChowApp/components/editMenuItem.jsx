@@ -5,10 +5,13 @@ import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-lis
 function EditMenu({route, navigation}){
     const mealID = route.params.id;
 
-    const access = route.params.accessToken;
+    const access = route.params.access;
 
-    const restID = route.params.restIDToken;
+    const restID = route.params.restaurantId;
 
+    const [getdata, setgetData] = useState([]);
+    console.log(getdata);
+    
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
     const [cookStyleTags, setcookStyleTags] = useState([]);
@@ -26,6 +29,7 @@ function EditMenu({route, navigation}){
     const [mealName, setMealName] = useState('');
     const [description, setDescription] = useState('');
     const [mealCalories, setCalories] = useState('');
+    console.log(mealCalories);
     const [mealPrice, setPrice] = useState('');
 
     const [ingredSelect, setIngredSelect] = useState([]);
@@ -33,6 +37,7 @@ function EditMenu({route, navigation}){
     const [cookStyleSelect, setcookStyleSelect] = useState([]);
     const [allergiesSelect, setallergiesSelect] = useState([]);
     const [tasteSelect, settasteSelect] = useState([]);
+    console.log(tasteSelect);
     const [restrictionSelect, setrestrictionSelect] = useState([]);
     const [timeOfDayAvailable, setTOD] = useState([]);
     
@@ -40,8 +45,11 @@ function EditMenu({route, navigation}){
     function submitMeal(){
       {/*submit to database here then reset the page*/}
       handleUpdateMeal();
-      navigation.navigate('Menu');
-
+      navigation.navigate('Menu', {access: access, restaurantId: restID});
+    }
+    function deleteMeal(){
+      handleDelMeal();
+      navigation.navigate('Menu', {access: access, restaurantId: restID});
     }
     {/*Gets current meal info to be updated*/}
     const handlegetMeal = async () => {
@@ -55,24 +63,25 @@ function EditMenu({route, navigation}){
         });
         if (response.status === 200) {
           const data = await response.json();
+          setgetData(data);
  
           setCalories(data.calories);
-          setcookStyleSelect(data.cook_style_tags);
-          setfoodTypeSelect(data.food_type_tag);
-          setIngredSelect(data.ingredients_tag);
+          //setcookStyleSelect(data.cook_style_tags);
+          //setfoodTypeSelect(data.food_type_tag);
+          //setIngredSelect(data.ingredients_tag);
           setMealName(data.item_name);
-          setallergiesSelect(data.menu_allergy_tag);
-          setrestrictionSelect(data.menu_restriction_tag);
+          //setallergiesSelect(data.menu_allergy_tag);
+          //setrestrictionSelect(data.menu_restriction_tag);
           setPrice(data.price);
-          settasteSelect(data.taste_tags);
-          setTOD(data.time_of_day_available);
+          //settasteSelect(data.taste_tags);
+          //setTOD(data.time_of_day_available);
+
 
 
         }
       }catch (error) {
         console.error("Error:", error);
       }
-
     } 
     useEffect (() => {
       handlegetMeal();
@@ -240,8 +249,33 @@ function EditMenu({route, navigation}){
     } 
     useEffect (() => {
       handlegetfoodTags();
-    }, []); 
+    }, []);
 
+    const handleDelMeal = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+        
+        }
+      
+      }catch (error) {
+          console.error("Error:", error);
+      }
+    }
+
+    useEffect(() => {
+      if (tasteTags.length === 0) {
+        // Set default selected values if tasteTags is empty
+        settasteSelect(getdata.taste_tags);
+      }
+    }, [tasteTags]);
+    
     return (
       <ScrollView style = {{ flex: 1}}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -333,6 +367,9 @@ function EditMenu({route, navigation}){
             save="key"
             //onSelect={() => alert(foodTypeSelect)} 
             label="Taste Tags"
+            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+            dropdownStyles={{backgroundColor: '#FECA83'}}
+            defaultOption={tasteSelect}
           />
           {/*Restrictions*/}
           <Text style={styles.normText}>Dietary Restrictions</Text>
@@ -357,7 +394,14 @@ function EditMenu({route, navigation}){
           
     
           {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
-          <Button title="Submit Meal" onPress={() => submitMeal()}/>
+          <Button title="Update Meal" 
+           onPress={() => submitMeal()}
+           style={styles.button}
+          />
+          <Button title="Delete Meal" 
+           onPress={() => deleteMeal()}
+           style={styles.button}
+          />
         </View>
         
         </SafeAreaView>
@@ -380,7 +424,8 @@ function EditMenu({route, navigation}){
       },
       normText: {
         fontSize: 16,
-        marginBottom: 16,
+        marginBottom: 9,
+        marginTop: 18,
       },
       input: {
         width: '100%',

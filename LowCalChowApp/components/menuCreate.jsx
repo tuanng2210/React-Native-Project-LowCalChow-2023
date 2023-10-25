@@ -341,7 +341,8 @@ function MenuCreate({route, navigation}){
       },
       normText: {
         fontSize: 16,
-        marginBottom: 16,
+        marginBottom: 9,
+        marginTop: 18,
       },
       input: {
         width: '100%',
