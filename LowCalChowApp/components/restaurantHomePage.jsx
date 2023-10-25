@@ -9,6 +9,7 @@ import {
   Modal,
   TextInput,
   Button as RNButton,
+  Picker,
 } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,6 +21,7 @@ function RestaurantHomepage({ navigation, route }) {
   const [tags, setTags] = useState([]);
   const [tagSelect, setTagSelect] = useState([]);
   const [priceLevel, setPriceLevel] = useState("");
+  const priceLevelOptions = ["$", "$$", "$$$"];
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
   const [streetName, setStreetName] = useState("");
@@ -292,22 +294,37 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="Rating"
             />
 
-            <MultipleSelectList
-              setSelected={(val) => setTagSelect(val)}
-              data={tags}
-              save="key"
-              //onSelect={() => alert(ingredSelect)}
-              label="Tags"
-              boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 45 }}
-              dropdownStyles={{ backgroundColor: "#FECA83" }}
-            />
-
-            <TextInput
+            <Text style={styles.modalTitle}>Select Tags</Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+              <MultipleSelectList
+                setSelected={(val) => setTagSelect(val)}
+                data={tags}
+                save="key"
+                label="Tags"
+                boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 10 }}
+                dropdownStyles={{
+                  backgroundColor: "#FECA83",
+                  borderRadius: 10,
+                }}
+              />
+            </View>
+            {/* <TextInput
               style={styles.input}
               value={priceLevel}
               onChangeText={(text) => setPriceLevel(text)}
               placeholder="Price Level"
-            />
+            /> */}
+            <Picker
+              selectedValue={priceLevel}
+              onValueChange={(itemValue, itemIndex) => setPriceLevel(itemValue)}
+              style={styles.input}
+            >
+              <Picker.Item label="Select Price Level" value="" />{" "}
+              {/* default empty option */}
+              {priceLevelOptions.map((option, index) => (
+                <Picker.Item label={option} value={option} key={index} />
+              ))}
+            </Picker>
 
             <TextInput
               style={styles.input}

@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
-function Settings(route) {
+function Settings({ route, navigation }) {
+  // const restaurantId = route.params.restaurantId;
+  // const access = route.params.access;
   const { access, restaurantId } = route.params;
   const [restaurantInfo, setRestaurantInfo] = useState({
     newRestaurantName: "",
@@ -28,7 +30,7 @@ function Settings(route) {
   const handleUpdateInfo = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/restaurants/${restaurantId}`,
+        `http://localhost:8000/restaurants/${restaurantId}/`,
         {
           method: "PUT",
           headers: {
@@ -103,16 +105,9 @@ function Settings(route) {
         }
         value={restaurantInfo.rating}
       />
-      <Picker
-        selectedValue={restaurantInfo.tags}
-        style={styles.input}
-        onValueChange={(itemValue) =>
-          setRestaurantInfo({ ...restaurantInfo, tags: itemValue })
-        }
-      >
-        <Picker.Item label="Select Tags" value="" />
+      <Picker selectedValue={restaurantInfo.tags} style={styles.input}>
         {availableTags.map((tag) => (
-          <Picker.Item label={tag} value={tag} key={tag} />
+          <Picker.Item label={tag.title} value={tag.id} key={tag.id} /> // Correct
         ))}
       </Picker>
       <Picker
