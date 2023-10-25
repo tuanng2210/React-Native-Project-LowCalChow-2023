@@ -44,7 +44,14 @@ function Search({ navigation, route }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
-                {!clicked && <Text style={styles.title}>Quick Search</Text>}
+                {!clicked && <Text style={styles.title}>Search for Restaurant</Text>}
+                <SearchBar
+                    searchPhrase={searchPhrase}
+                    setSearchPhrase={setSearchPhrase}
+                    clicked={clicked}
+                    setClicked={setClicked}
+                />
+                {!clicked && <Text style={styles.title}> Quick Search </Text>}
                 <SearchBar
                     searchPhrase={searchPhrase}
                     setSearchPhrase={setSearchPhrase}
@@ -52,10 +59,9 @@ function Search({ navigation, route }) {
                     setClicked={setClicked}
                 />
                 <Text style={styles.title}>Advanced Search</Text>
-                
-                </View>
-                </View>
-       
+            </View>
+        </View>
+
     );
 };
 const AdvancedSearch = ({ }) => {
@@ -119,14 +125,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
     },
-    mainContent: { 
+    mainContent: {
         padding: 20,
         backgroundColor: "#fff",
         justifyContent: "top",
         alignItems: "center",
     },
     title: {
-        padding: 10,
         fontSize: 30,
         fontWeight: "bold",
     },

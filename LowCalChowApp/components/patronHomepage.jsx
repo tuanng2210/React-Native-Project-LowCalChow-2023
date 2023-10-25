@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
-const Stack = createNativeStackNavigator();
-
 
 function PatronHomepage({ navigation, route }) {
   const { access } = route.params;
@@ -41,6 +37,9 @@ function PatronHomepage({ navigation, route }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.mainContent}> 
+      <Text style={styles.title}>Suggestion Feed</Text>
       </View>
     </View>
   );
