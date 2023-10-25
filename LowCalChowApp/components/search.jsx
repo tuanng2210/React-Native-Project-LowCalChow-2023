@@ -44,21 +44,21 @@ function Search({ navigation, route }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
-                {!clicked && <Text style={styles.title}>Search for Restaurant</Text>}
+                {!clicked && <Text style={styles.title}>Search for a Meal Item</Text>}
                 <SearchBar
                     searchPhrase={searchPhrase}
                     setSearchPhrase={setSearchPhrase}
                     clicked={clicked}
                     setClicked={setClicked}
                 />
-                {!clicked && <Text style={styles.title}> Quick Search </Text>}
+                {/*{!clicked && <Text style={styles.title}> Quick Search </Text>}
                 <SearchBar
                     searchPhrase={searchPhrase}
                     setSearchPhrase={setSearchPhrase}
                     clicked={clicked}
                     setClicked={setClicked}
                 />
-                <Text style={styles.title}>Advanced Search</Text>
+                <Text style={styles.title}>Advanced Search</Text>*/}
             </View>
         </View>
 

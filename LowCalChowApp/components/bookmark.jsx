@@ -21,7 +21,7 @@ function Bookmark({ navigation, route }) {
 
     const fetchBmItem = async () => {
         try {
-          const response = await fetch("http://localhost:8000/patrons/", {
+          const response = await fetch("http://localhost:8000/restaurants/1/menuitems/", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${access}`,
@@ -80,7 +80,7 @@ function Bookmark({ navigation, route }) {
             </View>
             <View style={styles.mainContent}>
                {/* {bmItem.map((bmItem)=> <Text key = {bmItem}>{bmItem.id}</Text> )}*/}
-               <Text style={styles.mainText}>Menu Item eventually {bmItem.id}
+               <Text style={styles.mainContent}>Item 1: {bmItem.item_name}
                </Text>
             </View>
         </View>

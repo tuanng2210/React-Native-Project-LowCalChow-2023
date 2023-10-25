@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
-
-
-const Stack = createNativeStackNavigator();
 
 function PatronSettingsPage({ navigation, route }) {
   const { access } = route.params;
@@ -40,7 +35,7 @@ function PatronSettingsPage({ navigation, route }) {
   }, [isFocused]);
 
   return (
-    <View style = {styles.container}>
+    <View style={styles.container}>
       <View style={styles.navbar}>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
@@ -48,7 +43,7 @@ function PatronSettingsPage({ navigation, route }) {
           <Icon name="gear" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
@@ -71,29 +66,27 @@ function PatronSettingsPage({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-    <View style={styles.mainContent}>
-    
-        <Text style={styles.title}>LowCalChow</Text>
-        <TouchableOpacity 
-        style={styles.mainText}
+      <View style={styles.mainContent}>
+        <TouchableOpacity
+          style={styles.titleContent}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
           <Icon name="edit" size={30} color="#000000" />
-          <Text style={styles.navbarText}></Text>
+          <Text style={styles.title}>Edit Profile</Text>
         </TouchableOpacity>
-        <Text style={styles.mainText}>Name: {profile.name}
-        </Text>
-        <Text style={styles.mainText}>Gender: {profile.gender}
-        </Text>
-        <Text style={styles.mainText}>Price Preference: {profile.price_preference}
-        </Text>
-        <Text style={styles.mainText}>Zipcode: {profile.zipcode}
-        </Text>
-        <Text style={styles.mainText}>Date of Birth: {profile.dob}
-        </Text>
-        <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-        </Text>
+      <Text style={styles.mainText}>Name: {profile.name}
+      </Text>
+      <Text style={styles.mainText}>Gender: {profile.gender}
+      </Text>
+      <Text style={styles.mainText}>Price Preference: {profile.price_preference}
+      </Text>
+      <Text style={styles.mainText}>Zipcode: {profile.zipcode}
+      </Text>
+      <Text style={styles.mainText}>Date of Birth: {profile.dob}
+      </Text>
+      <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
+      </Text>
       </View>
-      </View>
+    </View>
   );
 }
 
@@ -120,20 +113,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
+  mainItem: {
+
+  },
   mainContent: {
-    flex: 1,
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
-    alignItems: "center",
+    alignItems: "left",
+    
   },
   title: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
+    flexDirection: "row",
+  },
+  titleContent: {
+    flexDirection: "row",
+    padding: 10,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "left",
   },
   mainText: {
+    backgroundColor: "#fff",
     fontSize: 20,
-  }
+    padding: 10,
+  },
 },
 );
 export default PatronSettingsPage;
