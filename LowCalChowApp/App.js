@@ -19,6 +19,7 @@ import PatronSettingsPage from './components/patronSettingsPage';
 import PatronProfileEditPage from './components/patronProfileEditPage';
 import Search from './components/search';
 import Bookmark from './components/bookmark';
+import Settings from './components/settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ const App = () => {
         <Stack.Screen name="Patron Profile Edit Page" component={PatronProfileEditPage} />
         <Stack.Screen name="Restaurant Analytics Overview" component={RestaurantAnalytics} />
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
+        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     </NavigationContainer>
 
