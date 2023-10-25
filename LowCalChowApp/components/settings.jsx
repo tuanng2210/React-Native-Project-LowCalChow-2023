@@ -10,8 +10,6 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 
 function Settings({ route, navigation }) {
-  // const restaurantId = route.params.restaurantId;
-  // const access = route.params.access;
   const { access, restaurantId } = route.params;
   const [restaurantInfo, setRestaurantInfo] = useState({
     newRestaurantName: "",
