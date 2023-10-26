@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     padding: 10,
   },
   navbarItem: {
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     alignItems: "center",
     flexDirection: "row", // Align icon and text horizontally
   },
