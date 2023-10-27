@@ -24,6 +24,7 @@ function PatronProfileCreationPage({navigation}) {
 
   const nextPage = () => {
 
+
     let errors = {};
 
     if(!firstName){
@@ -172,9 +173,10 @@ function PatronProfileCreationPage({navigation}) {
       </View>
       
 
-      <TouchableOpacity style={styles.button} onPress={() => nextPage}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      <Button title="Submit" 
+           onPress={() => nextPage()}
+           style={styles.button}
+          />
 
       {Object.keys(errors).map((key, index) => (
         <Text key={index} style={styles.error}>
