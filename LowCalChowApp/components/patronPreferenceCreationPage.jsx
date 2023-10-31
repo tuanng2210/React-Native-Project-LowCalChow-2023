@@ -233,9 +233,10 @@ function PatronPreferenceCreationPage({navigation}) {
         onChangeText={(text) => setCalorieLimit(text)}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+      <Button title="Submit" 
+           onPress={() => handleSubmit()}
+           style={styles.button}
+          />
 
       <Button
         title="Back"

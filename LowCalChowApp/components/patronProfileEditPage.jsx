@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
 
@@ -63,7 +64,7 @@ function PatronProfileEditPage({navigation}) {
 
   const handleGetData = async () => {
     try{
-      const response = await fetch("http://localhost:8000/patrons/1/", {
+      const response = await fetch("http://localhost:8000/patrons/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -73,16 +74,18 @@ function PatronProfileEditPage({navigation}) {
       if(response.status === 200 || response.status === 201){
         const data = await response.json();
 
-        setCurrentUserName(data.name);
-        setCurrentGender(data.gender);
-        setCurrentPrice(data.price_preference);
-        setCurrentZip(data.zipcode);
-        setCurrentRestrictions(data.patron_restriction_tag);
-        setCurrentAllergies(data.patron_allergy_tag);
-        setCurrentTastes(data.patron_taste_tag);
-        setCurrentCalorieLimit(data.calorie_limit);
+        console.log(data)
 
-        setDob(data.dob);
+        setCurrentUserName(data[0].name);
+        setCurrentGender(data[0].gender);
+        setCurrentPrice(data[0].price_preference);
+        setCurrentZip(data[0].zipcode);
+        setCurrentRestrictions(data[0].patron_restriction_tag);
+        setCurrentAllergies(data[0].patron_allergy_tag);
+        setCurrentTastes(data[0].patron_taste_tag);
+        setCurrentCalorieLimit(data[0].calorie_limit);
+
+        setDob(data[0].dob);
       }
     }catch (error){
       console.error("Error:", error);
@@ -110,6 +113,8 @@ function PatronProfileEditPage({navigation}) {
       calorie_limit: parseInt(currentCalorieLimit)
     }
 
+    console.log(data)
+
     fetch("http://localhost:8000/patrons/1/", {
         method: "PUT",
         headers: {
@@ -132,112 +137,149 @@ function PatronProfileEditPage({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Patron Profile Edit</Text>
 
-      <Text style={styles.label}>Name:</Text>
+      <View style={styles.navbar}>
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Settings Page", { access })}
+        >
+          <Icon name="gear" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
 
-      <TextInput
-            style={styles.input}
-            placeholder={`${currentUserName}`}
-            value={currentUserName}
-            onChangeText={(text) => setCurrentUserName(text)}
-          />
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Bookmark", { access })}
+        >
+          <Icon name="bookmark" size={25} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Profile Edit</Text>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+      </View>
 
-      <Text style={styles.label}>Gender:</Text>
+      <View style={styles.mainContent}>
 
-      <Picker
-        selectedValue = {`${currentGender}`}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setCurrentGender(itemValue)
-        }>
+        <Text style={styles.title}>Patron Profile Edit</Text>
 
-        <Picker.Item label="Gender" value=""/>
-        <Picker.Item label="Female" value="Female" />
-        <Picker.Item label="Male" value="Male" />
-        <Picker.Item label="Other" value="Other"/>
+        <Text style={styles.label}>Name:</Text>
 
-      </Picker>
+        <TextInput
+              style={styles.input}
+              placeholder={`${currentUserName}`}
+              value={currentUserName}
+              onChangeText={(text) => setCurrentUserName(text)}
+            />
 
-      <Text style={styles.label}>Price Preference:</Text>
+        <Text style={styles.label}>Gender:</Text>
 
-      <Picker
-        selectedValue ={`${currentPrice}`}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setCurrentPrice(itemValue)
-        }>
+        <Picker
+          selectedValue = {`${currentGender}`}
+          style={{ height:50, width: 200}}
+          onValueChange = {(itemValue, itemIndex) =>
+            setCurrentGender(itemValue)
+          }>
 
-        <Picker.Item label="Price Preference" value=""/>
-        <Picker.Item label="$" value="$" />
-        <Picker.Item label="$$" value="$$" />
-        <Picker.Item label="$$$" value="$$$"/>
+          <Picker.Item label="Gender" value=""/>
+          <Picker.Item label="Female" value="Female" />
+          <Picker.Item label="Male" value="Male" />
+          <Picker.Item label="Other" value="Other"/>
 
-      </Picker>
+        </Picker>
 
-      <Text style={styles.label}>Zipcode:</Text>
+        <Text style={styles.label}>Price Preference:</Text>
 
-      <TextInput
-            style={styles.input}
-            placeholder={`${currentZip}`}
-            value={currentZip}
-            onChangeText={(text) => setCurrentZip(text)}
-          />
+        <Picker
+          selectedValue ={`${currentPrice}`}
+          style={{ height:50, width: 200}}
+          onValueChange = {(itemValue, itemIndex) =>
+            setCurrentPrice(itemValue)
+          }>
 
-      <Text style={styles.label}>Calorie Limit:</Text>
+          <Picker.Item label="Price Preference" value=""/>
+          <Picker.Item label="$" value="$" />
+          <Picker.Item label="$$" value="$$" />
+          <Picker.Item label="$$$" value="$$$"/>
 
-      <TextInput
-            style={styles.input}
-            placeholder={`${currentCalorieLimit}`}
-            value={currentCalorieLimit}
-            onChangeText={(text) => setCurrentCalorieLimit(text)}
-          />
+        </Picker>
 
-      {/*todo*/}
-      {/* <Text style={styles.label}>Restrictions:</Text>
+        <Text style={styles.label}>Zipcode:</Text>
 
-      <MultipleSelectList 
-            setSelected={(val) => setCurrentRestrictions(val)} 
-            data={restrictionsTags} 
-            save="key"
-            //onSelect={() => alert(ingredSelect)} 
-            label="Restrictions"
-            defaultOption={currentRestrictions}
-            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
-            dropdownStyles={{backgroundColor: '#FECA83'}}
-          />
-        
+        <TextInput
+              style={styles.input}
+              placeholder={`${currentZip}`}
+              value={currentZip}
+              onChangeText={(text) => setCurrentZip(text)}
+            />
 
-      <Text style={styles.label}>Allergies:</Text>
+        <Text style={styles.label}>Calorie Limit:</Text>
 
-      <MultipleSelectList 
-            setSelected={(val) => setCurrentAllergies(val)} 
-            data={allergyTags} 
-            save="key"
-            //onSelect={() => alert(ingredSelect)} 
-            label="Allergies"
-            defaultOption={currentRestrictions}
-            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
-            dropdownStyles={{backgroundColor: '#FECA83'}}
-          />
+        <TextInput
+              style={styles.input}
+              placeholder={`${currentCalorieLimit}`}
+              value={currentCalorieLimit}
+              onChangeText={(text) => setCurrentCalorieLimit(text)}
+            />
 
-      <Text style={styles.label}>Tastes:</Text>
+        {/*todo*/}
+        {/* <Text style={styles.label}>Restrictions:</Text>
 
-      <MultipleSelectList 
-            setSelected={(val) => setCurrentTastes(val)} 
-            data={tasteTags} 
-            save="key"
-            //onSelect={() => alert(ingredSelect)} 
-            label="Tastes"
-            defaultOption={currentRestrictions}
-            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
-            dropdownStyles={{backgroundColor: '#FECA83'}}
-          /> */}
-        
-        <Button title="Update Info" 
-           onPress={() => updateInfo()}
-           style={styles.button}
-          />
+        <MultipleSelectList 
+              setSelected={(val) => setCurrentRestrictions(val)} 
+              data={restrictionsTags} 
+              save="key"
+              //onSelect={() => alert(ingredSelect)} 
+              label="Restrictions"
+              defaultOption={currentRestrictions}
+              boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+              dropdownStyles={{backgroundColor: '#FECA83'}}
+            />
+          
+
+        <Text style={styles.label}>Allergies:</Text>
+
+        <MultipleSelectList 
+              setSelected={(val) => setCurrentAllergies(val)} 
+              data={allergyTags} 
+              save="key"
+              //onSelect={() => alert(ingredSelect)} 
+              label="Allergies"
+              defaultOption={currentRestrictions}
+              boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+              dropdownStyles={{backgroundColor: '#FECA83'}}
+            />
+
+        <Text style={styles.label}>Tastes:</Text>
+
+        <MultipleSelectList 
+              setSelected={(val) => setCurrentTastes(val)} 
+              data={tasteTags} 
+              save="key"
+              //onSelect={() => alert(ingredSelect)} 
+              label="Tastes"
+              defaultOption={currentRestrictions}
+              boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
+              dropdownStyles={{backgroundColor: '#FECA83'}}
+            /> */}
+          
+          <Button title="Update Info" 
+            onPress={() => updateInfo()}
+            style={styles.button}
+            />
+
+      </View>
+      
 
     </View>
   );
@@ -246,9 +288,7 @@ function PatronProfileEditPage({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
+    flexDirection: "column",
   },
   title: {
     fontSize: 24,
@@ -281,7 +321,35 @@ const styles = StyleSheet.create({
       color: 'red',
       fontSize: 20,
       marginBottom: 12,
-  }
+  },
+    navbar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#ff7f50",
+    padding: 10,
+  },
+  navbarItem: {
+    backgroundColor: "#ff7f50",
+    alignItems: "center",
+    flexDirection: "row", // Align icon and text horizontally
+  },
+  navbarText: {
+    color: "#000000",
+    fontSize: 30,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  mainItem: {
+
+  },
+  mainContent: {
+    padding: 20,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "left",
+    
+  },
 });
 
 export default PatronProfileEditPage;

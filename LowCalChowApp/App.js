@@ -37,7 +37,7 @@ const App = () => {
         <Stack.Screen name="Edit Menu" component={EditMenuPage} />
         <Stack.Screen name="Menu Creation" component={MenuCreate} />
         <Stack.Screen name="Patron Account Creation" component={PatronAccountCreationPage} />
-        <Stack.Screen name="Patron Profile Creation Page" component={PatronProfileCreationPage} />
+        <Stack.Screen name="Patron Profile Creation" component={PatronProfileCreationPage} />
         <Stack.Screen name="Restaurant Account Creation" component={RestaurantAccountCreationPage} />
         <Stack.Screen name="Patron Preference Creation" component={PatronPreferenceCreationPage} />
         <Stack.Screen name="Restaurant Homepage" component={RestaurantHomepage} />
