@@ -11,6 +11,58 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
+  const states = [
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+  ];
   const [restaurantInfo, setRestaurantInfo] = useState({
     newRestaurantName: "",
     rating: "",
@@ -153,14 +205,18 @@ function UpdateInfo({ route, navigation }) {
         }
         value={restaurantInfo.city}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="State"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, state: text })
+      <Picker
+        selectedValue={restaurantInfo.state}
+        onValueChange={(itemValue) =>
+          setRestaurantInfo({ ...restaurantInfo, state: itemValue })
         }
-        value={restaurantInfo.state}
-      />
+        style={styles.input} 
+      >
+        <Picker.Item label="Select a State" value="" />
+        {states.map((state, index) => (
+          <Picker.Item key={index} label={state} value={state} />
+        ))}
+      </Picker>
       <TextInput
         style={styles.input}
         placeholder="Zip Code"
