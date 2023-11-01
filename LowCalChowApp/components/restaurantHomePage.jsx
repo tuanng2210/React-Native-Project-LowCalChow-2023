@@ -358,7 +358,7 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="Rating"
             />
 
-            <Text style={styles.modalTitle}>Select Tags</Text>
+            <Text style={styles.modalSelectTag}>Select Tags</Text>
             <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
               <MultipleSelectList
                 setSelected={(val) => setTagSelect(val)}
@@ -569,7 +569,10 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+  },
+  modalSelectTag: {
+    fontSize: 15,
   },
   input: {
     width: "100%",
