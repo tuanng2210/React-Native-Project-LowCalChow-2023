@@ -8,6 +8,7 @@ import {
   Picker,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { MultipleSelectList } from "react-native-dropdown-select-list";
 
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -63,19 +64,32 @@ function UpdateInfo({ route, navigation }) {
     "WI",
     "WY",
   ];
-  const [restaurantInfo, setRestaurantInfo] = useState({
-    newRestaurantName: "",
-    rating: "",
-    tags: [],
-    priceLevel: "",
-    phoneNumber: "",
-    website: "",
-    streetName: "",
-    city: "",
-    state: "",
-    zipCode: "",
-  });
+
+  const [newRestaurantName, setNewRestaurantName] = useState("");
+  const [rating, setRating] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [priceLevel, setPriceLevel] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [website, setWebsite] = useState("");
+  const [streetName, setStreetName] = useState("");
+  const [city, setCity] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [availableTags, setAvailableTags] = useState([]);
+
+  const formatPhoneNumber = (input) => {
+    const cleaned = input.replace(/\D/g, "");
+    const formattedPhoneNumber = cleaned.replace(
+      /(\d{3})(\d{3})(\d{4})/,
+      "$1-$2-$3"
+    );
+    return formattedPhoneNumber;
+  };
+
+  const handlePhoneNumberInput = (text) => {
+    const formattedPhoneNumber = formatPhoneNumber(text);
+    setPhoneNumber(formattedPhoneNumber);
+  };
 
   const handleUpdateInfo = async () => {
     try {
@@ -87,26 +101,39 @@ function UpdateInfo({ route, navigation }) {
             "Content-Type": "application/json",
             Authorization: "Bearer " + access,
           },
-          body: JSON.stringify(restaurantInfo),
+          body: JSON.stringify({
+            newRestaurantName,
+            rating,
+            tags: selectedTags,
+            priceLevel,
+            phoneNumber,
+            website,
+            streetName,
+            city,
+            state: selectedState,
+            zipCode,
+          }),
         }
       );
 
       if (response.ok) {
         console.log("Restaurant information updated successfully!");
-        setRestaurantInfo({
-          newRestaurantName: "",
-          rating: "",
-          tags: [],
-          priceLevel: "",
-          phoneNumber: "",
-          website: "",
-          streetName: "",
-          city: "",
-          state: "",
-          zipCode: "",
-        });
+        setNewRestaurantName("");
+        setRating("");
+        setSelectedTags([]);
+        setPriceLevel("");
+        setPhoneNumber("");
+        setWebsite("");
+        setStreetName("");
+        setCity("");
+        setSelectedState("");
+        setZipCode("");
       } else {
-        console.error("Failed to update restaurant information");
+        const errorResponse = await response.json();
+        console.error(
+          "Failed to update restaurant information:",
+          errorResponse
+        );
       }
     } catch (error) {
       console.error("Error updating restaurant information:", error);
@@ -138,93 +165,84 @@ function UpdateInfo({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Update Restaurant Information:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Restaurant Name"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, newRestaurantName: text })
-        }
-        value={restaurantInfo.newRestaurantName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Rating"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, rating: text })
-        }
-        value={restaurantInfo.rating}
-      />
-      <Picker selectedValue={restaurantInfo.tags} style={styles.input}>
-        {availableTags.map((tag) => (
-          <Picker.Item label={tag.title} value={tag.id} key={tag.id} /> // Correct
-        ))}
-      </Picker>
-      <Picker
-        selectedValue={restaurantInfo.priceLevel}
-        style={styles.input}
-        onValueChange={(itemValue) =>
-          setRestaurantInfo({ ...restaurantInfo, priceLevel: itemValue })
-        }
-      >
-        <Picker.Item label="Select Price Level" value="" />
-        <Picker.Item label="$" value="$" />
-        <Picker.Item label="$$" value="$$" />
-        <Picker.Item label="$$$" value="$$$" />
-        <Picker.Item label="$$$$" value="$$$$" />
-      </Picker>
-      <TextInput
-        style={styles.input}
-        placeholder="Phone Number"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, phoneNumber: text })
-        }
-        value={restaurantInfo.phoneNumber}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Website"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, website: text })
-        }
-        value={restaurantInfo.website}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Street Name"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, streetName: text })
-        }
-        value={restaurantInfo.streetName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="City"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, city: text })
-        }
-        value={restaurantInfo.city}
-      />
-      <Picker
-        selectedValue={restaurantInfo.state}
-        onValueChange={(itemValue) =>
-          setRestaurantInfo({ ...restaurantInfo, state: itemValue })
-        }
-        style={styles.input} 
-      >
-        <Picker.Item label="Select a State" value="" />
-        {states.map((state, index) => (
-          <Picker.Item key={index} label={state} value={state} />
-        ))}
-      </Picker>
-      <TextInput
-        style={styles.input}
-        placeholder="Zip Code"
-        onChangeText={(text) =>
-          setRestaurantInfo({ ...restaurantInfo, zipCode: text })
-        }
-        value={restaurantInfo.zipCode}
-      />
+      <Text style={styles.title}>Update Restaurant Information</Text>
+      <View style={styles.formContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Restaurant Name"
+          onChangeText={setNewRestaurantName}
+          value={newRestaurantName}
+        />
+
+        <Picker
+          selectedValue={selectedTags}
+          onValueChange={(itemValue) => setSelectedTags(itemValue)}
+          style={styles.input}
+        >
+          <Picker.Item label="Select Tags" value="" />
+          {availableTags.map((tag) => (
+            <Picker.Item label={tag.title} value={tag.id} key={tag.id} />
+          ))}
+        </Picker>
+
+        <Picker
+          selectedValue={priceLevel}
+          onValueChange={(itemValue) => setPriceLevel(itemValue)}
+          style={styles.input}
+        >
+          <Picker.Item label="Select Price Level" value="" />
+          <Picker.Item label="$" value="$" />
+          <Picker.Item label="$$" value="$$" />
+          <Picker.Item label="$$$" value="$$$" />
+          <Picker.Item label="$$$$" value="$$$$" />
+        </Picker>
+
+        <TextInput
+          style={styles.input}
+          value={phoneNumber}
+          onChangeText={handlePhoneNumberInput}
+          placeholder="Phone Number"
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Website"
+          onChangeText={(text) => setWebsite(text)}
+          value={website}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Street Name"
+          onChangeText={(text) => setStreetName(text)}
+          value={streetName}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="City"
+          onChangeText={(text) => setCity(text)}
+          value={city}
+        />
+
+        <Picker
+          selectedValue={selectedState}
+          onValueChange={(itemValue) => setSelectedState(itemValue)}
+          style={styles.input}
+        >
+          <Picker.Item label="Select a State" value="" />
+          {states.map((state, index) => (
+            <Picker.Item key={index} label={state} value={state} />
+          ))}
+        </Picker>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Zip Code"
+          onChangeText={(text) => setZipCode(text)}
+          value={zipCode}
+        />
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
         <Text style={styles.buttonText}>Update</Text>
@@ -236,29 +254,47 @@ function UpdateInfo({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#ffffff",
     padding: 20,
+    justifyContent: "center",
+    alignContent: "center",
   },
-  label: {
-    fontSize: 18,
-    marginBottom: 10,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  formContainer: {
+    marginBottom: 20,
   },
   input: {
     height: 40,
-    borderColor: "gray",
+    borderColor: "#007bff",
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
+    borderRadius: 5,
   },
   button: {
     backgroundColor: "#FFA500",
-    padding: 10,
+    padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    alignSelf: "center",
+    width: 200,
   },
   buttonText: {
     color: "#ffffff",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  picker: {
+    height: 40,
+    borderColor: "#007bff",
+    borderWidth: 1,
+    marginBottom: 20,
+    borderRadius: 5,
   },
 });
 
