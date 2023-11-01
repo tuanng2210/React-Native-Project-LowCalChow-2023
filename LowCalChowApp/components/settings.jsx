@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   restaurantAddress: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
   },
   restaurantPhoneNumber: {
