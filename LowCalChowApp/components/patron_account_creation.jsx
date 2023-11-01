@@ -28,8 +28,8 @@ function PatronAccountCreationPage({navigation}) {
     if(!password){
       errors.password = "Password is required."
     }
-    else if(password.length < 6){
-      errors.password = "Password must be at least 6 characters."
+    else if(password.length < 8){
+      errors.password = "Password must be at least 8 characters."
     }
   
     if(!confirmPassword){
@@ -61,16 +61,9 @@ function PatronAccountCreationPage({navigation}) {
           // Handle the API response here
           console.log("API response:", responseData);
 
-          if (responseData.message === "success") {
+          const access = responseData.tokens.access
             // The signup was successful, you can navigate to a success screen or perform other actions
-            const { email, username, user_type } = responseData.content;
-            console.log("User details:", { email, username, user_type });
-            navigation.navigate("Patron Profile Creation Page");
-          } else {
-            // Handle any error messages returned by the API
-            console.log("Message :", responseData.message);
-            // You can display an error message to the user if needed
-          }
+          navigation.navigate("Patron Profile Creation",  {access: access});
         })
         .catch((error) => {
           console.error("Error:", error);
