@@ -140,27 +140,33 @@ function UpdateInfo({ route, navigation }) {
     }
   };
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8000/restaurants/resttags/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + access,
-            },
-          }
-        );
+  const fetchRestTags = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/restaurants/resttags/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        }
+      );
+      if (response.status === 200) {
         const data = await response.json();
-        setAvailableTags(data);
-      } catch (error) {
-        console.error("Error fetching tags:", error);
+        const formTags = data.map((item) => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setAvailableTags(formTags);
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    fetchTags();
+  useEffect(() => {
+    fetchRestTags();
   }, []);
 
   return (
@@ -174,16 +180,20 @@ function UpdateInfo({ route, navigation }) {
           value={newRestaurantName}
         />
 
-        <Picker
-          selectedValue={selectedTags}
-          onValueChange={(itemValue) => setSelectedTags(itemValue)}
-          style={styles.input}
-        >
-          <Picker.Item label="Select Tags" value="" />
-          {availableTags.map((tag) => (
-            <Picker.Item label={tag.title} value={tag.id} key={tag.id} />
-          ))}
-        </Picker>
+        <Text style={styles.modalSelectTag}>Select Tags</Text>
+        <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+          <MultipleSelectList
+            setSelected={(val) => setSelectedTags(val)}
+            data={availableTags}
+            save="key"
+            label="Tags"
+            boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 10 }}
+            dropdownStyles={{
+              backgroundColor: "#FECA83",
+              borderRadius: 10,
+            }}
+          />
+        </View>
 
         <Picker
           selectedValue={priceLevel}
