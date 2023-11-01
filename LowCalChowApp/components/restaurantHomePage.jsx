@@ -344,7 +344,7 @@ function RestaurantHomepage({ navigation, route }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Enter Restaurant Name</Text>
+            <Text style={styles.modalTitle}>Enter Restaurant Info</Text>
             <TextInput
               style={styles.input}
               value={newRestaurantName}

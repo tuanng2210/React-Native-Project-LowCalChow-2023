@@ -8,7 +8,7 @@ function Settings({ route, navigation }) {
   const [restaurantData, setRestaurantData] = useState(null);
 
   const navigateToUpdateInfo = () => {
-    navigation.navigate("Update Info Screen", { access, restaurantId });
+    navigation.navigate("Update Info", { access, restaurantId });
   };
 
   useEffect(() => {
@@ -37,6 +37,21 @@ function Settings({ route, navigation }) {
 
     fetchRestaurantData();
   }, [restaurantId]);
+
+  function formatTime(time) {
+    const [hours, minutes] = time.split(":");
+    let formattedTime = "";
+
+    if (hours < 12) {
+      formattedTime = `${hours}:${minutes} AM`;
+    } else if (hours === "12") {
+      formattedTime = `${hours}:${minutes} PM`;
+    } else {
+      formattedTime = `${hours - 12}:${minutes} PM`;
+    }
+
+    return formattedTime;
+  }
 
   return (
     <View style={styles.container}>
@@ -70,26 +85,54 @@ function Settings({ route, navigation }) {
           <View style={styles.openingHoursContainer}>
             <Text style={styles.openingHoursLabel}>Opening Hours:</Text>
             <View style={styles.openingHours}>
-              <Text>
-                Mon: {restaurantData.mon_open} - {restaurantData.mon_close}
+              <Text style={styles.dayText}>
+                Mon:{" "}
+                {restaurantData.mon_open && formatTime(restaurantData.mon_open)}{" "}
+                -{" "}
+                {restaurantData.mon_close &&
+                  formatTime(restaurantData.mon_close)}
               </Text>
-              <Text>
-                Tue: {restaurantData.tue_open} - {restaurantData.tue_close}
+              <Text style={styles.dayText}>
+                Tue:{" "}
+                {restaurantData.tue_open && formatTime(restaurantData.tue_open)}{" "}
+                -{" "}
+                {restaurantData.tue_close &&
+                  formatTime(restaurantData.tue_close)}
               </Text>
-              <Text>
-                Wed: {restaurantData.wed_open} - {restaurantData.wed_close}
+              <Text style={styles.dayText}>
+                Wed:{" "}
+                {restaurantData.wed_open && formatTime(restaurantData.wed_open)}{" "}
+                -{" "}
+                {restaurantData.wed_close &&
+                  formatTime(restaurantData.wed_close)}
               </Text>
-              <Text>
-                Thu: {restaurantData.thu_open} - {restaurantData.thu_close}
+              <Text style={styles.dayText}>
+                Thu:{" "}
+                {restaurantData.thu_open && formatTime(restaurantData.thu_open)}{" "}
+                -{" "}
+                {restaurantData.thu_close &&
+                  formatTime(restaurantData.thu_close)}
               </Text>
-              <Text>
-                Fri: {restaurantData.fri_open} - {restaurantData.fri_close}
+              <Text style={styles.dayText}>
+                Fri:{" "}
+                {restaurantData.fri_open && formatTime(restaurantData.fri_open)}{" "}
+                -{" "}
+                {restaurantData.fri_close &&
+                  formatTime(restaurantData.fri_close)}
               </Text>
-              <Text>
-                Sat: {restaurantData.sat_open} - {restaurantData.sat_close}
+              <Text style={styles.dayText}>
+                Sat:{" "}
+                {restaurantData.sat_open && formatTime(restaurantData.sat_open)}{" "}
+                -{" "}
+                {restaurantData.sat_close &&
+                  formatTime(restaurantData.sat_close)}
               </Text>
-              <Text>
-                Sun: {restaurantData.sun_open} - {restaurantData.sun_close}
+              <Text style={styles.dayText}>
+                Sun:{" "}
+                {restaurantData.sun_open && formatTime(restaurantData.sun_open)}{" "}
+                -{" "}
+                {restaurantData.sun_close &&
+                  formatTime(restaurantData.sun_close)}
               </Text>
             </View>
           </View>
@@ -169,6 +212,10 @@ const styles = StyleSheet.create({
   },
   openingHours: {
     marginTop: 10,
+  },
+  dayText: {
+    fontSize: 16,
+    marginBottom: 8,
   },
 });
 
