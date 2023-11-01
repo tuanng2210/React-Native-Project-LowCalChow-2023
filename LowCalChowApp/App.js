@@ -21,6 +21,7 @@ import PatronSettingsPage from './components/patronSettingsPage';
 import Search from './components/search';
 import Bookmark from './components/bookmark';
 import AdminHomepage from './components/AdminHomepage';
+import UpdateInfo from './components/UpdateInfoScreen';
 
 import Settings from './components/settings';
 
@@ -50,6 +51,7 @@ const App = () => {
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
         <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
         <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="Update Info Screen" component={UpdateInfo} />
       </Stack.Navigator>
     </NavigationContainer>
 
