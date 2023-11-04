@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
-import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
-
+import { TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 function viewMenuItem({route, navigation}){
-    const access = route.params.access;
-    const restID = route.params.restaurantId;
-    const mealID = rout.params.mealId;
+    //const access = route.params.access;
+    //const restID = route.params.restaurantId;
+    //const mealID = rout.params.mealId;
+    //const showBookmarkButton = route.params.bookmarkVis;
+    //const showMenuItemButton = route.params.menuitemVis;
+    const restID = 1;
+    const mealID = 1;
+    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5MTQwMDg5LCJpYXQiOjE2OTkxMzI4ODksImp0aSI6ImViNWRlMTgxZTQwMjQzNGY4NzZlYWQ4MWMxZTgyODVkIiwidXNlcl9pZCI6NH0.0HI8wcDof3C657oZr7KCFtsoOkG8AB9_4P8fzKnSKeg';
+    const showBookmarkButton = true;
+    const showMenuItemButton = true;
 
-    const mealName = "";
-    const mealPrice = "";
-    const mealCalories = "";
-    const mealIngredients = [];
-    const mealFoodType = "";
-    const mealCookStyle = "";
-    const mealAllergies = [];
-    const mealTOD = [];
-    const mealRestrictions = [];
+    const [mealName, setmealName] = useState("Ramen");
+    const [mealPrice, setmealPrice] = useState('');
+    const [mealCalories, setmealCalories] = useState('');
+    const [mealIngredients, setmealIngredients] = useState([]);
+    const [mealFoodType, setmealFoodType] = useState('');
+    const [mealCookStyle, setmealCookStyle] = useState('');
+    const [mealAllergies, setmealAllergies] = useState([]);
+    const [mealTOD, setmealTOD] = useState([]);
+    const [mealRestrictions, setmealRestrictions] = useState([]);
 
     const handleGetMeal = async () => {
         try{
@@ -29,15 +35,15 @@ function viewMenuItem({route, navigation}){
 
             if (response.status === 200) {
                 const data = await response.json();
-                mealName = data.item_name;
-                mealPrice = data.price;
-                mealCalories = data.calories;
-                mealIngredients = data.ingredients_tag;
-                mealFoodType = data.food_type_tag;
-                mealCookStyle = data.cook_style_tags;
-                mealAllergies = data.menu_allergy_tag;
-                mealTOD = data.time_of_day_available;
-                mealRestrictions = data.menu_restriction_tag;
+                setmealName = data.item_name;
+                setmealPrice = data.price;
+                setmealCalories = data.calories;
+                setmealIngredients = data.ingredients_tag;
+                setmealFoodType = data.food_type_tag;
+                setmealCookStyle = data.cook_style_tags;
+                setmealAllergies = data.menu_allergy_tag;
+                setmealTOD = data.time_of_day_available;
+                setmealRestrictions = data.menu_restriction_tag;
                 
             }
         }catch (error) {
@@ -47,21 +53,67 @@ function viewMenuItem({route, navigation}){
     useEffect (() => {
         handleGetMeal();
     }, []);
+
+    //todo add to bookmark list
+    const handleAddToBookmark = async () => {
+
+    }
+
+    //todo add to menu item history list
+    const handleAddToMenuItemHistory = async () => {
+
+    }
+
+
     return (
       <SafeAreaView style={styles.container}>
             <View style={styles.menuBar}>
-
-              {/* Bookmark Button */}
+              
+               <View style={styles.menuLeft}>
+                    {/* Home */}
+                  <TouchableOpacity style={styles.homeButton}
+                  onPress={() => navigation.navigate('Patron Homepage',{/*} {access: access}*/})}>
+                  <Icon name="home" size={36} color="black" />
+              
+                  </TouchableOpacity>
+               </View>
+               
+  
+              {/*Menu Item Title */}
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{mealName}</Text>
+             
+              {/* Empty View*/}
+               <View style={styles.menuRight}>
+                {/* Bookmark Button */}
+              { showBookmarkButton && ( 
               <TouchableOpacity style={styles.menuButton}>
-                <Text>Bookmark</Text>
+                <Icon name="bookmark" size={36} color="black" />
+              
               </TouchableOpacity>
+              )}
               {/* Save Menu Item Button */}
+              { showMenuItemButton && (
               <TouchableOpacity style={styles.menuButton}>
-                <Text>Save Menu Item</Text>
+                <Icon name="save" size={36} color="black" />
+                
               </TouchableOpacity>
-            </View>
+              )}
+               </View>
 
-            {/* Rest of your content */}
+
+              
+            </View>
+            <SafeAreaView style={styles.container}>
+              <Text style={styles.normText}>Calories: {mealCalories}</Text>
+              <Text style={styles.normText}>Price: ${mealPrice}</Text>
+              <Text style={styles.normText}>Food Type: {mealFoodType}</Text>
+              <Text style={styles.normText}>Cook Style: {mealCookStyle}</Text>
+              <Text style={styles.normText}>Ingredients: {mealIngredients}</Text>
+              <Text style={styles.normText}>Allergens: {mealAllergies}</Text>
+              <Text style={styles.normText}>Dietary Restrictions: {mealRestrictions}</Text>
+              <Text style={styles.normText}>Time Available: {mealTOD}</Text>
+            </SafeAreaView>
+            
           </SafeAreaView>
     );
 }
@@ -75,13 +127,36 @@ function viewMenuItem({route, navigation}){
       },
       menuBar: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         width: '100%',
-        padding: 10,
-        backgroundColor: '#eee', // Change the background color as needed
+        padding: 20,
+        backgroundColor: '#FECA83',
+        position: 'fixed',
+        top: 60,
+        zIndex: 1,
+      },
+      menuRight: {
+        flexDirection: 'row',
+        justifyContent:'flex-end',
+        alignItems: 'flex-end',
+        padding: 20,
+        width:'48%',
+
+      },
+      menuLeft: {
+        flexDirection: 'row',
+        justifyContent:'flex-start',
+        alignItems: 'flex-start',
+        padding: 20,
+        width:'48%',
+
       },
       menuButton: {
-        marginLeft: 10,
+        marginLeft: 25,
+      },
+      homeButton: {
+        marginRight: 25,
       },
       title: {
         fontSize: 24,

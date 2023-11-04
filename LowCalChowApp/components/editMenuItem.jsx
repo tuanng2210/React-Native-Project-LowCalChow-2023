@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
+//import MultiSelect from 'react-native-multiple-select';
 
 function EditMenu({route, navigation}){
     const mealID = route.params.id;
@@ -8,9 +9,6 @@ function EditMenu({route, navigation}){
     const access = route.params.access;
 
     const restID = route.params.restaurantId;
-
-    const [getdata, setgetData] = useState([]);
-    console.log(getdata);
     
     const [ingredientTags, setIngredientTags] =useState([]);
     const [foodTypeTags, setfoodTypeTags] =useState([]);
@@ -18,28 +16,31 @@ function EditMenu({route, navigation}){
     const [allergyTags, setallergyTags] = useState([]);
     const [tasteTags, settasteTags] = useState([]);
     const timeOfDay = [
-      { label: 'Breakfast', value: 'Breakfast' },
-      { label: 'Lunch', value: 'Lunch' },
-      { label: 'Dinner', value: 'Dinner' },
-      { label: 'Anytime', value: 'Anytime' },
+      { key: 'Breakfast', name: 'Breakfast' },
+      { key: 'Lunch', name: 'Lunch' },
+      { key: 'Dinner', name: 'Dinner' },
+      { key: 'Anytime', name: 'Anytime' },
     ];
   
     const [restrictionTags, setrestrictionTags] = useState('');
 
     const [mealName, setMealName] = useState('');
-    const [description, setDescription] = useState('');
     const [mealCalories, setCalories] = useState('');
-    console.log(mealCalories);
     const [mealPrice, setPrice] = useState('');
-
     const [ingredSelect, setIngredSelect] = useState([]);
+    const [defaultIngredSelect, setDefaultIngredSelect] = useState([]);
     const [foodTypeSelect, setfoodTypeSelect] = useState([]);
     const [cookStyleSelect, setcookStyleSelect] = useState([]);
     const [allergiesSelect, setallergiesSelect] = useState([]);
     const [tasteSelect, settasteSelect] = useState([]);
-    console.log(tasteSelect);
     const [restrictionSelect, setrestrictionSelect] = useState([]);
     const [timeOfDayAvailable, setTOD] = useState([]);
+
+    const defaultOptions = [
+      { key: '1', value: 'anchovy_paste' },
+      { key: '2', value: 'basil' },
+      // Add more key-value pairs as needed
+    ];
     
 
     function submitMeal(){
@@ -63,21 +64,32 @@ function EditMenu({route, navigation}){
         });
         if (response.status === 200) {
           const data = await response.json();
-          setgetData(data);
- 
-          setCalories(data.calories);
-          //setcookStyleSelect(data.cook_style_tags);
-          //setfoodTypeSelect(data.food_type_tag);
-          //setIngredSelect(data.ingredients_tag);
           setMealName(data.item_name);
-          //setallergiesSelect(data.menu_allergy_tag);
-          //setrestrictionSelect(data.menu_restriction_tag);
+          setCalories(data.calories);
           setPrice(data.price);
-          //settasteSelect(data.taste_tags);
-          //setTOD(data.time_of_day_available);
-
-
-
+          const formcookStyleTags = data.cook_style_tags.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setcookStyleSelect(formcookStyleTags);
+          const formfoodTypeTags = data.food_type_tag.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setfoodTypeSelect(formfoodTypeTags);
+          const formIngredsTags = data.ingredients_tag.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          setIngredSelect(formIngredsTags);
+          //setallergiesSelect(getdata.menu_allergy_tag);
+          //setrestrictionSelect(getdata.menu_restriction_tag);
+          const formTasteTags = data.taste_tags.map(item => ({
+            key: item.id,
+            value: item.title,
+          }));
+          settasteSelect(formTasteTags);
+          //setTOD(getdata.time_of_day_available);
         }
       }catch (error) {
         console.error("Error:", error);
@@ -85,7 +97,18 @@ function EditMenu({route, navigation}){
     } 
     useEffect (() => {
       handlegetMeal();
+
     }, []); 
+    useEffect(() => {
+      // Update the default option for ingredSelect when it changes
+      const defaultIngredSelect = ingredSelect.map(item => ({
+        key: item.key,
+        value: item.value,
+      }));
+    
+      // Set default option for MultipleSelectList
+      setDefaultIngredSelect(defaultIngredSelect);
+    }, [ingredSelect]);
 
     {/*Send data to backend to add menu item */}
     const handleUpdateMeal = async () => {
@@ -263,18 +286,10 @@ function EditMenu({route, navigation}){
         if (response.status === 200) {
         
         }
-      
       }catch (error) {
           console.error("Error:", error);
       }
     }
-
-    useEffect(() => {
-      if (tasteTags.length === 0) {
-        // Set default selected values if tasteTags is empty
-        settasteSelect(getdata.taste_tags);
-      }
-    }, [tasteTags]);
     
     return (
       <ScrollView style = {{ flex: 1}}>
@@ -329,9 +344,9 @@ function EditMenu({route, navigation}){
             save="key"
             //onSelect={() => alert(ingredSelect)} 
             label="Ingredients"
-            defaultOption={ingredSelect}
             boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
             dropdownStyles={{backgroundColor: '#FECA83'}}
+            defaultOption={defaultOptions}
           />
     
         
@@ -381,8 +396,8 @@ function EditMenu({route, navigation}){
             label="Taste Tags"
             boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
             dropdownStyles={{backgroundColor: '#FECA83'}}
-            defaultOption={tasteSelect}
           />
+      
           {/*Restrictions*/}
           <Text style={styles.normText}>Dietary Restrictions</Text>
 
@@ -406,6 +421,7 @@ function EditMenu({route, navigation}){
             boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
             dropdownStyles={{backgroundColor: '#FECA83'}}
           />
+          
     
           
     
@@ -433,6 +449,16 @@ function EditMenu({route, navigation}){
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+      },
+      RNPicker: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        color: 'black',
+        paddingRight: 30,
       },
       title: {
         fontSize: 24,

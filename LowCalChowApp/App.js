@@ -24,6 +24,7 @@ const App = () => {
   return (
     <NavigationContainer>      
       <Stack.Navigator>
+        {/* <Stack.Screen  name="View Menu Item" component={viewMenuItem}/> */}
         <Stack.Screen  name="Login" component={LoginPage}/>
         <Stack.Screen  name="Sign Up" component={SignUpPage}/>
         <Stack.Screen  name="Menu" component={MenuPage}/>
@@ -36,7 +37,7 @@ const App = () => {
         <Stack.Screen  name="Patron Homepage" component={PatronHomepage}/>
         <Stack.Screen  name="Restaurant Analytics Overview" component={RestaurantAnalytics}/>
         <Stack.Screen  name="Restaurant Dashboard" component={RestaurantDashboard}/>
-        <Stack.Screen  name="View Menu Item" compoent={viewMenuItem}/>
+        
 
       </Stack.Navigator>
     </NavigationContainer>
