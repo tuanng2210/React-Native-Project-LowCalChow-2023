@@ -8,15 +8,15 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { API_HOST } from "@env";
+import { API_HOST } from "@env";
 
 function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    // const apiURL = `${API_HOST}/auth/login/`;
-    // console.log(apiURL);
+    const apiURL = `${API_HOST}/auth/login/`;
+    console.log(apiURL);
     try {
       const response = await fetch("http://localhost:8000/auth/login/", {
         method: "POST",
