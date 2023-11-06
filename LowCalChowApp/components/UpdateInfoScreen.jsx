@@ -188,17 +188,18 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
-        <Text style={styles.modalSelectTag}>Select Tags</Text>
+        <Text style={styles.modalSelectTag}>Select Tags</Text> 
         <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
           <MultipleSelectList
             setSelected={(val) => setSelectedTags(val)}
             data={availableTags}
             save="key"
             label="Tags"
-            boxStyles={{ backgroundColor: "", borderRadius: 10 }}
+            boxStyles={{ backgroundColor: "", borderRadius: 10, width: "100%" }}
             dropdownStyles={{
               backgroundColor: "",
               borderRadius: 10,
+              width: "100%" 
             }}
           />
         </View>
@@ -285,6 +286,8 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 20,
+    justifyItems: "center",
+    alignItems: "center",
   },
   input: {
     height: 40,
@@ -292,6 +295,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     borderRadius: 5,
+    width: "20%",
   },
   button: {
     backgroundColor: "#FFA500",
@@ -299,11 +303,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: 200,
+    width: 100,
   },
   buttonText: {
-    color: "#ffffff",
-    fontSize: 18,
+    color: "#black",
+    fontSize: 16,
     fontWeight: "bold",
   },
   picker: {

@@ -285,7 +285,7 @@ function RestaurantHomepage({ navigation, route }) {
           ]}
           onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
-          <MaterialIcons name="home" size={24} color="#fff" />
+          <MaterialIcons name="home" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Home</Text>
           )}
@@ -302,7 +302,7 @@ function RestaurantHomepage({ navigation, route }) {
             navigation.navigate("Restaurant Analytics Overview", { access })
           }
         >
-          <MaterialIcons name="analytics" size={24} color="#fff" />
+          <MaterialIcons name="analytics" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Analytics</Text>
           )}
@@ -318,7 +318,7 @@ function RestaurantHomepage({ navigation, route }) {
             style={styles.addButton}
             onPress={() => handleAddRestaurant()}
           >
-            <MaterialIcons name="add" size={24} color="#fff" />
+            <MaterialIcons name="add" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
@@ -365,9 +365,8 @@ function RestaurantHomepage({ navigation, route }) {
                 data={tags}
                 save="key"
                 label="Tags"
-                boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 10 }}
+                boxStyles={{ borderRadius: 10 }}
                 dropdownStyles={{
-                  backgroundColor: "#FECA83",
                   borderRadius: 10,
                 }}
               />
@@ -433,8 +432,21 @@ function RestaurantHomepage({ navigation, route }) {
             />
 
             <View style={styles.modalButtons}>
-              <RNButton title="Cancel" onPress={() => setModalVisible(false)} />
-              <RNButton title="Add" onPress={confirmAddRestaurant} />
+              {/* <RNButton title="Cancel" onPress={() => setModalVisible(false)} /> */}
+              {/* <RNButton title="Add" onPress={confirmAddRestaurant} /> */}
+              <TouchableOpacity
+                style={styles.button}
+                onPress={confirmAddRestaurant}
+              >
+                <Text style={styles.buttonText}>Confirm</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -463,7 +475,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sidebarItemText: {
-    color: "#fff",
+    color: "#black",
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 10,
@@ -510,6 +522,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
+  button: {
+    backgroundColor: "#FFA500",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    alignSelf: "center",
+    width: 100,
+  },
   addButton: {
     backgroundColor: "#FF9800",
     margin: 30,
@@ -551,6 +571,7 @@ const styles = StyleSheet.create({
   buttonText: {
     marginLeft: 5,
     fontSize: 16,
+    fontWeight: "bold",
     color: "#000",
   },
   modalContainer: {
@@ -563,7 +584,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: "80%",
+    width: "50%",
     alignItems: "center",
   },
   modalTitle: {
@@ -575,7 +596,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    width: "100%",
+    width: "40%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
@@ -584,6 +605,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalButtons: {
+    marginTop: 40,
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",

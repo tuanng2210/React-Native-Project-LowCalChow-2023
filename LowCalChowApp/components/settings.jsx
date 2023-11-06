@@ -191,8 +191,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "white",
+    color: "#black",
     fontSize: 16,
+    fontWeight: "bold",
   },
   tagsContainer: {
     flexDirection: "row",

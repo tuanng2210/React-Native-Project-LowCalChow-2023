@@ -86,10 +86,11 @@ function Search({ navigation, route }) {
                 </TouchableOpacity>
 
             </View>
-            <TouchableOpacity style={styles.button}
+            {/* <TouchableOpacity style={styles.button}
                 onPress={() => navigation.navigate("SearchResults", { access })}>
                 <Text style={styles.buttonText}>SearchResults</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            
             <View style={styles.mainContent}>
                 <View style={styles.root}>
                     <Text style={styles.title}>Search for a Menu Item</Text>
@@ -234,13 +235,13 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     button: {
-        backgroundColor: "FFA500",
+        backgroundColor: "#FFA500",
         borderRadius: 8,
         paddingVertical: 10,
         alignItems: "center",
         marginTop: 16,
         marginBottom: 12,
-        width: "100%",
+        width: "10%",
     },
     buttonText: {
         fontWeight: "bold",
