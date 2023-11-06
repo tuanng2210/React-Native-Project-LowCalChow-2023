@@ -47,13 +47,10 @@ const App = () => {
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="Search Results" component={SearchResults} />
         <Stack.Screen name="Bookmark" component={Bookmark} />
-        <Stack.Screen name="Patron Profile Edit Page" component={PatronProfileEditPage} />
-        <Stack.Screen name="Restaurant Analytics Overview"  component={RestaurantAnalytics}/>
-        <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard}/>
-        <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
-        <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Update Info" component={UpdateInfo} />
-        
+        <Stack.Screen name="Restaurant Analytics Overview" component={RestaurantAnalytics} />
+        <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard} />
+>>>>>>>>> Temporary merge branch 2
+
       </Stack.Navigator>
     </NavigationContainer>
   );
