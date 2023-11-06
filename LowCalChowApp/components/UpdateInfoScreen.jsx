@@ -92,6 +92,19 @@ function UpdateInfo({ route, navigation }) {
   };
 
   const handleUpdateInfo = async () => {
+    const data = {
+      name: newRestaurantName,
+      rating: rating,
+      tags: selectedTags,
+      price_level: priceLevel,
+      phone_number: phoneNumber,
+      website: website,
+      street_name: streetName,
+      city: city,
+      state: selectedState,
+      zip_code: zipCode,
+    };
+    console.log(data);
     try {
       const response = await fetch(
         `http://localhost:8000/restaurants/${restaurantId}/`,
@@ -101,21 +114,9 @@ function UpdateInfo({ route, navigation }) {
             "Content-Type": "application/json",
             Authorization: "Bearer " + access,
           },
-          body: JSON.stringify({
-            newRestaurantName,
-            rating,
-            tags: selectedTags,
-            priceLevel,
-            phoneNumber,
-            website,
-            streetName,
-            city,
-            state: selectedState,
-            zipCode,
-          }),
+          body: JSON.stringify(data),
         }
       );
-
       if (response.ok) {
         console.log("Restaurant information updated successfully!");
         setNewRestaurantName("");
@@ -180,6 +181,13 @@ function UpdateInfo({ route, navigation }) {
           value={newRestaurantName}
         />
 
+        <TextInput
+          style={styles.input}
+          placeholder="Rating"
+          onChangeText={setRating}
+          value={rating}
+        />
+
         <Text style={styles.modalSelectTag}>Select Tags</Text>
         <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
           <MultipleSelectList
@@ -187,9 +195,9 @@ function UpdateInfo({ route, navigation }) {
             data={availableTags}
             save="key"
             label="Tags"
-            boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 10 }}
+            boxStyles={{ backgroundColor: "", borderRadius: 10 }}
             dropdownStyles={{
-              backgroundColor: "#FECA83",
+              backgroundColor: "",
               borderRadius: 10,
             }}
           />
@@ -280,7 +288,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "#007bff",
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
