@@ -57,28 +57,28 @@ function RestaurantDashboard() {
           onPress={() => navigation.navigate("Home")}
           style={styles.navItem}
         >
-          <Icon name="home" size={30} color="#ffffff" />
+          <Icon name="home" size={30} color="black" />
           <Text style={styles.navText}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("Menu", { access, restaurantId })}
           style={styles.navItem}
         >
-          <Icon name="restaurant-menu" size={30} color="#ffffff" />
+          <Icon name="restaurant-menu" size={30} color="black" />
           <Text style={styles.navText}>Menu</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("Settings", { access, restaurantId })}
           style={styles.navItem}
         >
-          <Icon name="settings" size={30} color="#ffffff" />
+          <Icon name="settings" size={30} color="black" />
           <Text style={styles.navText}>Settings</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("Analytics")}
           style={styles.navItem}
         >
-          <Icon name="analytics" size={30} color="#ffffff" />
+          <Icon name="analytics" size={30} color="black" />
           <Text style={styles.navText}>Analytics</Text>
         </TouchableOpacity>
       </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   navText: {
     marginLeft: 8,
     fontSize: 18,
-    color: "#ffffff",
+    color: "black",
   },
 });
 
