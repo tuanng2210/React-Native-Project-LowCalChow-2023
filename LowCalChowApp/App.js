@@ -22,7 +22,6 @@ import Search from "./components/search";
 import Bookmark from "./components/bookmark";
 import AdminHomepage from "./components/AdminHomepage";
 import UpdateInfo from "./components/UpdateInfoScreen";
-import SearchResults from "./components/searchResults";
 
 import Settings from "./components/settings";
 
@@ -45,7 +44,6 @@ const App = () => {
         <Stack.Screen name="Patron Homepage" component={PatronHomepage} />
         <Stack.Screen name="Patron Settings Page"  component={PatronSettingsPage}/>
         <Stack.Screen name="Search" component={Search} />
-        <Stack.Screen name="Search Results" component={SearchResults} />
         <Stack.Screen name="Bookmark" component={Bookmark} />
         <Stack.Screen name="Patron Profile Edit Page" component={PatronProfileEditPage} />
         <Stack.Screen name="Restaurant Analytics Overview"  component={RestaurantAnalytics}/>
