@@ -16,10 +16,10 @@ function EditMenu({route, navigation}){
     const [allergyTags, setallergyTags] = useState([]);
     const [tasteTags, settasteTags] = useState([]);
     const timeOfDay = [
-      { key: 'Breakfast', name: 'Breakfast' },
-      { key: 'Lunch', name: 'Lunch' },
-      { key: 'Dinner', name: 'Dinner' },
-      { key: 'Anytime', name: 'Anytime' },
+      { key: 'Breakfast', value: 'Breakfast' },
+      { key: 'Lunch', value: 'Lunch' },
+      { key: 'Dinner', value: 'Dinner' },
+      { key: 'Anytime', value: 'Anytime' },
     ];
   
     const [restrictionTags, setrestrictionTags] = useState('');

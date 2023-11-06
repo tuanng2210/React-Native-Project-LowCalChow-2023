@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IonIcons from 'react-native-vector-icons/Ionicons';
+import patronReview from './patronReview';
 function viewMenuItem({route, navigation}){
     //const access = route.params.access;
-    //const restID = route.params.restaurantId;
     //const mealID = rout.params.mealId;
     //const showBookmarkButton = route.params.bookmarkVis;
     //const showMenuItemButton = route.params.menuitemVis;
-    const restID = 1;
     const mealID = 1;
-    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5MTQwMDg5LCJpYXQiOjE2OTkxMzI4ODksImp0aSI6ImViNWRlMTgxZTQwMjQzNGY4NzZlYWQ4MWMxZTgyODVkIiwidXNlcl9pZCI6NH0.0HI8wcDof3C657oZr7KCFtsoOkG8AB9_4P8fzKnSKeg';
+    const bookmarkID = null;
+    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5MjM2NzAzLCJpYXQiOjE2OTkyMjk1MDMsImp0aSI6IjVmYWQzODFjOWEyZjQxNzE5ODJhODViZTc3ZDQ0YzAwIiwidXNlcl9pZCI6NH0.o597x4GcMAKJ3T7NJp-IOVmOoGc54bhcLjWulDiAmqs';
     const showBookmarkButton = true;
+    const [isBookmarked, setIsBookmarked] = useState(false);
     const showMenuItemButton = true;
+    const [isMIHistory, setIsMIHistory] = useState(false);
 
-    const [mealName, setmealName] = useState("Ramen");
+    const [mealName, setmealName] = useState('');
     const [mealPrice, setmealPrice] = useState('');
     const [mealCalories, setmealCalories] = useState('');
     const [mealIngredients, setmealIngredients] = useState([]);
@@ -25,7 +28,7 @@ function viewMenuItem({route, navigation}){
 
     const handleGetMeal = async () => {
         try{
-            const response = await fetch(`http://localhost:8000/restaurants/${restID}/menuitems/${mealID}/`, {
+            const response = await fetch(`http://localhost:8000/restaurants/menuitems/${mealID}/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,15 +38,16 @@ function viewMenuItem({route, navigation}){
 
             if (response.status === 200) {
                 const data = await response.json();
-                setmealName = data.item_name;
-                setmealPrice = data.price;
-                setmealCalories = data.calories;
-                setmealIngredients = data.ingredients_tag;
-                setmealFoodType = data.food_type_tag;
-                setmealCookStyle = data.cook_style_tags;
-                setmealAllergies = data.menu_allergy_tag;
-                setmealTOD = data.time_of_day_available;
-                setmealRestrictions = data.menu_restriction_tag;
+                setmealName(data.item_name);
+                setmealPrice(data.price);
+                setmealCalories(data.calories);
+                setmealIngredients(data.ingredients_tag.map(tag => tag.title));
+                console.log(mealIngredients);
+                setmealFoodType(data.food_type_tag.title);
+                setmealCookStyle(data.cook_style_tags.title);
+                setmealAllergies(data.menu_allergy_tag.map(tag => tag.title));
+                setmealTOD(data.time_of_day_available);
+                setmealRestrictions(data.menu_restriction_tag.map(tag => tag.title));
                 
             }
         }catch (error) {
@@ -56,18 +60,73 @@ function viewMenuItem({route, navigation}){
 
     //todo add to bookmark list
     const handleAddToBookmark = async () => {
+      const data = 
+      {
+        'menu_item': mealID,
+      }
 
+      try{
+        const response = await fetch ('http://localhost:8000/patrons/bookmarks/', {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.status === 200) {
+          setIsBookmarked(true);
+          const data = await response.json();
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
     }
 
     //todo add to menu item history list
     const handleAddToMenuItemHistory = async () => {
+  
+      let data = {
+        'menu_item': mealID,
+        'review': null,
+      };
+  
+      if (bookmarkID != null) {
+        data = {
+          ...data,
+          'bookmarkid': bookmarkID,
+        };
+      }
+      try{
+        const response = await fetch ('http://localhost:8000/patrons/menuitemhistory/', {
+          method: "POST",
 
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.status === 200) {
+          const data = await response.json()
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    function submitMIHistory(){
+      handleAddToMenuItemHistory();
+    }
+    function submitBKMKList(){
+      handleAddToBookmark();
     }
 
 
     return (
       <SafeAreaView style={styles.container}>
-            <View style={styles.menuBar}>
+            <SafeAreaView style={styles.menuBar}>
               
                <View style={styles.menuLeft}>
                     {/* Home */}
@@ -86,15 +145,15 @@ function viewMenuItem({route, navigation}){
                <View style={styles.menuRight}>
                 {/* Bookmark Button */}
               { showBookmarkButton && ( 
-              <TouchableOpacity style={styles.menuButton}>
-                <Icon name="bookmark" size={36} color="black" />
+              <TouchableOpacity style={styles.menuButton} onPress={submitBKMKList}>
+                <Icon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={36} color="black" />
               
               </TouchableOpacity>
               )}
               {/* Save Menu Item Button */}
               { showMenuItemButton && (
-              <TouchableOpacity style={styles.menuButton}>
-                <Icon name="save" size={36} color="black" />
+              <TouchableOpacity style={styles.menuButton} onPress={submitMIHistory}>
+                <IonIcons name={isMIHistory ? 'save' : 'save-outline'} size={36} color="black" />
                 
               </TouchableOpacity>
               )}
@@ -102,18 +161,49 @@ function viewMenuItem({route, navigation}){
 
 
               
-            </View>
+            </SafeAreaView>
             <SafeAreaView style={styles.container}>
               <Text style={styles.normText}>Calories: {mealCalories}</Text>
               <Text style={styles.normText}>Price: ${mealPrice}</Text>
               <Text style={styles.normText}>Food Type: {mealFoodType}</Text>
               <Text style={styles.normText}>Cook Style: {mealCookStyle}</Text>
-              <Text style={styles.normText}>Ingredients: {mealIngredients}</Text>
-              <Text style={styles.normText}>Allergens: {mealAllergies}</Text>
-              <Text style={styles.normText}>Dietary Restrictions: {mealRestrictions}</Text>
+              {/* Display Ingredients */}
+              <Text style={styles.normText}>Ingredients:</Text>
+                    <View style={styles.tagContainer}>
+                      {mealIngredients.map((ingredient, index) => (
+                        <View style={styles.tagBubble} key={index}>
+                          <Text style={styles.tagText}>{ingredient}</Text>
+                        </View>
+                      ))}
+                    </View>
+
+              {/* Display Allergens */}
+              <Text style={styles.normText}>Allergens:</Text>
+              <View style={styles.tagContainer}>
+                {mealAllergies.map((allergen, index) => (
+                  <View style={styles.tagBubble} key={index}>
+                    <Text style={styles.tagText}>{allergen}</Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* Display Dietary Restrictions */}
+              <Text style={styles.normText}>Dietary Restrictions:</Text>
+              <View style={styles.tagContainer}>
+                {mealRestrictions.map((restriction, index) => (
+                  <View style={styles.tagBubble} key={index}>
+                    <Text style={styles.tagText}>{restriction}</Text>
+                  </View>
+                ))}
+              </View>
               <Text style={styles.normText}>Time Available: {mealTOD}</Text>
             </SafeAreaView>
             
+            <ReviewForm
+             isVisible={isReviewModalVisible}
+             onClose={toggleReviewModal}
+             onSubmit={handleReviewSubmit}
+            />
           </SafeAreaView>
     );
 }
@@ -198,6 +288,22 @@ function viewMenuItem({route, navigation}){
           color: 'red',
           fontSize: 20,
           marginBottom: 12,
-      }
+      },  
+      tagContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 8,
+      },
+      tagBubble: {
+        backgroundColor: '#FFC0CB', // Background color for the tag bubble
+        borderRadius: 20, // Border radius to create a circular shape
+        paddingHorizontal: 10, // Horizontal padding to provide some space around the text
+        paddingVertical: 5, // Vertical padding to provide some space around the text
+        margin: 5, // Margin between tag bubbles
+      },
+      tagText: {
+        fontSize: 14,
+        color: 'black',
+      },
     });
     export default viewMenuItem;
