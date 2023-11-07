@@ -5,10 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { API_HOST } from "@env";
+import logo from "../assets/icons8-carrot-94.png";
 
 
 function LoginPage({ navigation }) {
@@ -53,6 +55,7 @@ function LoginPage({ navigation }) {
 
   return (
     <View style={styles.container}>
+       <Image source={logo} style={{ width: 80, height: 80 }} />
       <Text style={styles.title}>Login Page</Text>
       <TextInput
         style={styles.input}
