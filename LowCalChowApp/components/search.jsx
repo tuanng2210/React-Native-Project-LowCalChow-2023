@@ -55,7 +55,8 @@ function Search({ navigation, route }) {
       if (response.ok) {
         console.log("Search data added successfully.");
         const responseData = await response.json();
-        setSearchResults(responseData);
+        setSearchResults(responseData.results);
+        navigation.navigate('Search Results', { searchResults: responseData.results });
         console.log("Data received from the server:", responseData);
       } else {
         console.error(response.json());
@@ -143,12 +144,10 @@ function Search({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-
       {/* <TouchableOpacity style={styles.button}
                 onPress={() => navigation.navigate("SearchResults", { access })}>
                 <Text style={styles.buttonText}>SearchResults</Text>
             </TouchableOpacity> */}
-
       <View style={styles.mainContent}>
         <View style={styles.root}>
           <Text style={styles.title}>Search for a Menu Item</Text>
@@ -286,6 +285,22 @@ function Search({ navigation, route }) {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
+      
+      {/* {searchResults.length > 0 && (
+        <View style={styles.resultsContainer}>
+          <Text style={styles.resultsTitle}>Search Results</Text>
+          {searchResults.map((result) => (
+            <View key={result.id} style={styles.resultItem}>
+              <Text style={styles.resultText}>{result.item_name}</Text>
+              <Text style={styles.resultText}>Calories: {result.calories}</Text>
+              <Text style={styles.resultText}>Price: ${result.price}</Text>
+              <Text style={styles.resultText}>
+                Restaurant: {result.restaurant.name}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )} */}
     </View>
   );
 }
@@ -379,6 +394,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     width: "100%",
+  },
+  resultsContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+  },
+  resultsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  resultItem: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+  },
+  resultText: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
 export default Search;
