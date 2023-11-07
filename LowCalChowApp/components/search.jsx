@@ -5,10 +5,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+import logo from "../assets/icons8-carrot-94.png";
 
 function Search({ navigation, route }) {
   const { access } = route.params;
@@ -157,6 +159,7 @@ function Search({ navigation, route }) {
 
       <View style={styles.mainContent}>
         <View style={styles.root}>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
           <Text style={styles.title}>Search for a Menu Item</Text>
           <View style={styles.container}>
             <View
@@ -190,7 +193,7 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Restriction Tags
             </Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedRestrictionTags(val)}
                 data={dietaryRestrictionTags}
@@ -198,12 +201,12 @@ function Search({ navigation, route }) {
                 label="Tags"
                 boxStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
               />
@@ -212,7 +215,7 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Allergy Tags
             </Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
               <MultipleSelectList
                 setSelected={(val) => setAllergyTags(val)}
                 data={allergyTags}
@@ -220,19 +223,19 @@ function Search({ navigation, route }) {
                 label="Tags"
                 boxStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
               />
             </View>
 
             <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedTasteTags(val)}
                 data={patronTasteTags}
@@ -240,21 +243,21 @@ function Search({ navigation, route }) {
                 label="Tags"
                 boxStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
               />
             </View>
 
             <Text style={styles.modalSelectTag}>
-              Select Dislike Ingredient Tags
+              Select Disliked Ingredient Tags
             </Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedIngredientTags(val)}
                 data={dislikedIngredients}
@@ -262,12 +265,12 @@ function Search({ navigation, route }) {
                 label="Tags"
                 boxStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
                   backgroundColor: "",
-                  borderRadius: 10,
+                  borderRadius: 15,
                   width: "100%",
                 }}
               />
@@ -312,12 +315,6 @@ function Search({ navigation, route }) {
   );
 }
 
-const Results = ({ message, results }) => (
-  <View style={styles.title}>
-    <Text style={styles.mainContent}>{message}</Text>
-    <Text style={styles.mainContent}>{results}</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -402,6 +399,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     width: "100%",
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "left",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
   resultsContainer: {
     marginTop: 20,
     padding: 10,
@@ -422,6 +425,9 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  modalSelectTag: {
+    fontSize: 15,
   },
 });
 export default Search;
