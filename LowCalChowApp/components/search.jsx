@@ -19,7 +19,7 @@ function Search({ navigation, route }) {
   const [dislikedIngredients, setDislikedIngredients] = useState([]);
   const [patronTasteTags, setPatronTasteTags] = useState([]);
   const [priceMax, setPriceMax] = useState("");
-  const [priceMin, setPrice_min] = useState("");
+  const [priceMin, setPriceMin] = useState("");
   const [clicked, setClicked] = useState(false);
   const [selectedRestrictionTags, setSelectedRestrictionTags] = useState([]);
   const [selectedAllergyTags, setSelectedAllergyTags] = useState([]);
@@ -56,8 +56,18 @@ function Search({ navigation, route }) {
         console.log("Search data added successfully.");
         const responseData = await response.json();
         setSearchResults(responseData.results);
-        navigation.navigate('Search Results', { searchResults: responseData.results });
+        navigation.navigate("Search Results", {
+          searchResults: responseData.results,
+        });
         console.log("Data received from the server:", responseData);
+        setQuery("");
+        setCalorieLimit("");
+        setSelectedRestrictionTags([]);
+        setSelectedAllergyTags([]);
+        setSelectedIngredientTags([]);
+        setSelectedTasteTags([]);
+        setPriceMax("");
+        setPriceMin("");
       } else {
         console.error(response.json());
       }
@@ -270,7 +280,7 @@ function Search({ navigation, route }) {
               style={styles.input}
               placeholder="Min Price"
               value={priceMin}
-              onChangeText={(text) => setPrice_min(text)}
+              onChangeText={(text) => setPriceMin(text)}
             />
 
             <TextInput
@@ -285,7 +295,7 @@ function Search({ navigation, route }) {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
-      
+
       {/* {searchResults.length > 0 && (
         <View style={styles.resultsContainer}>
           <Text style={styles.resultsTitle}>Search Results</Text>
@@ -398,16 +408,16 @@ const styles = StyleSheet.create({
   resultsContainer: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
     borderRadius: 10,
   },
   resultsTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   resultItem: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,
