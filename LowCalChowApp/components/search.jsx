@@ -8,68 +8,36 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { MultipleSelectList } from "react-native-dropdown-select-list";
 
 function Search({ navigation, route }) {
   const { access } = route.params;
   const [query, setQuery] = useState("");
-  const [allergy_tags, setAllergy_tags] = useState([]);
-  const [calorie_limit, setCalorie_limit] = useState("");
-  const [dietary_restriction_tags, setDietary_restriction_tags] = useState([]);
-  const [disliked_ingredients, setDisliked_ingredients] = useState([]);
-  const [patron_taste_tags, setPatron_taste_tags] = useState([]);
-  const [price_max, setPrice_max] = useState("");
-  const [price_min, setPrice_min] = useState("");
+  const [allergyTags, setAllergyTags] = useState([]);
+  const [calorieLimit, setCalorieLimit] = useState("");
+  const [dietaryRestrictionTags, setDietaryRestrictionTags] = useState([]);
+  const [dislikedIngredients, setDislikedIngredients] = useState([]);
+  const [patronTasteTags, setPatronTasteTags] = useState([]);
+  const [priceMax, setPriceMax] = useState("");
+  const [priceMin, setPrice_min] = useState("");
   const [clicked, setClicked] = useState(false);
-  // const handleSubmit = () => {
-  //     let errors = {};
-  //     const data = {
-  //         query: query,
-  //         allergy_tags: allergy_tags,
-  //         calorie_limit: calorie_limit,
-  //         dietary_restriction_tags: dietary_restriction_tags,
-  //         disliked_ingredients: disliked_ingredients,
-  //         patron_taste_tags: patron_taste_tags,
-  //         price_max: price_max,
-  //         price_min: price_min,
-  //     };
+  const [selectedRestrictionTags, setSelectedRestrictionTags] = useState([]);
+  const [selectedAllergyTags, setSelectedAllergyTags] = useState([]);
+  const [selectedTasteTags, setSelectedTasteTags] = useState([]);
+  const [selectedIngredientTags, setSelectedIngredientTags] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
 
-  //     fetch("http://localhost:8000/patrons/searchhistory/", {
-  //         method: "POST",
-  //         headers: {
-  //             Accept: "application/json",
-  //             "Content-Type": "application/json",
-  //             "Authorization": "Bearer " + access,
-  //         },
-  //         body: JSON.stringify(data),
-  //     })
-  //         .then((response) => response.json())
-  //         .then((responseData) => {
-  //             // Handle the API response here
-  //             console.log("API response:", responseData);
-
-  //             if (responseData.message === "No Results or Search Failed") {
-  //                 const [query] = responseData.content;
-  //                 console.log("Menu Items:", [query]);
-  //                 navigation.navigate("PatronHomepage");
-  //             }
-  //             else {
-  //                 // Handle any error messages returned by the API
-  //                 console.log("Message :", responseData.message);
-  //                 // You can display an error message to the user if needed
-  //             }
-  //         })
-  // };
   const handleSubmit = async () => {
     try {
       const searchData = {
         query: query,
-        allergy_tags: allergy_tags,
-        calorie_limit: parseInt(calorie_limit), // Convert to integer if necessary
-        dietary_restriction_tags: dietary_restriction_tags,
-        disliked_ingredients: disliked_ingredients,
-        patron_taste_tags: patron_taste_tags,
-        price_max: parseFloat(price_max), // Convert to float if necessary
-        price_min: parseFloat(price_min),
+        calorie_limit: parseInt(calorieLimit),
+        dietary_restriction_tags: selectedRestrictionTags,
+        allergy_tags: selectedAllergyTags,
+        patron_taste_tags: selectedTasteTags,
+        disliked_ingredients: selectedIngredientTags,
+        price_max: parseFloat(priceMax),
+        price_min: parseFloat(priceMin),
       };
       console.log("Input data sent to the server:", searchData);
       const response = await fetch(
@@ -86,6 +54,9 @@ function Search({ navigation, route }) {
 
       if (response.ok) {
         console.log("Search data added successfully.");
+        const responseData = await response.json();
+        setSearchResults(responseData);
+        console.log("Data received from the server:", responseData);
       } else {
         console.error(response.json());
       }
@@ -93,7 +64,49 @@ function Search({ navigation, route }) {
       console.error("Error adding search data", error);
     }
   };
-  
+
+  useEffect(() => {
+    fetch("http://localhost:8000/restaurants/tags/", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        const dietary_tags = data.restrictiontags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const allergy_tags = data.allergytags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const patron_taste_tags = data.tastetags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const ingredient_tags = data.ingredienttags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        setDietaryRestrictionTags(dietary_tags);
+        setAllergyTags(allergy_tags);
+        setPatronTasteTags(patron_taste_tags);
+        setDislikedIngredients(ingredient_tags);
+      })
+      .catch((error) => {
+        console.error("Errors:", error);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
@@ -130,6 +143,7 @@ function Search({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
+
       {/* <TouchableOpacity style={styles.button}
                 onPress={() => navigation.navigate("SearchResults", { access })}>
                 <Text style={styles.buttonText}>SearchResults</Text>
@@ -163,45 +177,108 @@ function Search({ navigation, route }) {
             <TextInput
               style={styles.input}
               placeholder="Calorie Limit"
-              value={calorie_limit}
-              onChangeText={(text) => setCalorie_limit(text)}
+              value={calorieLimit}
+              onChangeText={(text) => setCalorieLimit(text)}
+            />
+
+            <Text style={styles.modalSelectTag}>
+              Select Dietary Restriction Tags
+            </Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+              <MultipleSelectList
+                setSelected={(val) => setSelectedRestrictionTags(val)}
+                data={dietaryRestrictionTags}
+                save="key"
+                label="Tags"
+                boxStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+                dropdownStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+              />
+            </View>
+
+            <Text style={styles.modalSelectTag}>
+              Select Dietary Allergy Tags
+            </Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+              <MultipleSelectList
+                setSelected={(val) => setAllergyTags(val)}
+                data={allergyTags}
+                save="key"
+                label="Tags"
+                boxStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+                dropdownStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+              />
+            </View>
+
+            <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+              <MultipleSelectList
+                setSelected={(val) => setSelectedTasteTags(val)}
+                data={patronTasteTags}
+                save="key"
+                label="Tags"
+                boxStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+                dropdownStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+              />
+            </View>
+
+            <Text style={styles.modalSelectTag}>
+              Select Dislike Ingredient Tags
+            </Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+              <MultipleSelectList
+                setSelected={(val) => setSelectedIngredientTags(val)}
+                data={dislikedIngredients}
+                save="key"
+                label="Tags"
+                boxStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+                dropdownStyles={{
+                  backgroundColor: "",
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+              />
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Min Price"
+              value={priceMin}
+              onChangeText={(text) => setPrice_min(text)}
             />
 
             <TextInput
               style={styles.input}
-              placeholder="Allergy"
-              value={allergy_tags}
-              onChangeText={(text) => setAllergy_tags(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Dietary tags"
-              value={dietary_restriction_tags}
-              onChangeText={(text) => setDietary_restriction_tags(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Disliked Ingredients"
-              value={disliked_ingredients}
-              onChangeText={(text) => setDisliked_ingredients(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Patron taste tags"
-              value={patron_taste_tags}
-              onChangeText={(text) => setPatron_taste_tags(text)}
-            />
-            <TextInput
-              style={styles.input}
               placeholder="Max Price"
-              value={price_max}
-              onChangeText={(text) => setPrice_max(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Min Price"
-              value={price_min}
-              onChangeText={(text) => setPrice_min(text)}
+              value={priceMax}
+              onChangeText={(text) => setPriceMax(text)}
             />
           </View>
         </View>
@@ -212,6 +289,7 @@ function Search({ navigation, route }) {
     </View>
   );
 }
+
 const Results = ({ message, results }) => (
   <View style={styles.title}>
     <Text style={styles.mainContent}>{message}</Text>
