@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
+import logo from "../assets/icons8-carrot-94.png";
 
 function PatronSettingsPage({ navigation, route }) {
   const { access } = route.params;
@@ -67,11 +68,12 @@ function PatronSettingsPage({ navigation, route }) {
         </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
+      <Image source={logo} style={{ width: 30, height: 30 }} />
         <TouchableOpacity
-          style={styles.titleContent}
+          style={styles.button}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
-          <Icon name="edit" size={30} color="#000000" />
-          <Text style={styles.title}>Edit Profile</Text>
+          <Icon name="edit" size={20} color="#000000" />
+          <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       <Text style={styles.mainText}>Name: {profile.name}
       </Text>
@@ -113,8 +115,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
-  mainItem: {
-
+  buttonText: {
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
   },
   mainContent: {
     padding: 20,
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
     
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     flexDirection: "row",
   },
@@ -140,6 +145,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
   },
+  button: {
+    backgroundColor: "#FFA500",
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 12,
+    width: "25%",
+  }
 },
 );
 export default PatronSettingsPage;

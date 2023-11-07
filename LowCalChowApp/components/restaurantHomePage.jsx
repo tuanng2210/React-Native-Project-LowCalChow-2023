@@ -359,15 +359,16 @@ function RestaurantHomepage({ navigation, route }) {
             />
 
             <Text style={styles.modalSelectTag}>Select Tags</Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+            <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "40%" }}>
               <MultipleSelectList
                 setSelected={(val) => setTagSelect(val)}
                 data={tags}
                 save="key"
                 label="Tags"
-                boxStyles={{ borderRadius: 10 }}
+                boxStyles={{ borderRadius: 10,  width: "100%", }}
                 dropdownStyles={{
                   borderRadius: 10,
+                  width: "100%",
                 }}
               />
             </View>
