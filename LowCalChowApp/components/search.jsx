@@ -12,11 +12,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 function Search({ navigation, route }) {
   const { access } = route.params;
   const [query, setQuery] = useState("");
-  const [allergy_tags, setAllergy_tags] = useState("");
+  const [allergy_tags, setAllergy_tags] = useState([]);
   const [calorie_limit, setCalorie_limit] = useState("");
-  const [dietary_restriction_tags, setDietary_restriction_tags] = useState("");
-  const [disliked_ingredients, setDisliked_ingredients] = useState("");
-  const [patron_taste_tags, setPatron_taste_tags] = useState("");
+  const [dietary_restriction_tags, setDietary_restriction_tags] = useState([]);
+  const [disliked_ingredients, setDisliked_ingredients] = useState([]);
+  const [patron_taste_tags, setPatron_taste_tags] = useState([]);
   const [price_max, setPrice_max] = useState("");
   const [price_min, setPrice_min] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -64,12 +64,12 @@ function Search({ navigation, route }) {
       const searchData = {
         query: query,
         allergy_tags: allergy_tags,
-        calorie_limit: calorie_limit,
+        calorie_limit: parseInt(calorie_limit), // Convert to integer if necessary
         dietary_restriction_tags: dietary_restriction_tags,
         disliked_ingredients: disliked_ingredients,
         patron_taste_tags: patron_taste_tags,
-        price_max: price_max,
-        price_min: price_min,
+        price_max: parseFloat(price_max), // Convert to float if necessary
+        price_min: parseFloat(price_min),
       };
       console.log("Input data sent to the server:", searchData);
       const response = await fetch(
@@ -93,6 +93,7 @@ function Search({ navigation, route }) {
       console.error("Error adding search data", error);
     }
   };
+  
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
@@ -158,17 +159,19 @@ function Search({ navigation, route }) {
                 onChangeText={(text) => setQuery(text)}
               />
             </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Allergy"
-              value={allergy_tags}
-              onChangeText={(text) => setAllergy_tags(text)}
-            />
+
             <TextInput
               style={styles.input}
               placeholder="Calorie Limit"
               value={calorie_limit}
               onChangeText={(text) => setCalorie_limit(text)}
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Allergy"
+              value={allergy_tags}
+              onChangeText={(text) => setAllergy_tags(text)}
             />
             <TextInput
               style={styles.input}
