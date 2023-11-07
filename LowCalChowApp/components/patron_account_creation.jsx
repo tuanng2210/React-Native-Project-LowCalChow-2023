@@ -117,7 +117,7 @@ function PatronAccountCreationPage({navigation}) {
           {errors[key]}
         </Text>
       ))}
-
+      
       <Button
         title="Back to Login"
         onPress={() => navigation.navigate("Login")}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: '100%',
+    width: '30%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     width: 100,
 },
   buttonText: {
-      color: '#fff',
+      color: '#black',
       fontWeight: 'bold',
       fontSize: 16,
   },
