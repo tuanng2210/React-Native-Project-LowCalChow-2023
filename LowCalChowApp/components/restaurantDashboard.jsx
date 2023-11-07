@@ -74,13 +74,6 @@ function RestaurantDashboard() {
           <Icon name="settings" size={30} color="black" />
           <Text style={styles.navText}>Settings</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("Analytics")}
-          style={styles.navItem}
-        >
-          <Icon name="analytics" size={30} color="black" />
-          <Text style={styles.navText}>Analytics</Text>
-        </TouchableOpacity> */}
       </View>
       {/* Render other restaurant dashboard content */}
     </View>
