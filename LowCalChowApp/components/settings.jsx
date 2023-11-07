@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     marginBottom: 20,
-    width: "100%",
+    width: "40%",
   },
   restaurantName: {
     fontSize: 24,
