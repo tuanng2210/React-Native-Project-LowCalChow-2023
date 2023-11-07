@@ -54,7 +54,7 @@ function SignUpPage() {
       width: 200, // Adjust the width as needed
     },
     buttonText: {
-      color: "#fff",
+      color: "#black",
       fontWeight: "bold",
       fontSize: 16,
     },
