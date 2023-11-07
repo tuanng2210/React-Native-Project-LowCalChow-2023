@@ -10,6 +10,7 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 
+
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const states = [

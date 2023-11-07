@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
     width: "20%",
-    alignSelf: 'center', 
+    alignSelf: "center",
   },
   buttonText: {
     color: "#black",
