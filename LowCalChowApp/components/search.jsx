@@ -56,6 +56,7 @@ function Search({ navigation, route }) {
         console.log("Search data added successfully.");
         const responseData = await response.json();
         setSearchResults(responseData.results);
+        navigation.navigate('Search Results', { searchResults: responseData.results });
         console.log("Data received from the server:", responseData);
       } else {
         console.error(response.json());
@@ -285,7 +286,7 @@ function Search({ navigation, route }) {
         </TouchableOpacity>
       </View>
       
-      {searchResults.length > 0 && (
+      {/* {searchResults.length > 0 && (
         <View style={styles.resultsContainer}>
           <Text style={styles.resultsTitle}>Search Results</Text>
           {searchResults.map((result) => (
@@ -299,7 +300,7 @@ function Search({ navigation, route }) {
             </View>
           ))}
         </View>
-      )}
+      )} */}
     </View>
   );
 }
