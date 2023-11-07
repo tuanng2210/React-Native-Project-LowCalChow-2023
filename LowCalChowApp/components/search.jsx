@@ -154,10 +154,7 @@ function Search({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity style={styles.button}
-                onPress={() => navigation.navigate("SearchResults", { access })}>
-                <Text style={styles.buttonText}>SearchResults</Text>
-            </TouchableOpacity> */}
+
       <View style={styles.mainContent}>
         <View style={styles.root}>
           <Text style={styles.title}>Search for a Menu Item</Text>
