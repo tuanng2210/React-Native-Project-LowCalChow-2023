@@ -20,7 +20,7 @@ import PatronProfileEditPage from './components/patronProfileEditPage';
 import Search from './components/search';
 import Bookmark from './components/bookmark';
 import AdminHomepage from './components/AdminHomepage';
-
+import AdminFAQPage from './components/AdminFAQPage';
 import Settings from './components/settings';
 
 const Stack = createNativeStackNavigator();
