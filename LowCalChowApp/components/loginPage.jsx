@@ -8,12 +8,15 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { API_HOST } from "@env";
 
 function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    const apiURL = `${API_HOST}/auth/login/`;
+    console.log(apiURL);
     try {
       const response = await fetch("http://localhost:8000/auth/login/", {
         method: "POST",
@@ -28,21 +31,18 @@ function LoginPage({ navigation }) {
         const { user_type, tokens } = data;
         const { access, refresh } = tokens;
         console.log("Authentication successful");
-
-        // Store the access and refresh tokens securely
-        // You can use a library like AsyncStorage for React Native or localStorage for web
+        console.log(access);
 
         if (user_type === "restaurant") {
-          // Redirect to the restaurant homepage
-          navigation.navigate("Restaurant Homepage", {access});
+          navigation.navigate("Restaurant Homepage", { access });
         } else if (user_type === "patron") {
-          // Redirect to the customer homepage
-          navigation.navigate("Patron Homepage");
+          navigation.navigate("Patron Homepage", { access });
+        } else if (user_type === "admin") {
+          navigation.navigate("Admin Homepage", { access });
         } else {
-          // Handle other user types or scenarios
+          //print error
         }
       } else {
-        // Handle authentication error (e.g., show error message)
         console.log("Authentication failed");
       }
     } catch (error) {
@@ -67,14 +67,14 @@ function LoginPage({ navigation }) {
         onChangeText={(text) => setPassword(text)}
       />
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "orange" }]} // Set the background color to orange
+        style={[styles.button, { backgroundColor: "orange" }]}
         onPress={handleLogin}
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "orange" }]} // Set the background color to orange
+        style={[styles.button, { backgroundColor: "orange" }]}
         onPress={() => navigation.navigate("Sign Up")}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
