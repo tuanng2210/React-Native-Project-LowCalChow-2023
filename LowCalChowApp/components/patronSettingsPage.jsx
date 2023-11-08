@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -86,6 +86,10 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
       </Text>
       </View>
+      <Button
+        title="Log Out"
+        onPress={() => navigation.navigate(("Login"))}
+      />
     </View>
   );
 }

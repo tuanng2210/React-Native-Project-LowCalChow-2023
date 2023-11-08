@@ -17,11 +17,11 @@ function addBmItem(){
 function Bookmark({ navigation, route }) {
     const { access } = route.params;
     const isFocused = useIsFocused();
-    const [bmItem, setBmItem] = useState ([]);
+    const [bmItems, setBmItem] = useState ([]);
 
-    const fetchBmItem = async () => {
+    const bookmarkedItems = async () => {
         try {
-          const response = await fetch("http://localhost:8000/restaurants/1/menuitems/", {
+          const response = await fetch("http://localhost:8000/patrons/bookmarks/", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${access}`,
@@ -30,7 +30,7 @@ function Bookmark({ navigation, route }) {
     
           if (response.ok) {
             const data = await response.json();
-            setBmItem(data.length > 0 ? data[0] : {}); 
+            setBmItem(data); 
           } else {
             setError("Error fetching data");
           }
@@ -38,10 +38,15 @@ function Bookmark({ navigation, route }) {
           setError("Error fetching data");
         }
       };
-    
+
+      for(var i = 0; i < bmItems.length; i++){
+        console.log(bmItems[i].menu_item.item_name);
+
+      }
+
       useEffect(() => {
         if (isFocused) {
-          fetchBmItem();
+          bookmarkedItems();
         }
       }, [isFocused]);
 
@@ -79,9 +84,7 @@ function Bookmark({ navigation, route }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
-               {/* {bmItem.map((bmItem)=> <Text key = {bmItem}>{bmItem.id}</Text> )}*/}
-               <Text style={styles.mainContent}>Item 1: {bmItem.item_name}
-               </Text>
+               <Text style={styles.mainContent}>Item 1: {bmItems.item_name}</Text>
             </View>
         </View>
     );

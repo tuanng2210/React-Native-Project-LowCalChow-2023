@@ -103,7 +103,7 @@ function PatronProfileEditPage({navigation}) {
   const handleUpdateInfo = async () => {
     const data = {
       name: currentUserName,
-      price_preference: currentPrice,
+      price_max: parseFloat(currentPrice),
       gender: currentGender,
       zipcode: currentZip,
       dob: dob,
@@ -200,19 +200,12 @@ function PatronProfileEditPage({navigation}) {
 
         <Text style={styles.label}>Price Preference:</Text>
 
-        <Picker
-          selectedValue ={`${currentPrice}`}
-          style={{ height:50, width: 200}}
-          onValueChange = {(itemValue, itemIndex) =>
-            setCurrentPrice(itemValue)
-          }>
-
-          <Picker.Item label="Price Preference" value=""/>
-          <Picker.Item label="$" value="$" />
-          <Picker.Item label="$$" value="$$" />
-          <Picker.Item label="$$$" value="$$$"/>
-
-        </Picker>
+        <TextInput
+          style={styles.input}
+          placeholder="Max Price (in USD)"
+          value={currentPrice}
+          onChangeText={(text) => setCurrentPrice(text)}
+        />
 
         <Text style={styles.label}>Zipcode:</Text>
 

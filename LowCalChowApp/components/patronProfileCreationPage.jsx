@@ -5,6 +5,7 @@ import { useRoute } from "@react-navigation/native";
 
 
 
+
 function PatronProfileCreationPage({navigation}) {
 
   const route = useRoute()
@@ -14,7 +15,7 @@ function PatronProfileCreationPage({navigation}) {
   const [lastName, setLastName] = useState('');
   const [zip, setZip] = useState('');
   const [gender, setGender] = useState('');
-  const [pricePref, setPricePref] = useState('');
+  const [priceMax, setPriceMax] = useState('');
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [year, setYear] = useState('');
@@ -43,7 +44,7 @@ function PatronProfileCreationPage({navigation}) {
       errors.gender = "Gender is required."
     }
 
-    if(!pricePref || pricePref == ""){
+    if(!priceMax || priceMax == ""){
       errors.pricePref = "Price Preference is required."
     }
 
@@ -74,11 +75,13 @@ function PatronProfileCreationPage({navigation}) {
 
       const data = {
         name: firstName + " " + lastName,
-        price_preference: pricePref,
+        price_max: parseFloat(priceMax),
         gender: gender,
         zipcode: zip,
         dob: dob
       }
+
+      console.log(data)
 
       navigation.navigate("Patron Preference Creation", {data: data, access: access});
 
@@ -114,20 +117,13 @@ function PatronProfileCreationPage({navigation}) {
         onChangeText={(text) => setZip(text)}
       />
 
-      <Text>Price Preference:</Text>
-      <Picker
-        selectedValue = {pricePref}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setPricePref(itemValue)
-        }>
-
-        <Picker.Item label="Price Preference" value=""/>
-        <Picker.Item label="$" value="$" />
-        <Picker.Item label="$$" value="$$" />
-        <Picker.Item label="$$$" value="$$$"/>
-
-      </Picker>
+      <Text>Price Preference: $</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Max Price (in USD)"
+        value={priceMax}
+        onChangeText={(text) => setPriceMax(text)}
+      />
 
       <Text>Gender:</Text>
       <Picker
