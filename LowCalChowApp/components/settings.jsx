@@ -109,7 +109,7 @@ function Settings({ route, navigation }) {
             ))}
           </View>
           <View style={styles.openingHoursContainer}>
-            <Text style={styles.openingHoursLabel}>Opening Hours:</Text>
+            <Text style={styles.openingHoursLabel}>Open Hours:</Text>
             <View style={styles.openingHours}>
               <Text style={styles.dayText}>
                 Mon:{" "}

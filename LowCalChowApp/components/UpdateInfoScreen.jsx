@@ -190,17 +190,17 @@ function UpdateInfo({ route, navigation }) {
         />
 
         <Text style={styles.modalSelectTag}>Select Tags</Text> 
-        <View style={{ marginVertical: 15, paddingHorizontal: 10 }}>
+        <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "20%", }}>
           <MultipleSelectList
             setSelected={(val) => setSelectedTags(val)}
             data={availableTags}
             save="key"
             label="Tags"
-            boxStyles={{ backgroundColor: "", borderRadius: 10, width: "100%" }}
+            boxStyles={{ backgroundColor: "", borderRadius: 10, }}
             dropdownStyles={{
               backgroundColor: "",
               borderRadius: 10,
-              width: "100%" 
+              width: "20%" 
             }}
           />
         </View>
