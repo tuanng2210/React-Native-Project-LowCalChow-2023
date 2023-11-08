@@ -75,13 +75,13 @@ function PatronProfileCreationPage({navigation}) {
 
       const data = {
         name: firstName + " " + lastName,
-        price_max: parseFloat(priceMax),
+        price_max: priceMax,
         gender: gender,
         zipcode: zip,
         dob: dob
       }
 
-      console.log(data)
+      console.log(data.price_max)
 
       navigation.navigate("Patron Preference Creation", {data: data, access: access});
 

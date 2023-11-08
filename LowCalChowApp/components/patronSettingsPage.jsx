@@ -79,7 +79,7 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Gender: {profile.gender}
       </Text>
-      <Text style={styles.mainText}>Price Preference: {profile.price_preference}
+      <Text style={styles.mainText}>Price Preference: {profile.price_max}
       </Text>
       <Text style={styles.mainText}>Zipcode: {profile.zipcode}
       </Text>
