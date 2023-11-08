@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { useRoute } from "@react-navigation/native";
+
+
 
 
 function PatronProfileCreationPage({navigation}) {
+
+  const route = useRoute()
+  const access = route.params?.access
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [zip, setZip] = useState('');
   const [gender, setGender] = useState('');
-  const [pricePref, setPricePref] = useState('');
-  //const [date, setDate] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [month, setMonth] = useState('');
+  const [day, setDay] = useState('');
+  const [year, setYear] = useState('');
+  var [dob, setdob] = useState('');
   const [errors, setErrors] = useState({});
 
 
   const nextPage = () => {
+
 
     let errors = {};
 
@@ -36,23 +44,46 @@ function PatronProfileCreationPage({navigation}) {
       errors.gender = "Gender is required."
     }
 
-    if(!pricePref || pricePref == ""){
+    if(!priceMax || priceMax == ""){
       errors.pricePref = "Price Preference is required."
+    }
+
+    if(year.length < 4 || (month.length < 2 || day.length < 2)){
+      errors.dobs = "Please enter a date in the format YYYY-MM-DD."
+    }
+    else if(((month == "02") || (month == "04") || (month == "06") || (month == "09") || (month == "11")) && (day == "31")){
+      errors.dob = "Day does not exist."
+    }
+    else if((month == "02") && (day == "30")){
+      errors.dob = "Day does not exist."
+    }
+    else if(parseInt(day) > 31 || parseInt(day) < 1){
+      errors.dob = "Day does not exist."
+    }
+    else if(parseInt(month) > 12 || parseInt(month) < 1){
+      errors.dob = "Month must be between 01 and 12."
+    }
+    else if(parseInt(year) < 1){
+      errors.dob = "Year cannot be negative."
     }
 
     setErrors(errors);
     
     if(Object.keys(errors).length === 0){
 
+      dob = year + "-" + month + "-" + day;
+
       const data = {
-        firstName: firstName,
-        lastName: lastName,
-        pricePref: pricePref,
+        name: firstName + " " + lastName,
+        price_max: parseFloat(priceMax),
         gender: gender,
-        zip: zip
+        zipcode: zip,
+        dob: dob
       }
 
-      navigation.navigate("Patron Preference Creation Page", {data: data});
+      console.log(data)
+
+      navigation.navigate("Patron Preference Creation", {data: data, access: access});
 
     } else {
       console.log("Form has errors.");
@@ -86,20 +117,13 @@ function PatronProfileCreationPage({navigation}) {
         onChangeText={(text) => setZip(text)}
       />
 
-      <Text>Price Preference:</Text>
-      <Picker
-        selectedValue = {pricePref}
-        style={{ height:50, width: 200}}
-        onValueChange = {(itemValue, itemIndex) =>
-          setPricePref(itemValue)
-        }>
-
-        <Picker.index label="Price Preference" value=""/>
-        <Picker.Item label="$" value="$" />
-        <Picker.Item label="$$" value="$$" />
-        <Picker.Item label="$$$" value="$$$"/>
-
-      </Picker>
+      <Text>Price Preference: $</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Max Price (in USD)"
+        value={priceMax}
+        onChangeText={(text) => setPriceMax(text)}
+      />
 
       <Text>Gender:</Text>
       <Picker
@@ -110,20 +134,45 @@ function PatronProfileCreationPage({navigation}) {
         }>
 
         <Picker.Item label="Gender" value=""/>
-        <Picker.Item label="Female" value="female" />
-        <Picker.Item label="Male" value="male" />
-        <Picker.Item label="Other" value="other"/>
+        <Picker.Item label="Female" value="Female" />
+        <Picker.Item label="Male" value="Male" />
+        <Picker.Item label="Other" value="Other"/>
 
       </Picker>
+      
+      <View style={styles.dobContainer}>
+        <Text>Date of Birth:</Text>
 
-      {/* <RNDateTimePicker 
-        onChange={this.setDate}
-        value={new Date()}
-      /> */}
+        <TextInput
+          style={styles.input}
+          placeholder="YYYY"
+          value={year}
+          onChangeText={(text) => setYear(text)}
+          maxLength={4}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={nextPage}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="MM"
+          value={month}
+          onChangeText={(text) => setMonth(text)}
+          maxLength={2}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="DD"
+          value={day}
+          onChangeText={(text) => setDay(text)}
+          maxLength={2}
+        />
+      </View>
+      
+
+      <Button title="Submit" 
+           onPress={() => nextPage()}
+           style={styles.button}
+          />
 
       {Object.keys(errors).map((key, index) => (
         <Text key={index} style={styles.error}>
@@ -141,6 +190,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+  },
+  dobContainer: {
+    flex: 1,
+    justifyContent: 'left'
   },
   title: {
     fontSize: 24,

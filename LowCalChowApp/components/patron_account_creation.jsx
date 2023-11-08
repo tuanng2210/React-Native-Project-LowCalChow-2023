@@ -1,53 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import logo from "../assets/icons8-carrot-94.png";
 
-function PatronAccountCreationPage({navigation}) {
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState('');
+function PatronAccountCreationPage({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleSubmit = () => {
-
     let errors = {};
 
-    if(!username){
-      errors.username = "Username is required."
-    }
-    
-    if(!email){
-      errors.email = "Email is required."
-    }
-    else if(!/\S+@\S+\.\S+/.test(email)){
-      errors.email = "Email is invalid."
+    if (!username) {
+      errors.username = "Username is required.";
     }
 
-    if(!password){
-      errors.password = "Password is required."
+    if (!email) {
+      errors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email is invalid.";
     }
-    else if(password.length < 6){
-      errors.password = "Password must be at least 6 characters."
+
+    if (!password) {
+      errors.password = "Password is required.";
+    } else if (password.length < 8) {
+      errors.password = "Password must be at least 8 characters.";
     }
-  
-    if(!confirmPassword){
-      errors.confirmPassword = "You must confirm your password."
-    }
-    else if(confirmPassword != password){
-      errors.confirmPassword = "Passwords do not match."
+
+    if (!confirmPassword) {
+      errors.confirmPassword = "You must confirm your password.";
+    } else if (confirmPassword != password) {
+      errors.confirmPassword = "Passwords do not match.";
     }
 
     setErrors(errors);
-    
-    if(Object.keys(errors).length === 0){
 
+    if (Object.keys(errors).length === 0) {
       const data = {
         email: email,
         username: username,
-        password: password
-      }
+        password: password,
+      };
 
       fetch("http://localhost:8000/auth/signup/patron/", {
         method: "POST",
@@ -61,16 +64,9 @@ function PatronAccountCreationPage({navigation}) {
           // Handle the API response here
           console.log("API response:", responseData);
 
-          if (responseData.message === "success") {
-            // The signup was successful, you can navigate to a success screen or perform other actions
-            const { email, username, user_type } = responseData.content;
-            console.log("User details:", { email, username, user_type });
-            navigation.navigate("Patron Profile Creation Page");
-          } else {
-            // Handle any error messages returned by the API
-            console.log("Message :", responseData.message);
-            // You can display an error message to the user if needed
-          }
+          const access = responseData.tokens.access;
+          // The signup was successful, you can navigate to a success screen or perform other actions
+          navigation.navigate("Patron Profile Creation", { access: access });
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -80,9 +76,9 @@ function PatronAccountCreationPage({navigation}) {
     }
   };
 
-
   return (
     <View style={styles.container}>
+      <Image source={logo} style={{ width: 80, height: 80 }} />
       <Text style={styles.title}>Patron Sign Up</Text>
 
       <TextInput
@@ -136,8 +132,8 @@ function PatronAccountCreationPage({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 16,
   },
   title: {
@@ -145,9 +141,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: '100%',
+    width: "30%",
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
@@ -161,17 +157,17 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 12,
     width: 100,
-},
+  },
   buttonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
+    color: "#black",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   error: {
-      color: 'red',
-      fontSize: 20,
-      marginBottom: 12,
-  }
+    color: "red",
+    fontSize: 20,
+    marginBottom: 12,
+  },
 });
 
 export default PatronAccountCreationPage;

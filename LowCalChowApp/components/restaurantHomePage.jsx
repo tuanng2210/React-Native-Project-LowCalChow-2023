@@ -9,6 +9,7 @@ import {
   Modal,
   TextInput,
   Button as RNButton,
+  Picker,
 } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,6 +21,7 @@ function RestaurantHomepage({ navigation, route }) {
   const [tags, setTags] = useState([]);
   const [tagSelect, setTagSelect] = useState([]);
   const [priceLevel, setPriceLevel] = useState("");
+  const priceLevelOptions = ["$", "$$", "$$$"];
   const [phoneNumber, setPhoneNumber] = useState("");
   const [website, setWebsite] = useState("");
   const [streetName, setStreetName] = useState("");
@@ -40,6 +42,58 @@ function RestaurantHomepage({ navigation, route }) {
   const windowWidth = Dimensions.get("window").width;
   const { access } = route.params;
   const isFocused = useIsFocused();
+  const stateOptions = [
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+  ];
 
   const fetchRestaurants = async () => {
     try {
@@ -136,8 +190,6 @@ function RestaurantHomepage({ navigation, route }) {
         city: city,
         state: state,
         zip_code: zipCode,
-        // mon_open: openingHours.mon.open ? openingHours.mon.open : null,
-        // mon_close: openingHours.mon.close ? openingHours.mon.close : null,
       };
       console.log("Input data sent to the server:", newRestaurantData);
       const response = await fetch("http://localhost:8000/restaurants/", {
@@ -207,6 +259,20 @@ function RestaurantHomepage({ navigation, route }) {
     return data[index];
   };
 
+  const formatPhoneNumber = (input) => {
+    const cleaned = input.replace(/\D/g, "");
+    const formattedPhoneNumber = cleaned.replace(
+      /(\d{3})(\d{3})(\d{4})/,
+      "$1-$2-$3"
+    );
+    return formattedPhoneNumber;
+  };
+
+  const handlePhoneNumberInput = (text) => {
+    const formattedPhoneNumber = formatPhoneNumber(text);
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
   return (
     <View style={styles.container}>
       {/* Sidebar */}
@@ -219,7 +285,7 @@ function RestaurantHomepage({ navigation, route }) {
           ]}
           onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
-          <MaterialIcons name="home" size={24} color="#fff" />
+          <MaterialIcons name="home" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Home</Text>
           )}
@@ -236,7 +302,7 @@ function RestaurantHomepage({ navigation, route }) {
             navigation.navigate("Restaurant Analytics Overview", { access })
           }
         >
-          <MaterialIcons name="analytics" size={24} color="#fff" />
+          <MaterialIcons name="analytics" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Analytics</Text>
           )}
@@ -252,7 +318,7 @@ function RestaurantHomepage({ navigation, route }) {
             style={styles.addButton}
             onPress={() => handleAddRestaurant()}
           >
-            <MaterialIcons name="add" size={24} color="#fff" />
+            <MaterialIcons name="add" size={24} color="black" />
           </TouchableOpacity>
         </View>
 
@@ -278,7 +344,7 @@ function RestaurantHomepage({ navigation, route }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Enter Restaurant Name</Text>
+            <Text style={styles.modalTitle}>Enter Restaurant Info</Text>
             <TextInput
               style={styles.input}
               value={newRestaurantName}
@@ -292,27 +358,37 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="Rating"
             />
 
-            <MultipleSelectList
-              setSelected={(val) => setTagSelect(val)}
-              data={tags}
-              save="key"
-              //onSelect={() => alert(ingredSelect)}
-              label="Tags"
-              boxStyles={{ backgroundColor: "#FDAA3A", borderRadius: 45 }}
-              dropdownStyles={{ backgroundColor: "#FECA83" }}
-            />
+            <Text style={styles.modalSelectTag}>Select Tags</Text>
+            <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "40%" }}>
+              <MultipleSelectList
+                setSelected={(val) => setTagSelect(val)}
+                data={tags}
+                save="key"
+                label="Tags"
+                boxStyles={{ borderRadius: 10,  width: "100%", }}
+                dropdownStyles={{
+                  borderRadius: 10,
+                  width: "100%",
+                }}
+              />
+            </View>
 
-            <TextInput
+            <Picker
+              selectedValue={priceLevel}
+              onValueChange={(itemValue, itemIndex) => setPriceLevel(itemValue)}
               style={styles.input}
-              value={priceLevel}
-              onChangeText={(text) => setPriceLevel(text)}
-              placeholder="Price Level"
-            />
+            >
+              <Picker.Item label="Select Price Level" value="" />{" "}
+              {/* default empty option */}
+              {priceLevelOptions.map((option, index) => (
+                <Picker.Item label={option} value={option} key={index} />
+              ))}
+            </Picker>
 
             <TextInput
               style={styles.input}
               value={phoneNumber}
-              onChangeText={(text) => setPhoneNumber(text)}
+              onChangeText={handlePhoneNumberInput}
               placeholder="Phone Number"
             />
 
@@ -320,7 +396,7 @@ function RestaurantHomepage({ navigation, route }) {
               style={styles.input}
               value={website}
               onChangeText={(text) => setWebsite(text)}
-              placeholder="Website"
+              placeholder="Website - Example: https://www.website.com"
             />
 
             <TextInput
@@ -337,12 +413,17 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="City"
             />
 
-            <TextInput
+            <Picker
+              selectedValue={state}
+              onValueChange={(itemValue, itemIndex) => setState(itemValue)}
               style={styles.input}
-              value={state}
-              onChangeText={(text) => setState(text)}
-              placeholder="State"
-            />
+            >
+              <Picker.Item label="Select State" value="" />{" "}
+              {/* default empty option */}
+              {stateOptions.map((stateCode, index) => (
+                <Picker.Item label={stateCode} value={stateCode} key={index} />
+              ))}
+            </Picker>
 
             <TextInput
               style={styles.input}
@@ -351,33 +432,22 @@ function RestaurantHomepage({ navigation, route }) {
               placeholder="Zip code"
             />
 
-            {/* <TextInput
-              style={styles.input}
-              value={openingHours.mon.open ? openingHours.mon.open : ""}
-              onChangeText={(text) =>
-                setOpeningHours((prevState) => ({
-                  ...prevState,
-                  mon: { ...prevState.mon, open: text },
-                }))
-              }
-              placeholder="Opening Time (optional)"
-            />
-
-            <TextInput
-              style={styles.input}
-              value={openingHours.mon.close ? openingHours.mon.close : ""}
-              onChangeText={(text) =>
-                setOpeningHours((prevState) => ({
-                  ...prevState,
-                  mon: { ...prevState.mon, close: text },
-                }))
-              }
-              placeholder="Closing Time (optional)"
-            /> */}
-
             <View style={styles.modalButtons}>
-              <RNButton title="Cancel" onPress={() => setModalVisible(false)} />
-              <RNButton title="Add" onPress={confirmAddRestaurant} />
+              {/* <RNButton title="Cancel" onPress={() => setModalVisible(false)} /> */}
+              {/* <RNButton title="Add" onPress={confirmAddRestaurant} /> */}
+              <TouchableOpacity
+                style={styles.button}
+                onPress={confirmAddRestaurant}
+              >
+                <Text style={styles.buttonText}>Confirm</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -406,7 +476,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sidebarItemText: {
-    color: "#fff",
+    color: "#black",
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 10,
@@ -453,6 +523,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
+  button: {
+    backgroundColor: "#FFA500",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    alignSelf: "center",
+    width: 100,
+  },
   addButton: {
     backgroundColor: "#FF9800",
     margin: 30,
@@ -494,6 +572,7 @@ const styles = StyleSheet.create({
   buttonText: {
     marginLeft: 5,
     fontSize: 16,
+    fontWeight: "bold",
     color: "#000",
   },
   modalContainer: {
@@ -506,16 +585,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: "80%",
+    width: "50%",
     alignItems: "center",
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+  },
+  modalSelectTag: {
+    fontSize: 15,
   },
   input: {
-    width: "100%",
+    width: "40%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
@@ -524,6 +606,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalButtons: {
+    marginTop: 40,
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
