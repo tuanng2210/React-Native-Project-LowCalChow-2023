@@ -6,9 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
+  Dimensions,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 
 function UpdateInfo({ route, navigation }) {
@@ -278,6 +283,8 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     alignContent: "center",
+    width: windowWidth,
+    height: windowHeight,
   },
   title: {
     fontSize: 24,
