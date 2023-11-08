@@ -5,15 +5,21 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { API_HOST } from "@env";
+import logo from "../assets/icons8-carrot-94.png";
+
 
 function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
+    const apiURL = `${API_HOST}/auth/login/`;
+    console.log(apiURL);
     try {
       const response = await fetch("http://localhost:8000/auth/login/", {
         method: "POST",
@@ -33,19 +39,15 @@ function LoginPage({ navigation }) {
         // You can use a library like AsyncStorage for React Native or localStorage for web
 
         if (user_type === "restaurant") {
-          // Redirect to the restaurant homepage
-          navigation.navigate("Restaurant Homepage", {access});
+          navigation.navigate("Restaurant Homepage", { access });
         } else if (user_type === "patron") {
-          // Redirect to the customer homepage
-          navigation.navigate("Patron Homepage", {access});
-          } else if (user_type === "admin") {
-        // Redirect to the admin homepage
-        navigation.navigate("Admin Homepage", {access});
+          navigation.navigate("Patron Homepage", { access });
+        } else if (user_type === "admin") {
+          navigation.navigate("Admin Homepage", { access });
         } else {
-          // Handle other user types or scenarios
+          //print error
         }
       } else {
-        // Handle authentication error (e.g., show error message)
         console.log("Authentication failed");
       }
     } catch (error) {
@@ -55,6 +57,7 @@ function LoginPage({ navigation }) {
 
   return (
     <View style={styles.container}>
+       <Image source={logo} style={{ width: 80, height: 80 }} />
       <Text style={styles.title}>Login Page</Text>
       <TextInput
         style={styles.input}
@@ -70,14 +73,14 @@ function LoginPage({ navigation }) {
         onChangeText={(text) => setPassword(text)}
       />
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "orange" }]} // Set the background color to orange
+        style={[styles.button, { backgroundColor: "orange" }]}
         onPress={handleLogin}
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "orange" }]} // Set the background color to orange
+        style={[styles.button, { backgroundColor: "orange" }]}
         onPress={() => navigation.navigate("Sign Up")}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: "100%",
+    width: "30%",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000000",
     fontWeight: "bold",
     fontSize: 16,
   },

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -55,6 +56,31 @@ function Settings({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.navBar}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.navItem}
+        >
+          <Icon name="home" size={30} color="black" />
+          <Text style={styles.navText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Menu", { access, restaurantId })}
+          style={styles.navItem}
+        >
+          <Icon name="restaurant-menu" size={30} color="black" />
+          <Text style={styles.navText}>Menu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Settings", { access, restaurantId })
+          }
+          style={styles.navItem}
+        >
+          <Icon name="settings" size={30} color="black" />
+          <Text style={styles.navText}>Settings</Text>
+        </TouchableOpacity>
+      </View>
       {restaurantData && (
         <View style={styles.restaurantInfo}>
           <Text style={styles.restaurantName}>{restaurantData.name}</Text>
@@ -83,7 +109,7 @@ function Settings({ route, navigation }) {
             ))}
           </View>
           <View style={styles.openingHoursContainer}>
-            <Text style={styles.openingHoursLabel}>Opening Hours:</Text>
+            <Text style={styles.openingHoursLabel}>Open Hours:</Text>
             <View style={styles.openingHours}>
               <Text style={styles.dayText}>
                 Mon:{" "}
@@ -135,16 +161,15 @@ function Settings({ route, navigation }) {
                   formatTime(restaurantData.sun_close)}
               </Text>
             </View>
+            <TouchableOpacity
+              style={styles.updateInfoButton}
+              onPress={navigateToUpdateInfo}
+            >
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
-
-      <TouchableOpacity
-        style={styles.updateInfoButton}
-        onPress={navigateToUpdateInfo}
-      >
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -153,14 +178,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    padding: 20,
+    // padding: 20,
   },
   restaurantInfo: {
+    marginTop: 40,
     backgroundColor: "#f9f9f9",
     padding: 20,
     borderRadius: 10,
     marginBottom: 20,
-    width: "100%",
+    width: "40%",
   },
   restaurantName: {
     fontSize: 24,
@@ -187,12 +213,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFA500",
     padding: 10,
     borderRadius: 5,
+    marginTop: 20,
     marginBottom: 20,
     alignItems: "center",
+    width: "20%",
+    alignSelf: "center",
   },
   buttonText: {
-    color: "white",
+    color: "#black",
     fontSize: 16,
+    fontWeight: "bold",
   },
   tagsContainer: {
     flexDirection: "row",
@@ -216,6 +246,23 @@ const styles = StyleSheet.create({
   dayText: {
     fontSize: 16,
     marginBottom: 8,
+  },
+  navBar: {
+    flexDirection: "row",
+    backgroundColor: "#FFA500", // Orange color
+    padding: 10,
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+  },
+  navItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  navText: {
+    marginLeft: 8,
+    fontSize: 18,
+    color: "black",
   },
 });
 

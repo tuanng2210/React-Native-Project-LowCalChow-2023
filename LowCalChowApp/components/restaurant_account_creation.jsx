@@ -6,7 +6,9 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
+import logo from "../assets/icons8-carrot-94.png";
 
 function RestaurantAccountCreationPage({ navigation }) {
   const [username, setUsername] = useState("");
@@ -43,14 +45,12 @@ function RestaurantAccountCreationPage({ navigation }) {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // Create a data object with the form fields
       const data = {
         email: email,
         username: username,
         password: password,
       };
 
-      // Make an HTTP POST request to your API endpoint
       fetch("http://localhost:8000/auth/signup/restaurant/", {
         method: "POST",
         headers: {
@@ -60,18 +60,14 @@ function RestaurantAccountCreationPage({ navigation }) {
       })
         .then((response) => response.json())
         .then((responseData) => {
-          // Handle the API response here
           console.log("API response:", responseData);
 
           if (responseData.message === "success") {
-            // The signup was successful, you can navigate to a success screen or perform other actions
             const { email, username, user_type } = responseData.content;
             console.log("User details:", { email, username, user_type });
             navigation.navigate("SuccessScreen");
           } else {
-            // Handle any error messages returned by the API
             console.log("Message :", responseData.message);
-            // You can display an error message to the user if needed
           }
         })
         .catch((error) => {
@@ -84,6 +80,7 @@ function RestaurantAccountCreationPage({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Image source={logo} style={{ width: 80, height: 80 }} />
       <Text style={styles.title}>Restaurant Sign Up</Text>
 
       <TextInput
@@ -146,7 +143,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: "100%",
+    width: "30%",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
@@ -164,7 +161,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   buttonText: {
-    color: "#fff",
+    color: "black",
     fontWeight: "bold",
     fontSize: 16,
   },
