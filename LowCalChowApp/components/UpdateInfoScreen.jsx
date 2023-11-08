@@ -10,6 +10,7 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 
+
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const states = [
@@ -267,6 +268,10 @@ function UpdateInfo({ route, navigation }) {
         <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
           <Text style={styles.buttonText}>Update</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Settings", {access, restaurantId})}>
+          <Text style={styles.buttonText}>Back To Settings</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -305,15 +310,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#FFA500",
+    margin: 15,
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: 100,
+    width: "10%",
   },
   buttonText: {
     color: "#black",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
   picker: {
