@@ -200,7 +200,7 @@ function UpdateInfo({ route, navigation }) {
             dropdownStyles={{
               backgroundColor: "",
               borderRadius: 10,
-              width: "20%" 
+              width: "100%" 
             }}
           />
         </View>

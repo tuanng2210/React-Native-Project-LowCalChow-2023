@@ -1,12 +1,45 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from "react-native-vector-icons/FontAwesome";
 
-const SearchResultsScreen = ({ route }) => {
+const SearchResultsScreen = ({navigation, route }) => {
   const { searchResults } = route.params;
+  const { access } = route.params;
 
   return (
+
     <View style={styles.container}>
-      <Text style={styles.title}>Search Results</Text>
+    <View style={styles.navbar}>
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Settings Page", { access })}
+        >
+          <Icon name="gear" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Bookmark", { access })}
+        >
+          <Icon name="bookmark" size={25} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Search Results</Text>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.mainContent}>
       {searchResults.map((result) => (
         <View style={styles.resultItem} key={result.id}>
           <Text style={styles.itemName}>{result.item_name}</Text>
@@ -14,7 +47,9 @@ const SearchResultsScreen = ({ route }) => {
           <Text>Price: ${result.price}</Text>
           <Text>Restaurant: {result.restaurant.name}</Text>
         </View>
+        
       ))}
+      </View>
     </View>
   );
 };
@@ -22,16 +57,20 @@ const SearchResultsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#ffffff',
+    flexDirection: "column",
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
+  },
+  mainContent: {
+    padding: 20,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "center",
   },
   resultItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'rgba(255, 165, 0, 0.5)',
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
@@ -40,6 +79,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+  },
+  navbar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#FFA500",
+    padding: 10,
+  },
+  navbarItem: {
+    backgroundColor: "#FFA500",
+    alignItems: "left",
+    flexDirection: "row", // Align icon and text horizontally
+  },
+  navbarText: {
+    color: "#000000",
+    fontSize: 30,
+    fontWeight: "bold",
+    marginLeft: 10,
   },
 });
 

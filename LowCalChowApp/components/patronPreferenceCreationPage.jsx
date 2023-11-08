@@ -154,7 +154,7 @@ function PatronPreferenceCreationPage({navigation}) {
 
       data = {
         name: data.name,
-        price_preference: data.price_preference,
+        price_max: data.price_preference,
         gender: data.gender,
         zipcode: data.zipcode,
         dob: data.dob,
