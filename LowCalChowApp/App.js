@@ -22,7 +22,10 @@ import Bookmark from './components/bookmark';
 import AdminHomepage from './components/AdminHomepage';
 import AdminFAQPage from './components/AdminFAQPage';
 import Settings from './components/settings';
-
+import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
+import viewMenuItem from './components/patronViewMenuItem';
+import UpdateInfo from './components/UpdateInfoScreen';
+import SearchResultsScreen from './components/searchResults';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
