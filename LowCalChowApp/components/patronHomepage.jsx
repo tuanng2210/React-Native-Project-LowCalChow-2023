@@ -40,7 +40,15 @@ function PatronHomepage({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.mainContent}> 
+      
+      <View style={styles.mainContent}>
+      <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity> 
       <Image source={logo} style={{ width: 30, height: 30 }} />
       <Text style={styles.title}>Suggestion Feed</Text>
       </View>

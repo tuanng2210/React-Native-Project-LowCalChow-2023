@@ -23,6 +23,7 @@ import Bookmark from "./components/bookmark";
 import AdminHomepage from "./components/AdminHomepage";
 import UpdateInfo from "./components/UpdateInfoScreen";
 import SearchResultsScreen from "./components/searchResults";
+import MenuItemHistory from "./components/menuItemHistory";
 
 import Settings from "./components/settings";
 import viewMenuItem from './components/patronViewMenuItem';
@@ -56,6 +57,7 @@ const App = () => {
         <Stack.Screen name="View Menu Item" component={viewMenuItem} />
         <Stack.Screen name="Update Info" component={UpdateInfo} />
         <Stack.Screen name="Search Results" component={SearchResultsScreen} />
+        <Stack.Screen name="Menu Item History" component={MenuItemHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

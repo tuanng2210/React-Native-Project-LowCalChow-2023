@@ -98,7 +98,6 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
       </Text>
       </View>
-<<<<<<< HEAD
       <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
@@ -106,12 +105,10 @@ function PatronSettingsPage({ navigation, route }) {
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
-=======
       <Button
         title="Log Out"
         onPress={() => navigation.navigate(("Login"))}
       />
->>>>>>> 4f2e9215d3d0425be9932aaf39cd0b8b93d3a0cd
     </View>
   );
 }
