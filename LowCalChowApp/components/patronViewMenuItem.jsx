@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
-import patronReview from './patronReview';
+import StarRating from 'react-native-star-svg-rating';
 function viewMenuItem({route, navigation}){
     //const access = route.params.access;
     //const mealID = rout.params.mealId;
@@ -10,7 +10,7 @@ function viewMenuItem({route, navigation}){
     //const showMenuItemButton = route.params.menuitemVis;
     const mealID = 1;
     const bookmarkID = null;
-    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5MjM2NzAzLCJpYXQiOjE2OTkyMjk1MDMsImp0aSI6IjVmYWQzODFjOWEyZjQxNzE5ODJhODViZTc3ZDQ0YzAwIiwidXNlcl9pZCI6NH0.o597x4GcMAKJ3T7NJp-IOVmOoGc54bhcLjWulDiAmqs';
+    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA3MjA4LCJpYXQiOjE2OTk0MDAwMDgsImp0aSI6IjM0YjFkZTYxZDE0NzQ0Yzg5ODJhYjVjYzE0NzdkNzlkIiwidXNlcl9pZCI6NH0.UVUoWGeWFjnya_kz6NfOD9gfSdN2ZUGYwk-XP2mmeV4';
     const showBookmarkButton = true;
     const [isBookmarked, setIsBookmarked] = useState(false);
     const showMenuItemButton = true;
@@ -25,6 +25,11 @@ function viewMenuItem({route, navigation}){
     const [mealAllergies, setmealAllergies] = useState([]);
     const [mealTOD, setmealTOD] = useState([]);
     const [mealRestrictions, setmealRestrictions] = useState([]);
+    
+    const [feedbackID, setFeedbackID] = useState('');
+    const [rating, setRating] = useState('');
+    const [review, setReview] = useState('');
+    const [reviewVisible, setReviewVisible] = useState(false);
 
     const handleGetMeal = async () => {
         try{
@@ -38,11 +43,11 @@ function viewMenuItem({route, navigation}){
 
             if (response.status === 200) {
                 const data = await response.json();
+                console.log(data);
                 setmealName(data.item_name);
                 setmealPrice(data.price);
                 setmealCalories(data.calories);
                 setmealIngredients(data.ingredients_tag.map(tag => tag.title));
-                console.log(mealIngredients);
                 setmealFoodType(data.food_type_tag.title);
                 setmealCookStyle(data.cook_style_tags.title);
                 setmealAllergies(data.menu_allergy_tag.map(tag => tag.title));
@@ -86,10 +91,10 @@ function viewMenuItem({route, navigation}){
 
     //todo add to menu item history list
     const handleAddToMenuItemHistory = async () => {
-  
+      console.log(feedbackID);
       let data = {
         'menu_item': mealID,
-        'review': null,
+        'review': feedbackID,
       };
   
       if (bookmarkID != null) {
@@ -98,6 +103,7 @@ function viewMenuItem({route, navigation}){
           'bookmarkid': bookmarkID,
         };
       }
+
       try{
         const response = await fetch ('http://localhost:8000/patrons/menuitemhistory/', {
           method: "POST",
@@ -109,20 +115,64 @@ function viewMenuItem({route, navigation}){
           body: JSON.stringify(data),
         });
         if (response.status === 200) {
-          const data = await response.json()
+          const data = await response.json();
         }
       }catch (error) {
         console.error("Error:", error);
       }
     }
-
-    function submitMIHistory(){
+    useEffect(() => {
       handleAddToMenuItemHistory();
+    }, [feedbackID]);
+
+
+    const handleSubmitFeedback = async () => {
+  
+      const data = {
+        'menu_item': mealID,
+        'review': review,
+        'rating': rating,
+      }
+      console.log(data);
+      try{
+        const response = await fetch ('http://localhost:8000/feedback/', {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.status === 201) {
+          const newdata = await response.json();
+        
+          setFeedbackID(newdata.id);
+        
+        }
+      }catch (error) {
+        console.error("Error:", error);
+      }
+    }
+    function openFeedback(){
+      setReviewVisible(true);
+    }
+    
+    function subFeedback(){
+      setReviewVisible(false);
+      handleSubmitFeedback();
+      //handleAddToMenuItemHistory();
     }
     function submitBKMKList(){
       handleAddToBookmark();
     }
+    const toggleReview = () =>{
+      setReviewVisible(!reviewVisible);
+      console.log(reviewVisible);
+    };
+    const handleReviewSubmit = (review) => {
 
+    };
 
     return (
       <SafeAreaView style={styles.container}>
@@ -152,7 +202,7 @@ function viewMenuItem({route, navigation}){
               )}
               {/* Save Menu Item Button */}
               { showMenuItemButton && (
-              <TouchableOpacity style={styles.menuButton} onPress={submitMIHistory}>
+              <TouchableOpacity style={styles.menuButton} onPress={openFeedback}>
                 <IonIcons name={isMIHistory ? 'save' : 'save-outline'} size={36} color="black" />
                 
               </TouchableOpacity>
@@ -198,12 +248,43 @@ function viewMenuItem({route, navigation}){
               </View>
               <Text style={styles.normText}>Time Available: {mealTOD}</Text>
             </SafeAreaView>
-            
-            <ReviewForm
-             isVisible={isReviewModalVisible}
-             onClose={toggleReviewModal}
-             onSubmit={handleReviewSubmit}
-            />
+            <View style={styles.modalWrapper}>
+              <Modal
+              animationType='slide'
+              transparent={true}
+              visible={reviewVisible}
+              onRequestClose={() =>{
+                setReviewVisible(false);
+              }} >
+                <View style={styles.modalContainer}>
+
+                  <Text style={styles.title}>Review: {mealName}</Text>
+                  <View style={styles.stars}>
+                  <StarRating
+                    rating = {rating}
+                    onChange = {setRating}
+                    maxStars={5}
+                    starSize={64}
+                    color="#5CCD28"
+                    borderColor="#000000"
+                    enableSwiping='true'
+
+                  />
+                  </View>
+
+                  <TextInput
+                  style={styles.input}
+                  value={review}
+                  onChangeText={(text) => setReview(text)}
+                  placeholder="Leave feedback about your experience"
+                  />
+
+                  <TouchableOpacity style={styles.button} onPress={subFeedback}>
+                    <Text style={styles.buttonText}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
+            </View>
           </SafeAreaView>
     );
 }
@@ -221,7 +302,7 @@ function viewMenuItem({route, navigation}){
         alignItems: 'center',
         width: '100%',
         padding: 20,
-        backgroundColor: '#FECA83',
+        backgroundColor: '#FFA500',
         position: 'fixed',
         top: 60,
         zIndex: 1,
@@ -264,12 +345,15 @@ function viewMenuItem({route, navigation}){
       },
       input: {
         width: '60%',
-        height: 40,
+        height: 200,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 8,
         marginBottom: 12,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF'
       },
       button: {
         backgroundColor: '44E342',
@@ -295,7 +379,7 @@ function viewMenuItem({route, navigation}){
         marginTop: 8,
       },
       tagBubble: {
-        backgroundColor: '#FFC0CB', // Background color for the tag bubble
+        backgroundColor: '#44E342', // Background color for the tag bubble
         borderRadius: 20, // Border radius to create a circular shape
         paddingHorizontal: 10, // Horizontal padding to provide some space around the text
         paddingVertical: 5, // Vertical padding to provide some space around the text
@@ -305,5 +389,21 @@ function viewMenuItem({route, navigation}){
         fontSize: 14,
         color: 'black',
       },
+      modalContainer: {
+        width: '50%',
+        height: '80%',
+        justifyContent: 'flex-start',
+        alignItems:'center',
+        backgroundColor:"#FFA500",
+        padding: 50,
+        borderColor: '#000000',
+      },
+      stars: {
+        flex: 1,
+        alignItems: 'center',
+        marginTop:50,
+      },
+
+        
     });
     export default viewMenuItem;
