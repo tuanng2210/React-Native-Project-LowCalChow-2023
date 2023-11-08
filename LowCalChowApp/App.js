@@ -55,6 +55,7 @@ const App = () => {
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="View Menu Item" component={viewMenuItem} />
         <Stack.Screen name="Update Info" component={UpdateInfo} />
+        <Stack.Screen name="Search Results" component={SearchResultsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
