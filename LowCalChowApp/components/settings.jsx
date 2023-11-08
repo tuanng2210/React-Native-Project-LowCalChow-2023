@@ -58,7 +58,7 @@ function Settings({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.navBar}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Restaurant Dashboard", {access, restaurantId})}
           style={styles.navItem}
         >
           <Icon name="home" size={30} color="black" />

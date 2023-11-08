@@ -10,10 +10,12 @@ import {
   TextInput,
   Button as RNButton,
   Picker,
+  Image
 } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
+import logo from "../assets/icons8-carrot-94.png";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
@@ -313,6 +315,7 @@ function RestaurantHomepage({ navigation, route }) {
       <View style={styles.mainContent}>
         {/* Section Title and Add Restaurant Button */}
         <View style={styles.sectionTitleContainer}>
+        <Image source={logo} style={{ width: 80, height: 80 }} />
           <Text style={styles.sectionTitle}>List of Restaurants</Text>
           <TouchableOpacity
             style={styles.addButton}
@@ -585,7 +588,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: "50%",
+    width: "30%",
+    height:"80%",
     alignItems: "center",
   },
   modalTitle: {
