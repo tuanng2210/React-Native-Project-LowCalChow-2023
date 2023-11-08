@@ -9,6 +9,7 @@ function MenuPage({route, navigation}){
   const [menuItems, setmenuItems]=useState([]);
   const RestID = route.params.restaurantId;
   const access = route.params.access;
+  const ScreenName = "Edit Menu";
   
   const handlegetMenuItems = async () => {
     try{
@@ -43,7 +44,7 @@ useEffect (() => {
         <View style={styles.container}>
             <Text style={styles.title}>Menu</Text>
 
-            <MenuComponent menuItems={menuItems} accessToken={access} restIDToken={RestID}/>
+            <MenuComponent menuItems={menuItems} accessToken={access} restIDToken={RestID} screenName={ScreenName}/>
 
             <Button title="Add Menu Item" onPress={() => navigation.navigate('Menu Creation', {access: access, restaurantId: RestID})}/>
             {/*<Button title="Edit Menu Item" onPress={() => navigation.navigate('Edit Menu')}/>*/}

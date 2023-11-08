@@ -1,33 +1,32 @@
-import React from "react";
-import { Button, StyleSheet, View } from "react-native";
-import LoginPage from "./components/loginPage";
-import SignUpPage from "./components/SignUp";
-import Handshake from "./components/handshake";
-import PatronProfileCreationPage from "./components/patronProfileCreationPage";
-import PatronPreferenceCreationPage from "./components/patronPreferenceCreationPage";
-import PatronAccountCreationPage from "./components/patron_account_creation";
-import PatronProfileEditPage from "./components/patronProfileEditPage";
-import RestaurantAccountCreationPage from "./components/restaurant_account_creation";
-import RestaurantHomepage from "./components/restaurantHomePage";
-import PatronHomepage from "./components/patronHomepage";
-import RestaurantAnalytics from "./components/restaurantGlobalAnalytics";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MenuCreate from "./components/menuCreate";
-import MenuPage from "./components/menu";
-import EditMenuPage from "./components/editMenuItem";
-import RestaurantDashboard from "./components/restaurantDashboard";
-import PatronSettingsPage from "./components/patronSettingsPage";
-import Search from "./components/search";
-import Bookmark from "./components/bookmark";
-import AdminHomepage from "./components/AdminHomepage";
-import UpdateInfo from "./components/UpdateInfoScreen";
-import SearchResultsScreen from "./components/searchResults";
-import MenuItemHistory from "./components/menuItemHistory";
+import React from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import LoginPage from './components/loginPage';
+import SignUpPage from './components/SignUp';
+import Handshake from './components/handshake';
+import PatronProfileCreationPage from './components/patronProfileCreationPage';
+import PatronAccountCreationPage from './components/patron_account_creation';
+import RestaurantAccountCreationPage from './components/restaurant_account_creation';
+import RestaurantHomepage from './components/restaurantHomePage';
+import PatronHomepage from './components/patronHomepage';
+import RestaurantAnalytics from './components/restaurantGlobalAnalytics';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MenuCreate from './components/menuCreate';
+import MenuPage from './components/menu';
+import EditMenuPage from './components/editMenuItem';
+import RestaurantDashboard from './components/restaurantDashboard';
+import PatronSettingsPage from './components/patronSettingsPage';
+import PatronProfileEditPage from './components/patronProfileEditPage';
+import Search from './components/search';
+import Bookmark from './components/bookmark';
+import AdminHomepage from './components/AdminHomepage';
+import AdminFAQPage from './components/AdminFAQPage';
+import Settings from './components/settings';import MenuItemHistory from "./components/menuItemHistory";
 
-import Settings from "./components/settings";
+import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import viewMenuItem from './components/patronViewMenuItem';
-
+import UpdateInfo from './components/UpdateInfoScreen';
+import SearchResultsScreen from './components/searchResults';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -53,6 +52,7 @@ const App = () => {
         <Stack.Screen name="Restaurant Analytics Overview"  component={RestaurantAnalytics}/>
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard}/>
         <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
+        <Stack.Screen name="Admin FAQ Page" component={AdminFAQPage} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="View Menu Item" component={viewMenuItem} />
         <Stack.Screen name="Update Info" component={UpdateInfo} />

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
   const navigation = useNavigation();
   const access = accessToken;
