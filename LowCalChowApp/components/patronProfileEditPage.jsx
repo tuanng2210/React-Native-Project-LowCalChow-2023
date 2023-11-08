@@ -176,7 +176,7 @@ function PatronProfileEditPage({navigation}) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Profile Edit</Text>
+        <Text style={styles.title}>Settings</Text>
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Homepage", { access })}
@@ -339,15 +339,15 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginBottom: 12,
   },
-    navbar: {
+  navbar: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     padding: 10,
   },
   navbarItem: {
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     alignItems: "center",
     flexDirection: "row", // Align icon and text horizontally
   },
@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
     alignItems: "left",
     
   },
+  
 });
 
 export default PatronProfileEditPage;
