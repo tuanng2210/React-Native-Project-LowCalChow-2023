@@ -26,6 +26,8 @@ import SearchResultsScreen from "./components/searchResults";
 import Settings from "./components/settings";
 import viewMenuItem from './components/patronViewMenuItem';
 import AdminFAQPage from './components/AdminFAQPage';
+import Settings from './components/settings';
+import viewMenuItem from './components/patronViewMenuItem';
 
 const Stack = createNativeStackNavigator();
 

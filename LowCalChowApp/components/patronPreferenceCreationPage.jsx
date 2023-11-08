@@ -154,13 +154,14 @@ function PatronPreferenceCreationPage({navigation}) {
 
       data = {
         name: data.name,
-        price_max: data.price_preference,
+        price_max: data.price_max,
         gender: data.gender,
         zipcode: data.zipcode,
         dob: data.dob,
         patron_restriction_tag: restrictionsIDs,
         patron_allergy_tag: allergiesIDs,
         patron_taste_tag: tasteIDs,
+        disliked_ingredients: [],
         calorie_limit: parseInt(calorielimit)
       }
 
