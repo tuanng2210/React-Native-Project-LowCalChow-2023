@@ -6,15 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
-  Dimensions,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
-
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -178,8 +172,8 @@ function UpdateInfo({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Update Restaurant Information</Text>
       <View style={styles.formContainer}>
+        <Text style={styles.title}>Update Restaurant Information</Text>
         <TextInput
           style={styles.input}
           placeholder="Restaurant Name"
@@ -194,18 +188,20 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
-        <Text style={styles.modalSelectTag}>Select Tags</Text> 
-        <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "20%", }}>
+        <Text style={styles.modalSelectTag}>Select Tags</Text>
+        <View
+          style={{ marginVertical: 15, paddingHorizontal: 0, width: "20%" }}
+        >
           <MultipleSelectList
             setSelected={(val) => setSelectedTags(val)}
             data={availableTags}
             save="key"
             label="Tags"
-            boxStyles={{ backgroundColor: "", borderRadius: 10, }}
+            boxStyles={{ backgroundColor: "", borderRadius: 10 }}
             dropdownStyles={{
               backgroundColor: "",
               borderRadius: 10,
-              width: "100%" 
+              width: "100%",
             }}
           />
         </View>
@@ -267,11 +263,11 @@ function UpdateInfo({ route, navigation }) {
           onChangeText={(text) => setZipCode(text)}
           value={zipCode}
         />
-      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
-        <Text style={styles.buttonText}>Update</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
+          <Text style={styles.buttonText}>Update</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -283,8 +279,8 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     alignContent: "center",
-    width: windowWidth,
-    height: windowHeight,
+    width: "100%",
+    height: "100%",
   },
   title: {
     fontSize: 24,
@@ -293,9 +289,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   formContainer: {
-    marginBottom: 20,
+    margin: 30,
     justifyItems: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   input: {
     height: 40,
