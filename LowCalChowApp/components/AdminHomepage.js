@@ -116,7 +116,7 @@ const handleEditTag = (tag) => {
           setEditTag(null);
         } else {
           console.error("API Error:", response.status);
-          console.error(await response.text()); // Log the response content
+          console.error(await response.text()); // Log the response content check
         }
       } catch (error) {
         console.error("Network Error:", error);

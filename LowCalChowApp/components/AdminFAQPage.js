@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 
 const faqData = [
   {
-    question: "What is LowCalChow, and how does it work?",
+    question: "What is LowCalChow, and how does it work?", //check
     answer: "LowCalChow is a mobile application designed to enhance your dining experience. It connects restaurants with health-conscious patrons by providing tailored menu recommendations based on your caloric needs, dietary restrictions, and palate preferences. Restaurants benefit from insights into patron trends, enabling them to refine their menus and attract more customers.",
   },
   {
