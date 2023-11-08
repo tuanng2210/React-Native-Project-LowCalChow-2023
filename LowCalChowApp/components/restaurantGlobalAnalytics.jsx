@@ -45,7 +45,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
           ]}
           onPress={() => navigation.navigate("Restaurant Homepage", { access })}
         >
-          <MaterialIcons name="home" size={24} color="#fff" />
+          <MaterialIcons name="home" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Home</Text>
           )}
@@ -62,7 +62,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
             navigation.navigate("Restaurant Analytics Overview", { access })
           }
         >
-          <MaterialIcons name="analytics" size={24} color="#fff" />
+          <MaterialIcons name="analytics" size={24} color="black" />
           {windowWidth >= 600 && (
             <Text style={styles.sidebarItemText}>Analytics</Text>
           )}
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sidebarItemText: {
-    color: "#fff",
+    color: "#black",
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 10,

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome";
+import logo from "../assets/icons8-carrot-94.png";
 
 function bmInputhandler(){
     setAnotherBmItem();
@@ -62,7 +63,9 @@ function Bookmark({ navigation, route }) {
                     <Icon name="bookmark" size={25} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
+                
                 <Text style={styles.navbarText}>Bookmarks</Text>
+               
                 <TouchableOpacity
                     style={styles.navbarItem}
                     onPress={() => navigation.navigate("Patron Homepage", { access })}
@@ -79,6 +82,7 @@ function Bookmark({ navigation, route }) {
                 </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
+            <Image source={logo} style={{ width: 30, height: 30 }} />
                {/* {bmItem.map((bmItem)=> <Text key = {bmItem}>{bmItem.id}</Text> )}*/}
                <Text style={styles.mainContent}>Item 1: {bmItem.item_name}
                </Text>
@@ -95,11 +99,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        backgroundColor: "#ff7f50",
+        backgroundColor: "#FFA500",
         padding: 10
     },
     navbarItem: {
-        backgroundColor: "#ff7f50",
+        backgroundColor: "#FFA500",
         alignItems: "center",
         flexDirection: "row", // Align icon and text horizontally
     },

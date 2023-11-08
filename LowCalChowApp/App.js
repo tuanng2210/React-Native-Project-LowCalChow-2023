@@ -22,6 +22,7 @@ import Search from "./components/search";
 import Bookmark from "./components/bookmark";
 import AdminHomepage from "./components/AdminHomepage";
 import UpdateInfo from "./components/UpdateInfoScreen";
+import SearchResultsScreen from "./components/searchResults";
 
 import Settings from "./components/settings";
 import viewMenuItem from './components/patronViewMenuItem';
@@ -35,52 +36,25 @@ const App = () => {
 
         <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Sign Up" component={SignUpPage} />
-        <Stack.Screen  name="Menu" component={MenuPage} />
-        <Stack.Screen  name="Edit Menu" component={EditMenuPage} />
-        <Stack.Screen  name="Menu Creation" component={MenuCreate} />
-        <Stack.Screen
-          name="Patron Account Creation"
-          component={PatronAccountCreationPage}
-        />
-        <Stack.Screen
-          name="Patron Profile Creation"
-          component={PatronProfileCreationPage}
-        />
-        <Stack.Screen
-          name="Restaurant Account Creation"
-          component={RestaurantAccountCreationPage}
-        />
-        <Stack.Screen
-          name="Patron Preference Creation"
-          component={PatronPreferenceCreationPage}
-        />
-        <Stack.Screen
-          name="Restaurant Homepage"
-          component={RestaurantHomepage}
-        />
+        <Stack.Screen name="Menu" component={MenuPage} />
+        <Stack.Screen name="Edit Menu" component={EditMenuPage} />
+        <Stack.Screen name="Menu Creation" component={MenuCreate} />
+        <Stack.Screen name="Patron Account Creation"  component={PatronAccountCreationPage}/>
+        <Stack.Screen name="Patron Profile Creation" component={PatronProfileCreationPage}/>
+        <Stack.Screen name="Restaurant Account Creation" component={RestaurantAccountCreationPage}/>
+        <Stack.Screen name="Patron Preference Creation" component={PatronPreferenceCreationPage}/>
+        <Stack.Screen name="Restaurant Homepage" component={RestaurantHomepage} />
         <Stack.Screen name="Patron Homepage" component={PatronHomepage} />
-        <Stack.Screen
-          name="Patron Settings Page"
-          component={PatronSettingsPage}
-        />
+        <Stack.Screen name="Patron Settings Page"  component={PatronSettingsPage}/>
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="Bookmark" component={Bookmark} />
-        <Stack.Screen
-          name="Patron Profile Edit Page"
-          component={PatronProfileEditPage}
-        />
-        <Stack.Screen
-          name="Restaurant Analytics Overview"
-          component={RestaurantAnalytics}
-        />
-        <Stack.Screen
-          name="Restaurant Dashboard"
-          component={RestaurantDashboard}
-        />
+        <Stack.Screen name="Patron Profile Edit Page" component={PatronProfileEditPage} />
+        <Stack.Screen name="Restaurant Analytics Overview"  component={RestaurantAnalytics}/>
+        <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard}/>
         <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
         <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Update Info" component={UpdateInfo} />        
-        <Stack.Screen  name="View Menu Item" component={viewMenuItem}/>
+        <Stack.Screen name="View Menu Item" component={viewMenuItem} />
+        <Stack.Screen name="Update Info" component={UpdateInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
