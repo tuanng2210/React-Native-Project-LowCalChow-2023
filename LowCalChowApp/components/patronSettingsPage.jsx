@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Button } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
@@ -98,6 +98,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
       </Text>
       </View>
+<<<<<<< HEAD
       <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
@@ -105,6 +106,12 @@ function PatronSettingsPage({ navigation, route }) {
           <Text style={styles.buttonText}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
+=======
+      <Button
+        title="Log Out"
+        onPress={() => navigation.navigate(("Login"))}
+      />
+>>>>>>> 4f2e9215d3d0425be9932aaf39cd0b8b93d3a0cd
     </View>
   );
 }

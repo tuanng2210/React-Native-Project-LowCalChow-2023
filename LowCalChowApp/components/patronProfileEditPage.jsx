@@ -11,11 +11,6 @@ function PatronProfileEditPage({navigation}) {
   const route = useRoute()
   const access = route.params?.access
 
-  const [userData, setUserData] = useState({});
-
-  
-
-
   const [errors, setErrors] = useState({});
 
   const [currentUserName, setCurrentUserName] = useState({});
@@ -26,8 +21,11 @@ function PatronProfileEditPage({navigation}) {
   const [currentAllergies, setCurrentAllergies] = useState({});
   const [currentTastes, setCurrentTastes] = useState({});
   const [currentCalorieLimit, setCurrentCalorieLimit] = useState({});
+  const [currentDisliked, setCurrentDisliked] = useState({});
 
   const [dob, setDob] = useState({});
+
+  const [patronId, setPatronId] = useState({});
 
   const restrictionsTags = [
     { label: 1, value: "Vegan" },
@@ -63,33 +61,34 @@ function PatronProfileEditPage({navigation}) {
   ];
 
   const handleGetData = async () => {
-    try{
+
+    try {
       const response = await fetch("http://localhost:8000/patrons/", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": ("Bearer " + access)
-        }
+          Authorization: `Bearer ${access}`,
+        },
       });
       if(response.status === 200 || response.status === 201){
         const data = await response.json();
 
-        console.log(data)
-
         setCurrentUserName(data[0].name);
         setCurrentGender(data[0].gender);
-        setCurrentPrice(data[0].price_preference);
+        setCurrentPrice(data[0].price_max);
         setCurrentZip(data[0].zipcode);
         setCurrentRestrictions(data[0].patron_restriction_tag);
         setCurrentAllergies(data[0].patron_allergy_tag);
         setCurrentTastes(data[0].patron_taste_tag);
         setCurrentCalorieLimit(data[0].calorie_limit);
-
+        setCurrentDisliked(data[0].disliked_ingredients);
+        setPatronId(data[0].id)
         setDob(data[0].dob);
       }
-    }catch (error){
+    }
+    catch(error){
       console.error("Error:", error);
     }
+
   }
   
   useEffect(() => {
@@ -101,21 +100,46 @@ function PatronProfileEditPage({navigation}) {
   }
 
   const handleUpdateInfo = async () => {
+
+    
+    var restrictionTagIds = [];
+    var allergyTagIds = [];
+    var tasteTagIds = [];
+    var dislikedIngredientsTagIds = [];        
+
+    for(var i = 0; i < currentRestrictions.length; i++){
+      restrictionTagIds.push(currentRestrictions[i].id)
+    }
+
+    for(var i = 0; i < currentAllergies.length; i++){
+      allergyTagIds.push(currentAllergies[i].id)
+    }
+
+    for(var i = 0; i < currentTastes.length; i++){
+      tasteTagIds.push(currentTastes[i].id)
+    }
+
+    for(var i = 0; i < currentDisliked.length; i++){
+      dislikedIngredientsTagIds.push(currentDisliked[i].id)
+    }
+    
+
     const data = {
       name: currentUserName,
-      price_preference: currentPrice,
+      price_max: parseFloat(currentPrice),
       gender: currentGender,
       zipcode: currentZip,
       dob: dob,
-      patron_restriction_tag: currentRestrictions,
-      patron_allergy_tag: currentAllergies,
-      patron_taste_tag: currentTastes,
+      patron_restriction_tag: restrictionTagIds,
+      patron_allergy_tag: allergyTagIds,
+      patron_taste_tag: tasteTagIds,
+      disliked_ingredients: dislikedIngredientsTagIds,
       calorie_limit: parseInt(currentCalorieLimit)
     }
 
     console.log(data)
 
-    fetch("http://localhost:8000/patrons/1/", {
+    fetch("http://localhost:8000/patrons/" + patronId + "/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +176,7 @@ function PatronProfileEditPage({navigation}) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Profile Edit</Text>
+        <Text style={styles.title}>Settings</Text>
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Homepage", { access })}
@@ -200,19 +224,12 @@ function PatronProfileEditPage({navigation}) {
 
         <Text style={styles.label}>Price Preference:</Text>
 
-        <Picker
-          selectedValue ={`${currentPrice}`}
-          style={{ height:50, width: 200}}
-          onValueChange = {(itemValue, itemIndex) =>
-            setCurrentPrice(itemValue)
-          }>
-
-          <Picker.Item label="Price Preference" value=""/>
-          <Picker.Item label="$" value="$" />
-          <Picker.Item label="$$" value="$$" />
-          <Picker.Item label="$$$" value="$$$"/>
-
-        </Picker>
+        <TextInput
+          style={styles.input}
+          placeholder="Max Price (in USD)"
+          value={currentPrice}
+          onChangeText={(text) => setCurrentPrice(text)}
+        />
 
         <Text style={styles.label}>Zipcode:</Text>
 
@@ -322,15 +339,15 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginBottom: 12,
   },
-    navbar: {
+  navbar: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     padding: 10,
   },
   navbarItem: {
-    backgroundColor: "#ff7f50",
+    backgroundColor: "#FFA500",
     alignItems: "center",
     flexDirection: "row", // Align icon and text horizontally
   },
@@ -350,6 +367,7 @@ const styles = StyleSheet.create({
     alignItems: "left",
     
   },
+  
 });
 
 export default PatronProfileEditPage;

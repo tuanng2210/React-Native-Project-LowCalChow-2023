@@ -34,7 +34,9 @@ function LoginPage({ navigation }) {
         const { user_type, tokens } = data;
         const { access, refresh } = tokens;
         console.log("Authentication successful");
-        console.log(access);
+
+        // Store the access and refresh tokens securely
+        // You can use a library like AsyncStorage for React Native or localStorage for web
 
         if (user_type === "restaurant") {
           navigation.navigate("Restaurant Homepage", { access });
