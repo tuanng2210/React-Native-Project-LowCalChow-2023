@@ -4,13 +4,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
 function viewMenuItem({route, navigation}){
-    //const access = route.params.access;
-    //const mealID = rout.params.mealId;
-    //const showBookmarkButton = route.params.bookmarkVis;
-    //const showMenuItemButton = route.params.menuitemVis;
-    const mealID = 1;
-    const bookmarkID = null;
-    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA3MjA4LCJpYXQiOjE2OTk0MDAwMDgsImp0aSI6IjM0YjFkZTYxZDE0NzQ0Yzg5ODJhYjVjYzE0NzdkNzlkIiwidXNlcl9pZCI6NH0.UVUoWGeWFjnya_kz6NfOD9gfSdN2ZUGYwk-XP2mmeV4';
+    const access = route.params.access;
+    const mealID = route.params.mealId;
+    const [bookmarkID, setBookmarkID] = useState('null');
+    if (route.params.bookmarkID){ setBookmarkID(route.params.bookmarkID);}
+    
+    //const mealID = 1;
+    //const bookmarkID = null;
+    //const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA3MjA4LCJpYXQiOjE2OTk0MDAwMDgsImp0aSI6IjM0YjFkZTYxZDE0NzQ0Yzg5ODJhYjVjYzE0NzdkNzlkIiwidXNlcl9pZCI6NH0.UVUoWGeWFjnya_kz6NfOD9gfSdN2ZUGYwk-XP2mmeV4';
     const showBookmarkButton = true;
     const [isBookmarked, setIsBookmarked] = useState(false);
     const showMenuItemButton = true;
@@ -97,7 +98,7 @@ function viewMenuItem({route, navigation}){
         'review': feedbackID,
       };
   
-      if (bookmarkID != null) {
+      if (bookmarkID != 'null') {
         data = {
           ...data,
           'bookmarkid': bookmarkID,
