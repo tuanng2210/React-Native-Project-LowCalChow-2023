@@ -8,6 +8,7 @@ function PatronSettingsPage({ navigation, route }) {
   const { access } = route.params;
   const [profile, setProfile] = useState([]);
   const isFocused = useIsFocused();
+  const [tasteTags, setTasteTags] = useState([]);
 
   const fetchProfile = async () => {
     try {
@@ -21,6 +22,7 @@ function PatronSettingsPage({ navigation, route }) {
       if (response.ok) {
         const data = await response.json();
         setProfile(data.length > 0 ? data[0] : {}); // Update profile with fetched data
+        setTasteTags(data.length > 0 ? data[0].patron_taste_tag : []);
       } else {
         setError("Error fetching data");
       }
@@ -69,15 +71,25 @@ function PatronSettingsPage({ navigation, route }) {
       </View>
       <View style={styles.mainContent}>
       <Image source={logo} style={{ width: 30, height: 30 }} />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
-          <Icon name="edit" size={20} color="#000000" />
-          <Text style={styles.buttonText}>Edit Profile</Text>
-        </TouchableOpacity>
+      <View style={styles.resultItem}>
       <Text style={styles.mainText}>Name: {profile.name}
       </Text>
       <Text style={styles.mainText}>Gender: {profile.gender}
+      </Text>
+      <Text style={styles.mainText}>Zip Code: {profile.zipcode}
+      </Text>
+      <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+      </Text>
+      <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
+      </Text>
+
+      <Text style={styles.mainText}>Desired Taste Tags:
+          {tasteTags.map(tag => (
+            <View key={tag.id}>
+              <Text> {tag.title}</Text>
+              </View> ))}
+      </Text>
+      <Text style={styles.mainText}>Disliked Ingredients: {profile.disliked_ingredients}
       </Text>
       <Text style={styles.mainText}>Price Preference: {profile.price_max}
       </Text>
@@ -88,6 +100,13 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
       </Text>
       </View>
+      <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
+          <Icon name="edit" size={20} color="#000000" />
+          <Text style={styles.buttonText}>Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
       <Button
         title="Log Out"
         onPress={() => navigation.navigate(("Login"))}
@@ -95,6 +114,7 @@ function PatronSettingsPage({ navigation, route }) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -129,8 +149,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
-    alignItems: "left",
+    alignItems: "center",
     
+  },
+  patronItem: {
+    backgroundColor: 'rgba(255, 165, 0, 0.5)',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 15,
   },
   title: {
     fontSize: 30,

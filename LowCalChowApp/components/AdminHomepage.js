@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Button,
+  Alert
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
@@ -16,7 +17,9 @@ function AdminHomepage() {
   const navigation = useNavigation();
   const {access, adminId} = route.params;
   const [restaurantTags, setRestaurantTags] = useState([]);
-   const [newTag, setNewTag] = useState(""); // State for user input
+  const [newTag, setNewTag] = useState(""); // State for user input
+  const [editTag, setEditTag] = useState(null); // State to store the tag being edited
+   const [editedTag, setEditedTag] = useState(""); // State for edited tag
 
 useEffect(() => {
   const getRestaurantTags = async () => {
@@ -47,94 +50,162 @@ useEffect(() => {
 
    getRestaurantTags();
 }, [access]);
-
- const addTag = () => {
+  const addTag = async () => {
     if (newTag) {
-      setRestaurantTags([...restaurantTags, { id: restaurantTags.length + 1, title: newTag }]);
-      setNewTag(""); // Clear the input
+      try {
+        const response = await fetch(
+          `http://localhost:8000/restaurants/resttags/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${access}`,
+            },
+            body: JSON.stringify({ title: newTag }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          // Update the local list with the new tag
+          setRestaurantTags([...restaurantTags, data]);
+          setNewTag(""); // Clear the input
+        } else {
+          console.error("API Error:", response.status);
+          console.error(await response.text()); // Log the response content
+        }
+      } catch (error) {
+        console.error("Network Error:", error);
+      }
     }
   };
 
-  // State to manage FAQ data
-  const [faqData] = useState([
-    {
-      question: "What is LowCalChow, and how does it work?",
-      answer:
-        "LowCalChow is a mobile application designed to enhance your dining experience. It connects restaurants with health-conscious patrons by providing tailored menu recommendations based on your caloric needs, dietary restrictions, and palate preferences. Restaurants benefit from insights into patron trends, enabling them to refine their menus and attract more customers.",
-    },
-    {
-      question: "Is LowCalChow available for both restaurants and patrons?",
-      answer:
-        "Yes, LowCalChow caters to both restaurants and patrons. Restaurants can optimize their menus and receive valuable feedback, while patrons can easily find meals that align with their dietary preferences.",
-    },
-    {
-      question: "How do I get started with LowCalChow?",
-      answer:
-        "If you're a restaurant, please contact our team to set up your account. For patrons, you can download the app from your device's app store, create a profile, and start exploring healthier dining options.",
-    },
-    {
-      question: "Is LowCalChow available in languages other than English?",
-      answer:
-        "Currently, LowCalChow is available in English. We aim to expand our language offerings in the future.",
-    },
-    {
-      question: "How do I search for meals on LowCalChow?",
-      answer:
-        "Simply enter your caloric needs, dietary restrictions, and palate preferences, and LowCalChow will provide you with a curated list of suitable menu items from participating restaurants.",
-    },
-    {
-      question: "Can I provide feedback on meals I've tried?",
-      answer:
-        "Yes, you can leave feedback and ratings for meals you've tried. Your input helps restaurants improve their offerings and helps fellow patrons make informed choices.",
-    },
-    {
-      question: "What kind of insights do restaurants get from LowCalChow?",
-      answer:
-        "Restaurants receive data on patron trends, including calorie preferences, dietary restrictions, and palate preferences. This information assists them in optimizing their menus to attract health-conscious customers.",
-    },
-    {
-      question: "Is my personal information secure on LowCalChow?",
-      answer:
-        "LowCalChow takes data security seriously. We only collect the information necessary to enhance your dining experience and delete any data that is no longer needed. Rest assured that your privacy is a top priority.",
-    },
-    {
-      question: "How does LowCalChow protect user information from breaches?",
-      answer:
-        "We have stringent security measures in place to protect user data, including encryption and secure server hosting. Our team regularly updates and monitors the platform to address any potential vulnerabilities.",
-    },
-    {
-      question: "What is LowCalChow's policy on third-party data sharing?",
-      answer:
-        "LowCalChow does not share user data with third parties for marketing purposes. We only use data to improve our services and enhance your dining experience.",
-    },
+const handleEditTag = (tag) => {
+    setEditedTag(tag.title);
+    setEditTag(tag);
+  };
 
-  ]);
+  const cancelEdit = () => {
+    setEditTag(null);
+    setEditedTag(""); // Clear the edited tag state
+  };
+
+  const submitEdit = async () => {
+    if (editedTag && editTag) {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/restaurants/resttags/${editTag.id}/`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${access}`,
+            },
+            body: JSON.stringify({ title: editedTag }),
+          }
+        );
+
+        if (response.ok) {
+          // Update the local list with the edited tag
+          setRestaurantTags((prevTags) =>
+            prevTags.map((tag) =>
+              tag.id === editTag.id ? { ...tag, title: editedTag } : tag
+            )
+          );
+          // Clear the edit state
+          setEditTag(null);
+        } else {
+          console.error("API Error:", response.status);
+          console.error(await response.text()); // Log the response content check
+        }
+      } catch (error) {
+        console.error("Network Error:", error);
+      }
+    }
+  };
+
+const handleDeleteTag = async (tagId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8000/restaurants/resttags/${tagId}/`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      // Remove the deleted tag from the local list
+      const updatedTags = restaurantTags.filter((tag) => tag.id !== tagId);
+      setRestaurantTags(updatedTags);
+    } else {
+      console.error("API Error:", response.status);
+      console.error(await response.text());
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+};
 
   return (
- <View style={styles.container}>
-      <Text style={styles.title}>Admin Homepage</Text>
+    <View style={styles.container}>
+      {/* Header in an orange box */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Admin Homepage</Text>
+        <Button
+          title="Admin FAQ Page"
+          onPress={() => navigation.navigate("Admin FAQ Page")}
+        />
+      </View>
 
-      {/* Add a TextInput for the user to enter a new tag */}
-      <TextInput
-        style={styles.input}
-        placeholder="Add a new tag"
-        value={newTag}
-        onChangeText={(text) => setNewTag(text)}
-      />
+      <View style={styles.tagsBox}>
+        <Text style={styles.tagsHeader}>RestTags</Text>
 
-      {/* Add button to add a new tag */}
-      <Button title="Add" onPress={addTag} />
+        {/* Add a TextInput for the user to enter a new tag */}
+        <TextInput
+          style={styles.input}
+          placeholder="Add a new tag"
+          value={newTag}
+          onChangeText={(text) => setNewTag(text)}
+        />
 
-      {/* List of Restaurant Tags */}
-      <FlatList
-        data={restaurantTags}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.tagContainer}>
-            <Text style={styles.tagText}>{item.title}</Text>
+        {/* Add button to add a new tag */}
+        <Button title="Add" onPress={addTag} />
+
+        {/* List of Restaurant Tags */}
+        <FlatList
+          data={restaurantTags}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.tagContainer}>
+              <Text style={styles.tagText}>{item.title}</Text>
+              <View style={styles.buttonContainer}>
+                <Button title="Edit" onPress={() => handleEditTag(item)} />
+                <View style={styles.buttonSpacer} /> {/* Add vertical space */}
+                <Button title="Delete" onPress={() => handleDeleteTag(item.id)} />
+              </View>
+            </View>
+          )}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+        {editTag && (
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Edit Tag</Text>
+          <TextInput
+            style={styles.modalInput}
+            placeholder="Enter new tag"
+            value={editedTag}
+            onChangeText={(text) => setEditedTag(text)}
+          />
+          <View style={styles.modalButtonContainer}>
+            <Button title="Cancel" onPress={cancelEdit} />
+            <Button title="Submit" onPress={submitEdit} />
           </View>
-        )}
-      />
+        </View>
+      )}
+      </View>
     </View>
   );
 }
@@ -143,32 +214,62 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: "#fff",
   },
-  title: {
+  headerContainer: {
+    backgroundColor: "orange",
+    padding: 16,
+  },
+  headerText: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "white",
     marginBottom: 16,
+  },
+  tagsBox: {
+    padding: 16,
+    backgroundColor: "#f5f5f5",
+  },
+  tagsHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   tagContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 25,
+    marginBottom: 15,
   },
   tagText: {
     fontSize: 16,
   },
-   input: {
+  input: {
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,
     marginBottom: 16,
   },
-  modalContainer: {
-    flex: 1, // Updated this value to 1
-    justifyContent: "center",
+   buttonContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20, // Added margin to separate the FAQ container
+  },
+  buttonSpacer: {
+    width: 10, // Adjust the width as needed for spacing
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#ccc",
+    marginVertical: 8,
+  },  modalContainer: {
+    position: "absolute",
+    top: "30%",
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 8,
+    elevation: 5,
   },
   modalTitle: {
     fontSize: 20,
@@ -176,30 +277,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   modalInput: {
-    width: "80%",
-    marginBottom: 16,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 8,
-  },
-  faqContainer: {
-    marginTop: 20, // Adjusted the top margin for FAQ container
-  },
-  faqTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
     marginBottom: 16,
   },
-  faqItem: {
-    marginBottom: 16,
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
-  faqQuestion: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  faqAnswer: {
-    fontSize: 16,
+   addButtonContainer: {
+    marginBottom: 32, // Add margin to create space between "Add" button and the first tag
   },
 });
 
