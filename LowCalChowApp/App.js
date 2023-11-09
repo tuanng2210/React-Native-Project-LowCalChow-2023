@@ -21,11 +21,14 @@ import Search from './components/search';
 import Bookmark from './components/bookmark';
 import AdminHomepage from './components/AdminHomepage';
 import AdminFAQPage from './components/AdminFAQPage';
-import Settings from './components/settings';import MenuItemHistory from "./components/menuItemHistory";
-
+import Settings from './components/settings';
+import MenuItemHistory from "./components/menuItemHistory";
+import UpdateInfo from './components/UpdateInfoScreen';
 import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import viewMenuItem from './components/patronViewMenuItem';
-import AdminFAQPage from './components/AdminFAQPage';
+import SearchResultsScreen from './components/searchResults';
+
+
 
 
 const Stack = createNativeStackNavigator();
