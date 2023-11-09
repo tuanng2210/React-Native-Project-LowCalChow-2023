@@ -10,7 +10,6 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 
-
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const states = [
@@ -65,6 +64,7 @@ function UpdateInfo({ route, navigation }) {
     "WI",
     "WY",
   ];
+  const [existingData, setExistingData] = useState(null);
 
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [rating, setRating] = useState("");
@@ -77,6 +77,7 @@ function UpdateInfo({ route, navigation }) {
   const [selectedState, setSelectedState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [availableTags, setAvailableTags] = useState([]);
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
 
   const formatPhoneNumber = (input) => {
     const cleaned = input.replace(/\D/g, "");
@@ -90,6 +91,42 @@ function UpdateInfo({ route, navigation }) {
   const handlePhoneNumberInput = (text) => {
     const formattedPhoneNumber = formatPhoneNumber(text);
     setPhoneNumber(formattedPhoneNumber);
+  };
+
+  const fetchExistingData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/restaurants/${restaurantId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const restaurantData = data;
+        setExistingData(restaurantData);
+
+        if (!newRestaurantName) setNewRestaurantName(data.name);
+        if (!rating) setRating(data.rating);
+        // if (selectedTags.length === 0) setSelectedTags(data.tags);
+        if (!priceLevel) setPriceLevel(data.price_level);
+        if (!phoneNumber) setPhoneNumber(data.phone_number);
+        if (!website) setWebsite(data.website);
+        if (!streetName) setStreetName(data.street_name);
+        if (!city) setCity(data.city);
+        if (!selectedState) setSelectedState(data.state);
+        if (!zipCode) setZipCode(data.zip_code);
+      } else {
+        console.error("Failed to fetch restaurant information");
+      }
+    } catch (error) {
+      console.error("Error fetching restaurant information:", error);
+    }
   };
 
   const handleUpdateInfo = async () => {
@@ -120,16 +157,21 @@ function UpdateInfo({ route, navigation }) {
       );
       if (response.ok) {
         console.log("Restaurant information updated successfully!");
-        setNewRestaurantName("");
-        setRating("");
-        setSelectedTags([]);
-        setPriceLevel("");
-        setPhoneNumber("");
-        setWebsite("");
-        setStreetName("");
-        setCity("");
-        setSelectedState("");
-        setZipCode("");
+        // setNewRestaurantName("");
+        // setRating("");
+        // setSelectedTags([]);
+        // setPriceLevel("");
+        // setPhoneNumber("");
+        // setWebsite("");
+        // setStreetName("");
+        // setCity("");
+        // setSelectedState("");
+        // setZipCode("");
+
+        setSuccessMessageVisible(true);
+        setTimeout(() => {
+          setSuccessMessageVisible(false);
+        }, 2000);
       } else {
         const errorResponse = await response.json();
         console.error(
@@ -168,6 +210,7 @@ function UpdateInfo({ route, navigation }) {
   };
 
   useEffect(() => {
+    fetchExistingData();
     fetchRestTags();
   }, []);
 
@@ -269,9 +312,21 @@ function UpdateInfo({ route, navigation }) {
           <Text style={styles.buttonText}>Update</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Settings", {access, restaurantId})}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate("Settings", { access, restaurantId })
+          }
+        >
           <Text style={styles.buttonText}>Back To Settings</Text>
         </TouchableOpacity>
+        {successMessageVisible && (
+          <View style={styles.successMessage}>
+            <Text style={styles.successMessageText}>
+              Restaurant information updated successfully!
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -328,6 +383,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     borderRadius: 5,
+  },
+  successMessage: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  successMessageText: {
+    color: "#ffffff",
+    textAlign: "center",
   },
 });
 
