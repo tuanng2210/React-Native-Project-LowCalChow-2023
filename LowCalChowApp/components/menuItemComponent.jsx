@@ -4,12 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
   const navigation = useNavigation();
-  const access = accessToken;
-  if (restIDToken)
-  {
-    setRestID(restIDToken);
-  }
   const [RestID, setRestID] = useState('');
+  const access = accessToken;
+  useEffect(() => {
+    if (restIDToken) {
+      setRestID(restIDToken);
+    }
+  }, [restIDToken]);
+
   const ScreenName = screenName;
   console.log(screenName);
   console.log(ScreenName);

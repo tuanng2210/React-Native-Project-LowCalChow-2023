@@ -1,15 +1,14 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useIsFocused } from "@react-navigation/native";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const [restaurantData, setRestaurantData] = useState(null);
-
+  const isFocused = useIsFocused();
   const navigateToUpdateInfo = () => {
     navigation.navigate("Update Info", { access, restaurantId });
   };
@@ -39,7 +38,7 @@ function Settings({ route, navigation }) {
     };
 
     fetchRestaurantData();
-  }, [restaurantId]);
+  }, [restaurantId, isFocused]);
 
   function formatTime(time) {
     const [hours, minutes] = time.split(":");
@@ -60,7 +59,7 @@ function Settings({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.navBar}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Restaurant Dashboard", {access, restaurantId})}
           style={styles.navItem}
         >
           <Icon name="home" size={30} color="black" />
@@ -101,6 +100,10 @@ function Settings({ route, navigation }) {
           </Text>
           <Text style={styles.restaurantRating}>
             <Text style={styles.label}>Rating:</Text> {restaurantData.rating}
+          </Text>
+          <Text style={styles.restaurantPriceLevel}>
+            <Text style={styles.label}>Price Level:</Text>{" "}
+            {restaurantData.price_level}
           </Text>
           <View style={styles.tagsContainer}>
             <Text style={styles.label}>Tags: </Text>
@@ -180,8 +183,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    width: windowWidth,
-    height: windowHeight,
+    width: "100%",
+    height: "100%",
   },
   restaurantInfo: {
     marginTop: 40,
@@ -190,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     width: "40%",
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   restaurantName: {
     fontSize: 24,
@@ -206,6 +209,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   restaurantRating: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  restaurantPriceLevel: {
     fontSize: 16,
     marginBottom: 10,
   },

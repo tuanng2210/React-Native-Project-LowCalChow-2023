@@ -10,10 +10,12 @@ import {
   TextInput,
   Button as RNButton,
   Picker,
+  Image,
 } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
+import logo from "../assets/icons8-carrot-94.png";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
@@ -313,6 +315,7 @@ function RestaurantHomepage({ navigation, route }) {
       <View style={styles.mainContent}>
         {/* Section Title and Add Restaurant Button */}
         <View style={styles.sectionTitleContainer}>
+          <Image source={logo} style={{ width: 80, height: 80 }} />
           <Text style={styles.sectionTitle}>List of Restaurants</Text>
           <TouchableOpacity
             style={styles.addButton}
@@ -359,13 +362,15 @@ function RestaurantHomepage({ navigation, route }) {
             />
 
             <Text style={styles.modalSelectTag}>Select Tags</Text>
-            <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "40%" }}>
+            <View
+              style={{ marginVertical: 15, paddingHorizontal: 0, width: "50%" }}
+            >
               <MultipleSelectList
                 setSelected={(val) => setTagSelect(val)}
                 data={tags}
                 save="key"
                 label="Tags"
-                boxStyles={{ borderRadius: 10,  width: "100%", }}
+                boxStyles={{ borderRadius: 10, width: "100%" }}
                 dropdownStyles={{
                   borderRadius: 10,
                   width: "100%",
@@ -585,7 +590,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: "50%",
+    width: "30%",
+    height: "80%",
     alignItems: "center",
   },
   modalTitle: {
@@ -597,7 +603,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    width: "40%",
+    width: "50%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function RestaurantDashboard() {
   const route = useRoute();
@@ -54,7 +54,7 @@ function RestaurantDashboard() {
     <View style={styles.container}>
       <View style={styles.navBar}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Restaurant Dashboard", {access, restaurantId} )}
           style={styles.navItem}
         >
           <Icon name="home" size={30} color="black" />

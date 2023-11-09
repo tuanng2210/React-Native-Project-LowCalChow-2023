@@ -6,15 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
-  Dimensions,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
-
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -70,6 +64,7 @@ function UpdateInfo({ route, navigation }) {
     "WI",
     "WY",
   ];
+  const [existingData, setExistingData] = useState(null);
 
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [rating, setRating] = useState("");
@@ -82,6 +77,7 @@ function UpdateInfo({ route, navigation }) {
   const [selectedState, setSelectedState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [availableTags, setAvailableTags] = useState([]);
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
 
   const formatPhoneNumber = (input) => {
     const cleaned = input.replace(/\D/g, "");
@@ -95,6 +91,42 @@ function UpdateInfo({ route, navigation }) {
   const handlePhoneNumberInput = (text) => {
     const formattedPhoneNumber = formatPhoneNumber(text);
     setPhoneNumber(formattedPhoneNumber);
+  };
+
+  const fetchExistingData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/restaurants/${restaurantId}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        // const restaurantData = data;
+        // setExistingData(restaurantData);
+
+        if (!newRestaurantName) setNewRestaurantName(data.name);
+        if (!rating) setRating(data.rating);
+        // if (selectedTags.length === 0) setSelectedTags(data.tags);
+        if (!priceLevel) setPriceLevel(data.price_level);
+        if (!phoneNumber) setPhoneNumber(data.phone_number);
+        if (!website) setWebsite(data.website);
+        if (!streetName) setStreetName(data.street_name);
+        if (!city) setCity(data.city);
+        if (!selectedState) setSelectedState(data.state);
+        if (!zipCode) setZipCode(data.zip_code);
+      } else {
+        console.error("Failed to fetch restaurant information");
+      }
+    } catch (error) {
+      console.error("Error fetching restaurant information:", error);
+    }
   };
 
   const handleUpdateInfo = async () => {
@@ -125,16 +157,21 @@ function UpdateInfo({ route, navigation }) {
       );
       if (response.ok) {
         console.log("Restaurant information updated successfully!");
-        setNewRestaurantName("");
-        setRating("");
-        setSelectedTags([]);
-        setPriceLevel("");
-        setPhoneNumber("");
-        setWebsite("");
-        setStreetName("");
-        setCity("");
-        setSelectedState("");
-        setZipCode("");
+        // setNewRestaurantName("");
+        // setRating("");
+        // setSelectedTags([]);
+        // setPriceLevel("");
+        // setPhoneNumber("");
+        // setWebsite("");
+        // setStreetName("");
+        // setCity("");
+        // setSelectedState("");
+        // setZipCode("");
+
+        setSuccessMessageVisible(true);
+        setTimeout(() => {
+          setSuccessMessageVisible(false);
+        }, 2000);
       } else {
         const errorResponse = await response.json();
         console.error(
@@ -173,13 +210,14 @@ function UpdateInfo({ route, navigation }) {
   };
 
   useEffect(() => {
+    fetchExistingData();
     fetchRestTags();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Update Restaurant Information</Text>
       <View style={styles.formContainer}>
+        <Text style={styles.title}>Update Restaurant Information</Text>
         <TextInput
           style={styles.input}
           placeholder="Restaurant Name"
@@ -194,18 +232,20 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
-        <Text style={styles.modalSelectTag}>Select Tags</Text> 
-        <View style={{ marginVertical: 15, paddingHorizontal: 0,  width: "20%", }}>
+        <Text style={styles.modalSelectTag}>Select Tags</Text>
+        <View
+          style={{ marginVertical: 15, paddingHorizontal: 0, width: "20%" }}
+        >
           <MultipleSelectList
             setSelected={(val) => setSelectedTags(val)}
             data={availableTags}
             save="key"
             label="Tags"
-            boxStyles={{ backgroundColor: "", borderRadius: 10, }}
+            boxStyles={{ backgroundColor: "", borderRadius: 10 }}
             dropdownStyles={{
               backgroundColor: "",
               borderRadius: 10,
-              width: "100%" 
+              width: "100%",
             }}
           />
         </View>
@@ -267,11 +307,27 @@ function UpdateInfo({ route, navigation }) {
           onChangeText={(text) => setZipCode(text)}
           value={zipCode}
         />
-      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
-        <Text style={styles.buttonText}>Update</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
+          <Text style={styles.buttonText}>Update</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate("Settings", { access, restaurantId })
+          }
+        >
+          <Text style={styles.buttonText}>Back To Settings</Text>
+        </TouchableOpacity>
+        {successMessageVisible && (
+          <View style={styles.successMessage}>
+            <Text style={styles.successMessageText}>
+              Restaurant information updated successfully!
+            </Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -283,8 +339,8 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     alignContent: "center",
-    width: windowWidth,
-    height: windowHeight,
+    width: "100%",
+    height: "100%",
   },
   title: {
     fontSize: 24,
@@ -293,9 +349,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   formContainer: {
-    marginBottom: 20,
+    margin: 30,
     justifyItems: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
   input: {
     height: 40,
@@ -307,15 +365,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#FFA500",
+    margin: 15,
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: 100,
+    width: "10%",
   },
   buttonText: {
     color: "#black",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
   picker: {
@@ -324,6 +383,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     borderRadius: 5,
+  },
+  successMessage: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  successMessageText: {
+    color: "#ffffff",
+    textAlign: "center",
   },
 });
 
