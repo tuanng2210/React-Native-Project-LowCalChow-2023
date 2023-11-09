@@ -108,8 +108,8 @@ function UpdateInfo({ route, navigation }) {
 
       if (response.ok) {
         const data = await response.json();
-        const restaurantData = data;
-        setExistingData(restaurantData);
+        // const restaurantData = data;
+        // setExistingData(restaurantData);
 
         if (!newRestaurantName) setNewRestaurantName(data.name);
         if (!rating) setRating(data.rating);
