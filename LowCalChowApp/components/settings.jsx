@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useIsFocused } from "@react-navigation/native";
 
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const [restaurantData, setRestaurantData] = useState(null);
-
+  const isFocused = useIsFocused();
   const navigateToUpdateInfo = () => {
     navigation.navigate("Update Info", { access, restaurantId });
   };
@@ -37,7 +38,7 @@ function Settings({ route, navigation }) {
     };
 
     fetchRestaurantData();
-  }, [restaurantId]);
+  }, [restaurantId, isFocused]);
 
   function formatTime(time) {
     const [hours, minutes] = time.split(":");
