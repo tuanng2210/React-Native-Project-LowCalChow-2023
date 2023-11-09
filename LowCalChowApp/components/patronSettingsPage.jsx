@@ -78,7 +78,7 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
-      <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+      {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -90,7 +90,7 @@ function PatronSettingsPage({ navigation, route }) {
               </View> ))}
       </Text>
       <Text style={styles.mainText}>Disliked Ingredients: {profile.disliked_ingredients}
-      </Text>
+      </Text> */}
       <Text style={styles.mainText}>Price Preference: {profile.price_max}
       </Text>
       <Text style={styles.mainText}>Zipcode: {profile.zipcode}
