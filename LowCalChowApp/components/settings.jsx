@@ -101,6 +101,10 @@ function Settings({ route, navigation }) {
           <Text style={styles.restaurantRating}>
             <Text style={styles.label}>Rating:</Text> {restaurantData.rating}
           </Text>
+          <Text style={styles.restaurantPriceLevel}>
+            <Text style={styles.label}>Price Level:</Text>{" "}
+            {restaurantData.price_level}
+          </Text>
           <View style={styles.tagsContainer}>
             <Text style={styles.label}>Tags: </Text>
             {restaurantData.tags.map((tag) => (
@@ -205,6 +209,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   restaurantRating: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  restaurantPriceLevel: {
     fontSize: 16,
     marginBottom: 10,
   },
