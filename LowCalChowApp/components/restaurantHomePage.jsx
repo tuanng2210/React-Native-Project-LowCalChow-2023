@@ -438,8 +438,7 @@ function RestaurantHomepage({ navigation, route }) {
             />
 
             <View style={styles.modalButtons}>
-              {/* <RNButton title="Cancel" onPress={() => setModalVisible(false)} /> */}
-              {/* <RNButton title="Add" onPress={confirmAddRestaurant} /> */}
+            
               <TouchableOpacity
                 style={styles.button}
                 onPress={confirmAddRestaurant}
@@ -604,7 +603,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "50%",
-    height: 40,
+    height: "80%",
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
