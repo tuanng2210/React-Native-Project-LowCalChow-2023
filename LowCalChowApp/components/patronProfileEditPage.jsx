@@ -312,9 +312,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   title: {
-    fontSize: 24,
-    marginBottom: 16,
-    justifyContent: "center",
+    fontSize: 30,
+    flexDirection: "row",
     fontWeight: "bold",
   },
   input: {
