@@ -193,7 +193,7 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Restriction Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, backgroundColor: "rgba(255, 165, 0, 0.5)", }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedRestrictionTags(val)}
                 data={dietaryRestrictionTags}
@@ -215,7 +215,7 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Allergy Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, backgroundColor: "rgba(255, 165, 0, 0.5)", }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0,  }}>
               <MultipleSelectList
                 setSelected={(val) => setAllergyTags(val)}
                 data={allergyTags}
@@ -235,7 +235,7 @@ function Search({ navigation, route }) {
             </View>
 
             <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, backgroundColor: "rgba(255, 165, 0, 0.5)",}}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0,}}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedTasteTags(val)}
                 data={patronTasteTags}
@@ -257,7 +257,7 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Disliked Ingredient Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, backgroundColor: "rgba(255, 165, 0, 0.5)", }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedIngredientTags(val)}
                 data={dislikedIngredients}
