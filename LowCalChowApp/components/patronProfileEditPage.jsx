@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
 
 
-function PatronProfileEditPage({navigation}) {
+function PatronProfileEditPage({ navigation }) {
 
   const route = useRoute()
   const access = route.params?.access
@@ -40,13 +40,13 @@ function PatronProfileEditPage({navigation}) {
 
   const allergyTags = [
     { label: "Milk", value: "Milk" },
-    { label: "Sesame" , value: "Sesame" },
+    { label: "Sesame", value: "Sesame" },
     { label: "Soybeans", value: "Soybeans" },
     { label: "Wheat", value: "Wheat" },
-    { label: "Peanuts" , value: "Peanuts" },
+    { label: "Peanuts", value: "Peanuts" },
     { label: "Tree-nuts", value: "Tree-nuts" },
     { label: "Eggs", value: "Eggs" },
-    { label: "Shellfish" , value: "Shellfish" },
+    { label: "Shellfish", value: "Shellfish" },
     { label: "Fish", value: "Fish" },
     { label: "Celiac", value: "Celiac" }
   ];
@@ -56,7 +56,7 @@ function PatronProfileEditPage({navigation}) {
     { label: "Sweet", value: "Sweet" },
     { label: "Spicy", value: "Spicy" },
     { label: "Umami", value: "Umami" },
-    { label: "Sour" , value: "Sour" },
+    { label: "Sour", value: "Sour" },
     { label: "Bitter", value: "Bitter" },
   ];
 
@@ -69,7 +69,7 @@ function PatronProfileEditPage({navigation}) {
           Authorization: `Bearer ${access}`,
         },
       });
-      if(response.status === 200 || response.status === 201){
+      if (response.status === 200 || response.status === 201) {
         const data = await response.json();
 
         setCurrentUserName(data[0].name);
@@ -85,44 +85,44 @@ function PatronProfileEditPage({navigation}) {
         setDob(data[0].dob);
       }
     }
-    catch(error){
+    catch (error) {
       console.error("Error:", error);
     }
 
   }
-  
+
   useEffect(() => {
     handleGetData();
   }, []);
 
-  function updateInfo(){
+  function updateInfo() {
     handleUpdateInfo();
   }
 
   const handleUpdateInfo = async () => {
 
-    
+
     var restrictionTagIds = [];
     var allergyTagIds = [];
     var tasteTagIds = [];
-    var dislikedIngredientsTagIds = [];        
+    var dislikedIngredientsTagIds = [];
 
-    for(var i = 0; i < currentRestrictions.length; i++){
+    for (var i = 0; i < currentRestrictions.length; i++) {
       restrictionTagIds.push(currentRestrictions[i].id)
     }
 
-    for(var i = 0; i < currentAllergies.length; i++){
+    for (var i = 0; i < currentAllergies.length; i++) {
       allergyTagIds.push(currentAllergies[i].id)
     }
 
-    for(var i = 0; i < currentTastes.length; i++){
+    for (var i = 0; i < currentTastes.length; i++) {
       tasteTagIds.push(currentTastes[i].id)
     }
 
-    for(var i = 0; i < currentDisliked.length; i++){
+    for (var i = 0; i < currentDisliked.length; i++) {
       dislikedIngredientsTagIds.push(currentDisliked[i].id)
     }
-    
+
 
     const data = {
       name: currentUserName,
@@ -140,18 +140,19 @@ function PatronProfileEditPage({navigation}) {
     console.log(data)
 
     fetch("http://localhost:8000/patrons/" + patronId + "/", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": ("Bearer " + access)
-        },
-        body: JSON.stringify(data)
-      })
-      .then((response) => {response.json()
-        if(response.status == "200" || response.status == "201"){
-          navigation.navigate("Patron Profile Edit", {access: access});
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": ("Bearer " + access)
+      },
+      body: JSON.stringify(data)
+    })
+      .then((response) => {
+        response.json()
+        if (response.status == "200" || response.status == "201") {
+          navigation.navigate("Patron Profile Edit", { access: access });
         }
-        else{
+        else {
           alert("There was an issue.")
           console.log(response.status)
         }
@@ -176,7 +177,7 @@ function PatronProfileEditPage({navigation}) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>Patron Profile Edit</Text>
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Homepage", { access })}
@@ -195,34 +196,32 @@ function PatronProfileEditPage({navigation}) {
 
       <View style={styles.mainContent}>
 
-        <Text style={styles.title}>Patron Profile Edit</Text>
-
-        <Text style={styles.label}>Name:</Text>
+        <Text style={styles.otherText}>Username:</Text>
 
         <TextInput
-              style={styles.input}
-              placeholder={`${currentUserName}`}
-              value={currentUserName}
-              onChangeText={(text) => setCurrentUserName(text)}
-            />
+          style={styles.input}
+          placeholder={`${currentUserName}`}
+          value={currentUserName}
+          onChangeText={(text) => setCurrentUserName(text)}
+        />
 
-        <Text style={styles.label}>Gender:</Text>
+        <Text style={styles.otherText}>Gender:</Text>
 
         <Picker
-          selectedValue = {`${currentGender}`}
-          style={{ height:50, width: 200}}
-          onValueChange = {(itemValue, itemIndex) =>
+          selectedValue={`${currentGender}`}
+          style={{ height: 40, width: "60%", }}
+          onValueChange={(itemValue, itemIndex) =>
             setCurrentGender(itemValue)
           }>
 
-          <Picker.Item label="Gender" value=""/>
+          <Picker.Item label="Gender" value="" />
           <Picker.Item label="Female" value="Female" />
           <Picker.Item label="Male" value="Male" />
-          <Picker.Item label="Other" value="Other"/>
+          <Picker.Item label="Other" value="Other" />
 
         </Picker>
 
-        <Text style={styles.label}>Price Preference:</Text>
+        <Text style={styles.text}>Price Preference:</Text>
 
         <TextInput
           style={styles.input}
@@ -231,23 +230,23 @@ function PatronProfileEditPage({navigation}) {
           onChangeText={(text) => setCurrentPrice(text)}
         />
 
-        <Text style={styles.label}>Zipcode:</Text>
+        <Text style={styles.otherText}>Zipcode:</Text>
 
         <TextInput
-              style={styles.input}
-              placeholder={`${currentZip}`}
-              value={currentZip}
-              onChangeText={(text) => setCurrentZip(text)}
-            />
+          style={styles.input}
+          placeholder={`${currentZip}`}
+          value={currentZip}
+          onChangeText={(text) => setCurrentZip(text)}
+        />
 
-        <Text style={styles.label}>Calorie Limit:</Text>
+        <Text style={styles.otherText}>Calorie Limit:</Text>
 
         <TextInput
-              style={styles.input}
-              placeholder={`${currentCalorieLimit}`}
-              value={currentCalorieLimit}
-              onChangeText={(text) => setCurrentCalorieLimit(text)}
-            />
+          style={styles.input}
+          placeholder={`${currentCalorieLimit}`}
+          value={currentCalorieLimit}
+          onChangeText={(text) => setCurrentCalorieLimit(text)}
+        />
 
         {/*todo*/}
         {/* <Text style={styles.label}>Restrictions:</Text>
@@ -289,18 +288,23 @@ function PatronProfileEditPage({navigation}) {
               boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
               dropdownStyles={{backgroundColor: '#FECA83'}}
             /> */}
-          
-          <Button title="Update Info" 
-            onPress={() => updateInfo()}
-            style={styles.button}
-            />
 
+
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => updateInfo()}
+        >
+          <Text style={styles.buttonText}>Update Info</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate(("Login"))}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
-      
-
     </View>
   );
-  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -310,9 +314,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 16,
+    justifyContent: "center",
+    fontWeight: "bold",
   },
   input: {
-    width: '100%',
+    width: '60%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -321,23 +327,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: "orange",
+    backgroundColor: "#FFA500",
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
-    width: 100,
-},
+    width: "20%",
+  },
   buttonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
+    padding: 8,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   error: {
-      color: 'red',
-      fontSize: 20,
-      marginBottom: 12,
+    color: 'red',
+    fontSize: 20,
+    marginBottom: 12,
   },
   navbar: {
     flexDirection: "row",
@@ -364,10 +370,16 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
-    alignItems: "left",
-    
+    alignItems: "center",
+
   },
-  
+  otherText: {
+    paddingTop: 5,
+
+  },
+  text: {
+    paddingTop: 15,
+  }
 });
 
 export default PatronProfileEditPage;
