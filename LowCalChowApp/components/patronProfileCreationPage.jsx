@@ -93,13 +93,12 @@ function PatronProfileCreationPage({ navigation }) {
 
   return (
     <View style={styles.container}>
-    <View style={styles.titleContainer}>
-    <Text style={styles.titleText}>Create Patron Profile</Text>
-    </View>
-<View style={styles.mainContainer}>
-      
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Create Patron Profile</Text>
+      </View>
+      <View style={styles.mainContainer}>
 
-      
+
         <TextInput
           style={styles.input}
           placeholder="First Name"
@@ -130,10 +129,10 @@ function PatronProfileCreationPage({ navigation }) {
         />
 
 
-        
+
         <Picker
           selectedValue={gender}
-          style={{ height: 40, width: "60%",  }}
+          style={{ height: 40, width: "60%", }}
           onValueChange={(itemValue, itemIndex) =>
             setGender(itemValue)
           }>
@@ -171,20 +170,19 @@ function PatronProfileCreationPage({ navigation }) {
           onChangeText={(text) => setDay(text)}
           maxLength={2}
         />
-      
-
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: "orange" }]}
-        onPress={() => nextPage()}
-      >
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-      {Object.keys(errors).map((key, index) => (
-        <Text key={index} style={styles.error}>
-          {errors[key]}
-        </Text>
-      ))}
-</View>
+        
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "orange" }]}
+          onPress={() => nextPage()}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+        {Object.keys(errors).map((key, index) => (
+          <Text key={index} style={styles.error}>
+            {errors[key]}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };

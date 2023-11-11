@@ -51,6 +51,11 @@ function PatronHomepage({ navigation, route }) {
         </TouchableOpacity> 
       <Image source={logo} style={{ width: 30, height: 30 }} />
       <Text style={styles.title}>Suggestion Feed</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate(("Login"))}>
+        <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -90,6 +95,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
+  },
+  buttonText: {
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  button: {
+    backgroundColor: "#FFA500",
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 12,
+    width: "25%",
   },
 },
 );

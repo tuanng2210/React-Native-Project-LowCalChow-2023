@@ -121,10 +121,11 @@ function PatronAccountCreationPage({ navigation }) {
         </Text>
       ))}
 
-      <Button
-        title="Back to Login"
-        onPress={() => navigation.navigate("Login")}
-      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate(("Login"))}>
+        <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
     </View>
   );
 }
