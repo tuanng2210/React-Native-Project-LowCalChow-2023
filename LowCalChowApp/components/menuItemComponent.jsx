@@ -14,7 +14,7 @@ const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
 
   const ScreenName = screenName;
   console.log(screenName);
-  console.log(ScreenName);
+  {/*console.log(ScreenName);*/}
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {id: item.id, access: access, ...(RestID && { restaurantId: RestID })})}>

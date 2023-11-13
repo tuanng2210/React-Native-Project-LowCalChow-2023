@@ -5,7 +5,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
 function viewMenuItem({route, navigation}){
     const access = route.params.access;
-    const mealID = route.params.mealId;
+    const mealID = route.params.id;
     const [bookmarkID, setBookmarkID] = useState('null');
     if (route.params.bookmarkID){ setBookmarkID(route.params.bookmarkID);}
     

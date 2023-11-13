@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import MenuComponent from './menuItemComponent';
 import {useIsFocused} from '@react-navigation/native';
 
-function MenuItemHistory ({navigation, route }) {const isFocused = useIsFocused();
+function MenuItemHistory ({navigation, route }) {
+  const isFocused = useIsFocused();
   const { access } = route.params;
-  const [menuItems, setMenuItems] =useState([]);
+  const [mhItems, setMhItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
   const ScreenName = "View Menu Item";
   const handlegetMenuItems = async () => {
     try{
@@ -14,15 +16,18 @@ function MenuItemHistory ({navigation, route }) {const isFocused = useIsFocused(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + access,
+        Authorization: "Bearer " + access,
       },
     });
-
+    
+   
     if (response.ok) 
     {
       const data = await response.json();
-      setMenuItems(data.length > 0 ? data[0].menu_item : []);
+      setMhItems(data);
+      console.log(menuItems);
     } 
+
   }catch (error) {
     console.error("Error:", error);
   }
@@ -36,6 +41,9 @@ useEffect (() => {
 }, [isFocused]); 
   console.log(menuItems);
 
+  useEffect (() => {
+    setMenuItems(mhItems.map(item => item.menu_item));
+  }, [mhItems]); 
 
   return (
 
@@ -71,8 +79,9 @@ useEffect (() => {
         </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
-
+      {menuItems.length > 0 && (
       <MenuComponent menuItems={menuItems} accessToken={access} screenName={ScreenName}/>
+      )}
     </View>
     </View>
   );
