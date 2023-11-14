@@ -1,12 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+
+
+
 
 const SearchResultsScreen = ({navigation, route }) => {
   const { searchResults } = route.params;
   const { access } = route.params;
+  const [bookmarkItem, setBookmarkItem] = useState ("");
 
+  const handleSubmit = async () => {
+    try {
+      const bookmarkItem = {
+        menu_item: bookmarkItem,
+      };
+      const response = await fetch(
+        "http://localhost:8000/patrons/bookmarks/",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${access}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookmarkItem),
+        }
+      );
+  
+      if (response.ok) {
+        console.log("Bookmark added successfully.");
+        const responseData = await response.json();
+        setBookmark(responseData.results);
+        navigation.navigate("Bookmark", {
+          bookmarkItem: responseData.results,
+        });
+        console.log("Data received from the server:", responseData);
+        setBookmark("");
+    }
+    else {
+      console.error("Error adding bookmark", error);
+    }
+  }catch (error) {
+    console.error("Error adding bookmark", error);
+  }
+  };
   return (
+    
 
     <View style={styles.container}>
     <View style={styles.navbar}>
@@ -46,10 +85,14 @@ const SearchResultsScreen = ({navigation, route }) => {
           <Text>Calories: {result.calories}</Text>
           <Text>Price: ${result.price}</Text>
           <Text>Restaurant: {result.restaurant.name}</Text>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <Icon name="bookmark" size={25} color="#000000" />
+        </TouchableOpacity>
         </View>
         
       ))}
       </View>
+     
     </View>
   );
 };

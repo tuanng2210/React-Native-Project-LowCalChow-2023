@@ -138,8 +138,8 @@ function Search({ navigation, route }) {
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Search</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -155,11 +155,17 @@ function Search({ navigation, route }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mainContent}>
         <View style={styles.root}>
-        <Image source={logo} style={{ width: 30, height: 30 }} />
+        
           <Text style={styles.title}>Search for a Menu Item</Text>
           <View style={styles.container}>
             <View
@@ -193,19 +199,19 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Restriction Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedRestrictionTags(val)}
                 data={dietaryRestrictionTags}
                 save="key"
                 label="Tags"
                 boxStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
@@ -215,19 +221,19 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Dietary Allergy Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0,  }}>
               <MultipleSelectList
                 setSelected={(val) => setAllergyTags(val)}
                 data={allergyTags}
                 save="key"
                 label="Tags"
                 boxStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
@@ -235,19 +241,19 @@ function Search({ navigation, route }) {
             </View>
 
             <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0,}}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedTasteTags(val)}
                 data={patronTasteTags}
                 save="key"
                 label="Tags"
                 boxStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
@@ -257,19 +263,19 @@ function Search({ navigation, route }) {
             <Text style={styles.modalSelectTag}>
               Select Disliked Ingredient Tags
             </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
+            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
               <MultipleSelectList
                 setSelected={(val) => setSelectedIngredientTags(val)}
                 data={dislikedIngredients}
                 save="key"
                 label="Tags"
                 boxStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
                 dropdownStyles={{
-                  backgroundColor: "",
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
                   borderRadius: 15,
                   width: "100%",
                 }}
@@ -293,6 +299,11 @@ function Search({ navigation, route }) {
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate(("Login"))}>
+        <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
       </View>
 

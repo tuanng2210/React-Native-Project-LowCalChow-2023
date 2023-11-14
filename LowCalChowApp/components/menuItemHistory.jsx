@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import MenuComponent from './menuItemComponent';
 import {useIsFocused} from '@react-navigation/native';
+import logo from "../assets/icons8-carrot-94.png";
 
-function MenuItemHistory ({navigation, route }) {const isFocused = useIsFocused();
+function MenuItemHistory ({navigation, route }) {
+  const isFocused = useIsFocused();
   const { access } = route.params;
-  const [menuItems, setMenuItems] =useState([]);
+  const [mhItems, setMhItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
   const ScreenName = "View Menu Item";
   const handlegetMenuItems = async () => {
     try{
@@ -14,15 +17,18 @@ function MenuItemHistory ({navigation, route }) {const isFocused = useIsFocused(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + access,
+        Authorization: "Bearer " + access,
       },
     });
-
+    
+   
     if (response.ok) 
     {
       const data = await response.json();
-      setMenuItems(data.length > 0 ? data[0].menu_item : []);
+      setMhItems(data);
+      console.log(menuItems);
     } 
+
   }catch (error) {
     console.error("Error:", error);
   }
@@ -36,6 +42,9 @@ useEffect (() => {
 }, [isFocused]); 
   console.log(menuItems);
 
+  useEffect (() => {
+    setMenuItems(mhItems.map(item => item.menu_item));
+  }, [mhItems]); 
 
   return (
 
@@ -45,15 +54,14 @@ useEffect (() => {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Menu Item History</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -69,10 +77,18 @@ useEffect (() => {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
-
+      {menuItems.length > 0 && (
       <MenuComponent menuItems={menuItems} accessToken={access} screenName={ScreenName}/>
+      )}
     </View>
     </View>
   );
@@ -104,6 +120,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     padding: 20,
+    flex: 2,
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",

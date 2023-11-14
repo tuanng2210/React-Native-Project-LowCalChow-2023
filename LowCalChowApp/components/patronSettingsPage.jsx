@@ -53,6 +53,7 @@ function PatronSettingsPage({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Settings</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -68,9 +69,16 @@ function PatronSettingsPage({ navigation, route }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.mainContent}>
-      <Image source={logo} style={{ width: 30, height: 30 }} />
+      
       <View style={styles.resultItem}>
       <Text style={styles.mainText}>Name: {profile.name}
       </Text>
@@ -78,7 +86,7 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
-      {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+       <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -90,7 +98,7 @@ function PatronSettingsPage({ navigation, route }) {
               </View> ))}
       </Text>
       <Text style={styles.mainText}>Disliked Ingredients: {profile.disliked_ingredients}
-      </Text> */}
+      </Text> 
       <Text style={styles.mainText}>Price Preference: {profile.price_max}
       </Text>
       <Text style={styles.mainText}>Zipcode: {profile.zipcode}
@@ -104,13 +112,15 @@ function PatronSettingsPage({ navigation, route }) {
           style={styles.button}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
           <Icon name="edit" size={20} color="#000000" />
-          <Text style={styles.buttonText}>Edit Profile</Text>
+          <Text style={styles.buttonText}>  Edit Profile</Text>
         </TouchableOpacity>
-      </View>
-      <Button
-        title="Log Out"
-        onPress={() => navigation.navigate(("Login"))}
-      />
+      
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => navigation.navigate(("Login"))}>
+        <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+    </View>
     </View>
   );
 }
@@ -139,12 +149,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
-  buttonText: {
-    color: "#000000",
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
+  
   mainContent: {
     padding: 20,
     backgroundColor: "#fff",
@@ -182,8 +187,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
-    width: "25%",
-  }
+    width: "20%",
+    flexDirection: "row",
+    padding: 10,
+  },
+  logoutButton: {
+    
+      backgroundColor: "#FFA500",
+      borderRadius: 8,
+      paddingVertical: 10,
+      alignItems: "center",
+      marginTop: 16,
+      marginBottom: 12,
+      width: "20%",
+    
+  },
+  buttonText: {
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
 },
 );
 export default PatronSettingsPage;

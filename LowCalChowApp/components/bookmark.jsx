@@ -76,7 +76,7 @@ function Bookmark({ navigation, route }) {
                     <Icon name="bookmark" size={25} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
-                
+                <Image source={logo} style={{ width: 30, height: 30 }} />
                 <Text style={styles.navbarText}>Bookmarks</Text>
                
                 <TouchableOpacity
@@ -93,10 +93,17 @@ function Bookmark({ navigation, route }) {
                     <Icon name="search" size={24} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
-            <Image source={logo} style={{ width: 30, height: 30 }} />
+            
                 {bookmarks}
+               
             </View>
         </View>
     );
@@ -131,6 +138,21 @@ const styles = StyleSheet.create({
         justifyContent: "top",
         alignItems: "center",
     },
+    buttonText: {
+        color: "#000000",
+        fontSize: 20,
+        fontWeight: "bold",
+        marginLeft: 10,
+      },
+      button: {
+        backgroundColor: "#FFA500",
+        borderRadius: 8,
+        paddingVertical: 10,
+        alignItems: "center",
+        marginTop: 16,
+        marginBottom: 12,
+        width: "25%",
+      },
     title: {
         fontSize: 30,
         fontWeight: "bold",

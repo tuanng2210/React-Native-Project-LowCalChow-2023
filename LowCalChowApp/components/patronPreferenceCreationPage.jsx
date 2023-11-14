@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import { useRoute } from "@react-navigation/native";
 
 
 
-function PatronPreferenceCreationPage({navigation}) {
+function PatronPreferenceCreationPage({ navigation }) {
 
   const route = useRoute()
   var data = route.params?.data
@@ -25,13 +25,13 @@ function PatronPreferenceCreationPage({navigation}) {
 
   const allergyTags = [
     { label: "Milk", value: "Milk" },
-    { label: "Sesame" , value: "Sesame" },
+    { label: "Sesame", value: "Sesame" },
     { label: "Soybeans", value: "Soybeans" },
     { label: "Wheat", value: "Wheat" },
-    { label: "Peanuts" , value: "Peanuts" },
+    { label: "Peanuts", value: "Peanuts" },
     { label: "Tree-nuts", value: "Tree-nuts" },
     { label: "Eggs", value: "Eggs" },
-    { label: "Shellfish" , value: "Shellfish" },
+    { label: "Shellfish", value: "Shellfish" },
     { label: "Fish", value: "Fish" },
     { label: "Celiac", value: "Celiac" }
   ];
@@ -41,7 +41,7 @@ function PatronPreferenceCreationPage({navigation}) {
     { label: "Sweet", value: "Sweet" },
     { label: "Spicy", value: "Spicy" },
     { label: "Umami", value: "Umami" },
-    { label: "Sour" , value: "Sour" },
+    { label: "Sour", value: "Sour" },
     { label: "Bitter", value: "Bitter" },
   ];
 
@@ -55,18 +55,18 @@ function PatronPreferenceCreationPage({navigation}) {
 
     let errors = {};
 
-    if(calorielimit == {}){
+    if (calorielimit == {}) {
       setCalorieLimit(9999);
     }
 
-    if(Object.keys(errors).length === 0){
+    if (Object.keys(errors).length === 0) {
 
       var restrictionsIDs = [];
       var allergiesIDs = [];
       var tasteIDs = [];
 
-      for(var i = 0; i < restrictions.length; i++){
-        switch(restrictions[i]){
+      for (var i = 0; i < restrictions.length; i++) {
+        switch (restrictions[i]) {
           case 'Vegan':
             restrictionsIDs.push(1)
             break;
@@ -94,8 +94,8 @@ function PatronPreferenceCreationPage({navigation}) {
         }
       }
 
-      for(var i = 0; i < allergies.length; i++){
-        switch(allergies[i]){
+      for (var i = 0; i < allergies.length; i++) {
+        switch (allergies[i]) {
           case 'Milk':
             allergiesIDs.push(1)
             break;
@@ -129,8 +129,8 @@ function PatronPreferenceCreationPage({navigation}) {
         }
       }
 
-      for(var i = 0; i < taste.length; i++){
-        switch(taste[i]){
+      for (var i = 0; i < taste.length; i++) {
+        switch (taste[i]) {
           case 'Salty':
             tasteIDs.push(1)
             break;
@@ -173,11 +173,12 @@ function PatronPreferenceCreationPage({navigation}) {
         },
         body: JSON.stringify(data)
       })
-        .then((response) => {response.json()
-          if(response.status == "200" || response.status == "201"){
-            navigation.navigate("Patron Homepage", {access: access});
+        .then((response) => {
+          response.json()
+          if (response.status == "200" || response.status == "201") {
+            navigation.navigate("Patron Homepage", { access: access });
           }
-          else{
+          else {
             alert("There was an issue.")
             console.log(response.status)
           }
@@ -194,55 +195,88 @@ function PatronPreferenceCreationPage({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Let's pick your preferences</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Let's pick your preferences</Text>
+      </View>
 
-      <Text>Dietary Restrictions?</Text>
-      <MultipleSelectList 
-            setSelected={(val) => setRestrictions(val)} 
-            data={restrictionsTags} 
+      <View style={styles.mainContent}>
+      <View style={{ marginVertical: 5, paddingRight: 5, }}>
+        <Text style = {styles.modalSelectTag}>
+        Dietary Restrictions?</Text>
+          <MultipleSelectList
+            setSelected={(val) => setRestrictions(val)}
+            data={restrictionsTags}
             save="value"
             //onSelect={() => alert(allergiesSelect)} 
             label="Restrictions"
-            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
-            dropdownStyles={{backgroundColor: '#FECA83'}}
-      />
-
-      <Text>Allergies?</Text>
-      <MultipleSelectList 
-            setSelected={(val) => setAllergies(val)} 
-            data={allergyTags} 
-            save="key"
-            //onSelect={() => alert(allergiesSelect)} 
-            label="Allergy"
-            boxStyles={{backgroundColor: '#FDAA3A', borderRadius: 45}}
-            dropdownStyles={{backgroundColor: '#FECA83'}}
-      />
-
-    <Text>Taste Preferences?</Text>
-      <MultipleSelectList 
-            setSelected={(val) => setTaste(val)} 
-            data={tasteTags} 
-            save="key"
-            //onSelect={() => alert(allergiesSelect)} 
-            label="Taste"
-      />
-
-    <Text>Calorie Limit? (9999 for no limit)</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Calorie Limit"
-        onChangeText={(text) => setCalorieLimit(text)}
-      />
-
-      <Button title="Submit" 
-           onPress={() => handleSubmit()}
-           style={styles.button}
+            boxStyles={{
+              backgroundColor: 'rgba(255, 165, 0, 0.5)',
+              borderRadius: 15,
+              width: "100%"
+            }}
+            dropdownStyles={{
+              backgroundColor: 'rgba(255, 165, 0, 0.5)',
+              borderRadius: 15,
+              width: "100%",
+            }}
           />
+        <Text style = {styles.modalSelectTag}>Allergies?</Text>
+        
+        <MultipleSelectList
+          setSelected={(val) => setAllergies(val)}
+          data={allergyTags}
+          save="key"
+          //onSelect={() => alert(allergiesSelect)} 
+          label="Allergy"
+          boxStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%"
+          }}
+          dropdownStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%",
+          }}
+        />
+        
+        <Text style = {styles.modalSelectTag}>Taste Preferences?</Text>
+        <MultipleSelectList
+          setSelected={(val) => setTaste(val)}
+          data={tasteTags}
+          save="key"
+          //onSelect={() => alert(allergiesSelect)} 
+          label="Taste"
+          boxStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%"
+          }}
+          dropdownStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%",
+          }}
+        />
+        </View>
+        <Text style = {styles.modalSelectTag}>Calorie Limit? (9999 no limit)</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Calorie Limit"
+          onChangeText={(text) => setCalorieLimit(text)}
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleSubmit()}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
 
-      <Button
-        title="Back"
-        onPress={() => navigation.navigate("Patron Profile Creation")}
-      />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Patron Profile Creation")}>
+          <Text style={styles.buttonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -250,20 +284,20 @@ function PatronPreferenceCreationPage({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
   },
-  dobContainer: {
-    flex: 1,
-    justifyContent: 'left'
+  mainContent: {
+    padding: 20,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "center",
+    alignContent: "center",
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 16,
+  modalSelectTag: {
+    fontSize: 15,
+    justifyContent: "left",
   },
   input: {
-    width: '100%',
+    width: '15%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -271,44 +305,43 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginBottom: 12,
   },
+  error: {
+    color: 'red',
+    fontSize: 20,
+    marginBottom: 12,
+  },
   button: {
-    backgroundColor: "orange",
+    backgroundColor: "#FFA500",
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: "center",
     marginTop: 16,
     marginBottom: 12,
-    width: 100,
-},
+    width: "10%",
+  },
   buttonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
+    color: "#000000",
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   error: {
-      color: 'red',
-      fontSize: 20,
-      marginBottom: 12,
-  },
-  button: {
-    backgroundColor: "orange",
-    borderRadius: 8,
-    paddingVertical: 10,
-    alignItems: "center",
-    marginTop: 16,
+    color: 'red',
+    fontSize: 20,
     marginBottom: 12,
-    width: 100,
-},
-  buttonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
   },
-  error: {
-      color: 'red',
-      fontSize: 20,
-      marginBottom: 12,
-  }
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#FFA500",
+    padding: 10,
+  },
+  titleText: {
+    color: "#000000",
+    fontSize: 30,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
 });
 
 export default PatronPreferenceCreationPage;
