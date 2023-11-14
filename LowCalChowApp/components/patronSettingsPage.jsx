@@ -111,7 +111,7 @@ function PatronSettingsPage({ navigation, route }) {
       <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
-          <Icon name="edit" size={20} color="#000000" />
+          <Icon style= {styles.buttonIcon} name="edit" size={20} color="#000000" />
           <Text style={styles.buttonText}>  Edit Profile</Text>
         </TouchableOpacity>
       
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     width: "20%",
     flexDirection: "row",
+    paddingLeft: 65,
     padding: 10,
   },
   logoutButton: {
@@ -196,12 +197,14 @@ const styles = StyleSheet.create({
       backgroundColor: "#FFA500",
       borderRadius: 8,
       paddingVertical: 10,
+      
       alignItems: "center",
       marginTop: 16,
       marginBottom: 12,
       width: "20%",
     
   },
+ 
   buttonText: {
     color: "#000000",
     fontSize: 20,

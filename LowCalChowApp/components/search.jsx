@@ -300,11 +300,7 @@ function Search({ navigation, route }) {
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate(("Login"))}>
-        <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+        
       </View>
 
       {/* {searchResults.length > 0 && (

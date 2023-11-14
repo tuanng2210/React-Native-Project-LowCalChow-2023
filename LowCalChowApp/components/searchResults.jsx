@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import logo from "../assets/icons8-carrot-94.png";
 
 
 
@@ -62,6 +62,7 @@ const SearchResultsScreen = ({navigation, route }) => {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Search Results</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -76,6 +77,12 @@ const SearchResultsScreen = ({navigation, route }) => {
         >
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
         </TouchableOpacity>
       </View>
       <View style={styles.mainContent}>
