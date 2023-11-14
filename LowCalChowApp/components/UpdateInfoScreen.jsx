@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#FFA500",
-    margin: 15,
+    margin: 10,
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
@@ -389,6 +389,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
+    marginBottom: 20,
   },
   successMessageText: {
     color: "#ffffff",
