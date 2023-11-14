@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
+import logo from "../assets/icons8-carrot-94.png";
 
 
 function PatronProfileEditPage({ navigation }) {
@@ -177,6 +178,7 @@ function PatronProfileEditPage({ navigation }) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Patron Profile Edit</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -192,11 +194,17 @@ function PatronProfileEditPage({ navigation }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mainContent}>
 
-        <Text style={styles.otherText}>Username:</Text>
+        <Text style={styles.otherText}>Name:</Text>
 
         <TextInput
           style={styles.input}
@@ -370,7 +378,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",
-
+    flex: 2, 
   },
   otherText: {
     paddingTop: 5,

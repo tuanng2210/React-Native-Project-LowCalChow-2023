@@ -76,7 +76,7 @@ function Bookmark({ navigation, route }) {
                     <Icon name="bookmark" size={25} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
-                
+                <Image source={logo} style={{ width: 30, height: 30 }} />
                 <Text style={styles.navbarText}>Bookmarks</Text>
                
                 <TouchableOpacity
@@ -93,15 +93,17 @@ function Bookmark({ navigation, route }) {
                     <Icon name="search" size={24} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
             </View>
             <View style={styles.mainContent}>
-            <Image source={logo} style={{ width: 30, height: 30 }} />
+            
                 {bookmarks}
-                <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate(("Login"))}>
-        <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+               
             </View>
         </View>
     );

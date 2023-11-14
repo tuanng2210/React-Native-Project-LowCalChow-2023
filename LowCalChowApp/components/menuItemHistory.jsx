@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import MenuComponent from './menuItemComponent';
 import {useIsFocused} from '@react-navigation/native';
+import logo from "../assets/icons8-carrot-94.png";
 
 function MenuItemHistory ({navigation, route }) {
   const isFocused = useIsFocused();
@@ -53,15 +54,14 @@ useEffect (() => {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Menu Item History</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -75,6 +75,13 @@ useEffect (() => {
           onPress={() => navigation.navigate("Search", { access })}
         >
           <Icon name="search" size={24} color="#000000" />
+          <Text style={styles.navbarText}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
@@ -113,6 +120,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     padding: 20,
+    flex: 2,
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",

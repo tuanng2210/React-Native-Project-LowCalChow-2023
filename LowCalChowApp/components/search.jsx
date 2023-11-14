@@ -138,8 +138,8 @@ function Search({ navigation, route }) {
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Search</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -155,11 +155,17 @@ function Search({ navigation, route }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mainContent}>
         <View style={styles.root}>
-        <Image source={logo} style={{ width: 30, height: 30 }} />
+        
           <Text style={styles.title}>Search for a Menu Item</Text>
           <View style={styles.container}>
             <View

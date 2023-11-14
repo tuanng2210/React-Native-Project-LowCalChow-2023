@@ -53,6 +53,7 @@ function PatronSettingsPage({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
         <Text style={styles.title}>Settings</Text>
         <TouchableOpacity
           style={styles.navbarItem}
@@ -68,10 +69,16 @@ function PatronSettingsPage({ navigation, route }) {
           <Icon name="search" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mainContent}>
-      <Image source={logo} style={{ width: 30, height: 30 }} />
+      
       <View style={styles.resultItem}>
       <Text style={styles.mainText}>Name: {profile.name}
       </Text>

@@ -15,7 +15,7 @@ function PatronHomepage({ navigation, route }) {
           <Icon name="gear" size={24} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
@@ -23,39 +23,35 @@ function PatronHomepage({ navigation, route }) {
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
 
+        <Image source={logo} style={{ width: 30, height: 30 }} />
+
         <Text style={styles.title}>LowCalChow</Text>
 
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Homepage", { access })}
         >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
+          <Icon name="home" size={26} color="#000000" />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Search", { access })}
         >
           <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-      </View>
-      
-      <View style={styles.mainContent}>
-      <TouchableOpacity
+
+        <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Menu Item History", { access })}
         >
           <Icon name="book" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity> 
-      <Image source={logo} style={{ width: 30, height: 30 }} />
-      <Text style={styles.title}>Suggestion Feed</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate(("Login"))}>
-        <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.mainContent}>
+
+        <Text style={styles.title}>Suggestion Feed</Text>
       </View>
     </View>
   );
@@ -88,6 +84,7 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     padding: 20,
+    flex: 2,
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",
@@ -110,6 +107,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 12,
     width: "25%",
+  },
+  buttonContainer: {
+    flex: "end",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 },
 );
