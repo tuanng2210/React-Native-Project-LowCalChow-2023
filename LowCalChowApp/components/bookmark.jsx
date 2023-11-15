@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {WebView} from 'react-native-webview';
@@ -69,42 +69,50 @@ function Bookmark({ navigation, route }) {
                     <Icon name="gear" size={24} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
-
+                <View style={styles.navbarItem}>
+                <Image source={logo} style={{ width: 30, height: 30 }} />
+                <Text style={styles.navbarText}>Bookmarks</Text>
+                </View>
                 <TouchableOpacity style={styles.navbarItem}
                     onPress={() => navigation.navigate("Bookmark", { access })}
                 >
                     <Icon name="bookmark" size={25} color="#000000" />
                     <Text style={styles.navbarText}></Text>
                 </TouchableOpacity>
-                <Image source={logo} style={{ width: 30, height: 30 }} />
-                <Text style={styles.navbarText}>Bookmarks</Text>
-               
-                <TouchableOpacity
-                    style={styles.navbarItem}
-                    onPress={() => navigation.navigate("Patron Homepage", { access })}
-                >
-                    <Icon name="home" size={24} color="#000000" />
-                    <Text style={styles.navbarText}></Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.navbarItem}
-                    onPress={() => navigation.navigate("Search", { access })}
-                >
-                    <Icon name="search" size={24} color="#000000" />
-                    <Text style={styles.navbarText}></Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Menu Item History", { access })}
-        >
-          <Icon name="book" size={24} color="#000000" />
-        </TouchableOpacity>
+                
+                
+           
             </View>
+            <ScrollView>
             <View style={styles.mainContent}>
             
                 {bookmarks}
                
             </View>
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+       
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={26} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
+        </View>
         </View>
     );
 };
@@ -127,7 +135,7 @@ const styles = StyleSheet.create({
     },
     navbarText: {
         color: "#000000",
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: "bold",
         marginLeft: 10,
     },
@@ -163,7 +171,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         padding: 20,
         width: 500
-    }
+    },
+    buttonContainer: {
+        flex: "end",
+        flexDirection: "row",
+        backgroundColor: "#FFA500",
+        width: "100%",
+        justifyContent: "space-around",
+        padding: 10,
+      },
 },
 );
 export default Bookmark;

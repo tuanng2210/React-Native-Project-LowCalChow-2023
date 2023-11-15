@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
@@ -169,39 +169,21 @@ function PatronProfileEditPage({ navigation }) {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-
+        <View style={styles.navbarItem}>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
+        <Text style={styles.navbarText}>Patron Profile Edit</Text>
+        </View>
+        <View style={styles.navbarItem}>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Image source={logo} style={{ width: 30, height: 30 }} />
-        <Text style={styles.title}>Patron Profile Edit</Text>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Homepage", { access })}
-        >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", { access })}
-        >
-          <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Menu Item History", { access })}
-        >
-          <Icon name="book" size={24} color="#000000" />
-        </TouchableOpacity>
+        </View>
+        
       </View>
-
+    <ScrollView>
       <View style={styles.mainContent}>
 
         <Text style={styles.otherText}>Name:</Text>
@@ -304,12 +286,32 @@ function PatronProfileEditPage({ navigation }) {
         >
           <Text style={styles.buttonText}>Update Info</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate(("Login"))}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+        
       </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+       
+       <TouchableOpacity
+         style={styles.navbarItem}
+         onPress={() => navigation.navigate("Patron Homepage", { access })}
+       >
+         <Icon name="home" size={26} color="#000000" />
+       </TouchableOpacity>
+
+       <TouchableOpacity
+         style={styles.navbarItem}
+         onPress={() => navigation.navigate("Search", { access })}
+       >
+         <Icon name="search" size={24} color="#000000" />
+       </TouchableOpacity>
+
+       <TouchableOpacity
+         style={styles.navbarItem}
+         onPress={() => navigation.navigate("Menu Item History", { access })}
+       >
+         <Icon name="book" size={24} color="#000000" />
+       </TouchableOpacity>
+       </View>
     </View>
   );
 }
@@ -366,12 +368,9 @@ const styles = StyleSheet.create({
   },
   navbarText: {
     color: "#000000",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 10,
-  },
-  mainItem: {
-
   },
   mainContent: {
     padding: 20,
@@ -386,7 +385,15 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingTop: 15,
-  }
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },
 });
 
 export default PatronProfileEditPage;
