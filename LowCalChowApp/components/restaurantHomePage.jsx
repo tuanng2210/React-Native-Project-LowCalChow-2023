@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "50%",
-    height: "80%",
+    height: "100%",
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
