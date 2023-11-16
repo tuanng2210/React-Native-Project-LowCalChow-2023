@@ -16,11 +16,33 @@ function addBmItem(){
       ]);
 };
 
+function removeBookmark(id, access){
+
+    try {
+        const response = fetch(`http://localhost:8000/patrons/bookmarks/${id}/`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
+  
+        if (response.ok) {
+            alert("Bookmark removed.")
+        } else {
+          console.log("Error removing bookmark");
+        }
+      } catch (error) {
+        console.log("Error removing bookmark");
+      }
+
+}
+
 function Bookmark({ navigation, route }) {
     const { access } = route.params;
     const isFocused = useIsFocused();
     const [bmItems, setBmItem] = useState ([]);
     var bookmarks = []
+    var bookmarkIDs = []
 
     const bookmarkedItems = async () => {
 
@@ -44,10 +66,21 @@ function Bookmark({ navigation, route }) {
       };
 
       for(var i = 0; i < bmItems.length; i++){
-        console.log(bmItems[i].menu_item.item_name);
+
         bookmarks.push(
-            <View style={styles.bookmark}>
-                <Text>{bmItems[i].menu_item.item_name}</Text>
+            <View style={styles.bookmark} key={bookmarkIDs[i]}>
+                <Text style={styles.itemName}>{bmItems[i].menu_item.item_name}</Text>
+                <Text>Calories: {bmItems[i].menu_item.calories}</Text>
+                <Text>Price: ${bmItems[i].menu_item.price}</Text>
+                <Text>Restaurant: {bmItems[i].menu_item.restaurant.name}</Text>
+
+                <TouchableOpacity style={styles.deleteBmButton}
+                    onPress={() => removeBookmark(bookmarkIDs[i], access)}
+                >
+                    <Icon name="bookmark" size={25} color="#000000" />
+                    <Text style={styles.navbarText}></Text>
+                </TouchableOpacity>
+
             </View>
         )
 
@@ -136,12 +169,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     bookmark: {
-        backgroundColor:"#fcdb9d",
-        borderRadius:8,
-        marginBottom: 20,
-        padding: 20,
-        width: 500
-    }
+        backgroundColor: 'rgba(255, 165, 0, 0.5)',
+        borderRadius: 8,
+        padding: 15,
+        marginBottom: 15,
+    },
+    itemName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+      }
 },
 );
 export default Bookmark;
