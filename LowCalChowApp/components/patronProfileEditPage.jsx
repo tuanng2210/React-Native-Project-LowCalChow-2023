@@ -77,7 +77,9 @@ function PatronProfileEditPage({navigation}) {
       if(response.status === 200 || response.status === 201){
         const data = await response.json();
 
-        const nameArray = data[0].name.split(" ", 1);
+
+        //name is returned as a split array; limit it to one split for the first name. All other items are treated as part of the last name
+        //for names with multiple last names
         setFirstName(data[0].name.split(" ", 1));
         setLastName(data[0].name.split(" ").slice(1).join(" "));
 
