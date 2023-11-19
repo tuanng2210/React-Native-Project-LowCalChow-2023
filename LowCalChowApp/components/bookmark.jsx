@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "rea
 import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {WebView} from 'react-native-webview';
+import MenuComponent from "./menuItemComponent";
 import Icon from "react-native-vector-icons/FontAwesome";
 import logo from "../assets/icons8-carrot-94.png";
 
@@ -41,6 +42,8 @@ function Bookmark({ navigation, route }) {
     const { access } = route.params;
     const isFocused = useIsFocused();
     const [bmItems, setBmItem] = useState ([]);
+    const [bookmarkItems, setBookmarkItems] = useState([]);
+    const ScreenName = "View Menu Item";
     var bookmarks = []
     var bookmarkIDs = []
 
@@ -92,6 +95,11 @@ function Bookmark({ navigation, route }) {
         }
       }, [isFocused]);
 
+
+      useEffect(() => {
+        setBookmarkItems(bmItems.map(item => item.menu_item));
+      }, [bmItems]);
+
     return (
 
         <View style={styles.container}>
@@ -118,9 +126,12 @@ function Bookmark({ navigation, route }) {
             </View>
             <ScrollView>
             <View style={styles.mainContent}>
-            
-                {bookmarks}
                
+                {bookmarkItems.length > 0 && (
+                <MenuComponent menuItems={bookmarkItems} accessToken={access} screenName={ScreenName}/>
+                )}
+
+
             </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
