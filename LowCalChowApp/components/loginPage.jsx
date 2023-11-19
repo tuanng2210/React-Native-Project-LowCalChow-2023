@@ -29,26 +29,35 @@ function LoginPage({ navigation }) {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.status === 200) {
+      if (response.status === 200 ) {
         const data = await response.json();
-        const { user_type, tokens } = data;
-        const { access, refresh } = tokens;
-        console.log("Authentication successful");
 
-        // Store the access and refresh tokens securely
-        // You can use a library like AsyncStorage for React Native or localStorage for web
 
-        if (user_type === "restaurant") {
-          navigation.navigate("Restaurant Homepage", { access });
-        } else if (user_type === "patron") {
-          navigation.navigate("Patron Homepage", { access });
-        } else if (user_type === "admin") {
-          navigation.navigate("Admin Homepage", { access });
-        } else {
-          //print error
+        if(data.message == "Login Successful"){
+          const { user_type, tokens } = data;
+          const { access, refresh } = tokens;
+          console.log("Authentication successful");
+  
+          // Store the access and refresh tokens securely
+          // You can use a library like AsyncStorage for React Native or localStorage for web
+  
+          if (user_type === "restaurant") {
+            navigation.navigate("Restaurant Homepage", { access });
+          } else if (user_type === "patron") {
+            navigation.navigate("Patron Homepage", { access });
+          } else if (user_type === "admin") {
+            navigation.navigate("Admin Homepage", { access });
+          } else {
+            //print error
+          }
+        }
+        else if(data.details == "Invalid Credentials"){
+          alert("Sorry, the username or password you entered is incorrect.");
         }
       } else {
         console.log("Authentication failed");
+
+        alert("Sorry, something went wrong.")
       }
     } catch (error) {
       console.error("Error:", error);

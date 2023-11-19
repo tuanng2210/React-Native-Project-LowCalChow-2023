@@ -19,8 +19,6 @@ const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {id: item.id, access: access, ...(RestID && { restaurantId: RestID })})}>
         <View style={styles.menuItem}>
-          <Text>{item.item_name}</Text>
-
           <Text style={styles.itemName}>{item.item_name}</Text>
           <Text>Calories: {item.calories}</Text>
           <Text>Price: ${item.price}</Text>
