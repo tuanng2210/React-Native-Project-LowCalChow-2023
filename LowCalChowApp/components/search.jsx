@@ -33,6 +33,10 @@ function Search({ navigation, route }) {
   const [isTasteTagsModalVisible, setIsTasteTagsModalVisible] = useState(false);
   const [isRestrictionTagsModalVisible, setIsRestrictionTagsModalVisible] =
     useState(false);
+  const [isAllergyTagsModalVisible, setIsAllergyTagsModalVisible] =
+    useState(false);
+  const [isIngredientTagsModalVisible, setIsIngredientTagsModalVisible] =
+    useState(false);
   const [defaultRestrictionTags, setDefaultRestrictionTags] = useState([]);
   const [defaultTasteTags, setDefaultTasteTags] = useState([]);
   const [defaultAllergyTags, setDefaultAllergyTags] = useState([]);
@@ -63,8 +67,24 @@ function Search({ navigation, route }) {
           value: tag.title,
         }));
 
+        const patronAllergyTags = responseData[0].patron_allergy_tag.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
+        const patronIngredientTags = responseData[0].disliked_ingredients.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
         setDefaultRestrictionTags(patronRestrictionTags);
         setDefaultTasteTags(patronTasteTags);
+        setDefaultAllergyTags(patronAllergyTags);
+        setDefaultIngredientTags(patronIngredientTags);
       } else {
         console.error(await response.json());
       }
@@ -81,7 +101,14 @@ function Search({ navigation, route }) {
     console.log("Default Taste Tags:", defaultTasteTags);
     setSelectedRestrictionTags(defaultRestrictionTags);
     setSelectedTasteTags(defaultTasteTags);
-  }, [defaultTasteTags]);
+    setSelectedAllergyTags(defaultAllergyTags);
+    setSelectedIngredientTags(defaultIngredientTags);
+  }, [
+    defaultTasteTags,
+    defaultRestrictionTags,
+    defaultAllergyTags,
+    defaultIngredientTags,
+  ]);
 
   const openTasteTagsModal = () => {
     setIsTasteTagsModalVisible(true);
@@ -97,6 +124,22 @@ function Search({ navigation, route }) {
 
   const closeRestrictionTagsModal = () => {
     setIsRestrictionTagsModalVisible(false);
+  };
+
+  const openAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(true);
+  };
+
+  const closeAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(false);
+  };
+
+  const openIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(true);
+  };
+
+  const closeIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(false);
   };
 
   const handleTasteTagSelect = (selectedTasteTag) => {
@@ -128,6 +171,39 @@ function Search({ navigation, route }) {
       setSelectedTasteTags([
         ...selectedRestrictionTags,
         selectedRestrictionTag,
+      ]);
+    }
+  };
+
+  const handleAllergyTagSelect = (selectedAllergyTag) => {
+    const isSelected = selectedAllergyTags.some(
+      (tag) => tag.key === selectedAllergyTag.key
+    );
+
+    if (isSelected) {
+      setSelectedAllergyTags(
+        selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
+      );
+    } else {
+      setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
+    }
+  };
+
+  const handleIngredientSelect = (selectedIngredientTag) => {
+    const isSelected = selectedIngredientTags.some(
+      (tag) => tag.key === selectedIngredientTag.key
+    );
+
+    if (isSelected) {
+      setSelectedIngredientTags(
+        selectedIngredientTags.filter(
+          (tag) => tag.key !== selectedIngredientTag.key
+        )
+      );
+    } else {
+      setSelectedIngredientTags([
+        ...selectedIngredientTags,
+        selectedIngredientTag,
       ]);
     }
   };
@@ -279,70 +355,6 @@ function Search({ navigation, route }) {
                 onChangeText={(text) => setCalorieLimit(text)}
               />
 
-              {/* <Text style={styles.modalSelectTag}>
-                Select Dietary Restriction Tags
-              </Text>
-              <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
-                <MultipleSelectList
-                  setSelected={(val) => setSelectedRestrictionTags(val)}
-                  data={dietaryRestrictionTags}
-                  save="key"
-                  label="Tags"
-                  boxStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                  dropdownStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                />
-              </View> */}
-
-              {/* <Text style={styles.modalSelectTag}>
-                Select Dietary Allergy Tags
-              </Text>
-              <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
-                <MultipleSelectList
-                  setSelected={(val) => setAllergyTags(val)}
-                  data={allergyTags}
-                  save="key"
-                  label="Tags"
-                  boxStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                  dropdownStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                />
-              </View> */}
-
-              {/* <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0,}}>
-              <MultipleSelectList
-                setSelected={(val) => setSelectedTasteTags(val)}
-                data={patronTasteTags}
-                save="key"
-                label="Tags"
-                boxStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-                dropdownStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-              />
-            </View> */}
-
               <TouchableOpacity
                 onPress={openRestrictionTagsModal}
                 style={styles.tasteTagsButton}
@@ -373,27 +385,35 @@ function Search({ navigation, route }) {
                 onClose={closeTasteTagsModal}
               />
 
-              {/* <Text style={styles.modalSelectTag}>
-                Select Disliked Ingredient Tags
-              </Text>
-              <View style={{ marginVertical: 5, paddingHorizontal: 0 }}>
-                <MultipleSelectList
-                  setSelected={(val) => setSelectedIngredientTags(val)}
-                  data={dislikedIngredients}
-                  save="key"
-                  label="Tags"
-                  boxStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                  dropdownStyles={{
-                    backgroundColor: "rgba(255, 165, 0, 0.5)",
-                    borderRadius: 15,
-                    width: "100%",
-                  }}
-                />
-              </View> */}
+              <TouchableOpacity
+                onPress={openAllergyTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
+              </TouchableOpacity>
+              <TagModal
+                visible={isAllergyTagsModalVisible}
+                tags={allergyTags}
+                selectedTags={selectedAllergyTags}
+                onSelect={handleAllergyTagSelect}
+                onClose={closeAllergyTagsModal}
+              />
+
+              <TouchableOpacity
+                onPress={openIngredientTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>
+                  Select Dislike Ingredients{" "}
+                </Text>
+              </TouchableOpacity>
+              <TagModal
+                visible={isIngredientTagsModalVisible}
+                tags={dislikedIngredients}
+                selectedTags={selectedIngredientTags}
+                onSelect={handleIngredientSelect}
+                onClose={closeIngredientTagsModal}
+              />
 
               <TextInput
                 style={styles.input}
