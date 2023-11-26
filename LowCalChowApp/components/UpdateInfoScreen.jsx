@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+import TagModal from "./tagModal";
 
 function UpdateInfo({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -78,6 +79,8 @@ function UpdateInfo({ route, navigation }) {
   const [zipCode, setZipCode] = useState("");
   const [availableTags, setAvailableTags] = useState([]);
   const [successMessageVisible, setSuccessMessageVisible] = useState(false);
+  const [isRestTagsModalVisible, setIsRestTagsModalVisible] = useState(false);
+  const [defaultRestTags, setDefaultRestTags] = useState([]);
 
   const formatPhoneNumber = (input) => {
     const cleaned = input.replace(/\D/g, "");
@@ -121,6 +124,13 @@ function UpdateInfo({ route, navigation }) {
         if (!city) setCity(data.city);
         if (!selectedState) setSelectedState(data.state);
         if (!zipCode) setZipCode(data.zip_code);
+
+        const RestTags = data.tags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        setDefaultRestTags(RestTags);
       } else {
         console.error("Failed to fetch restaurant information");
       }
@@ -214,6 +224,32 @@ function UpdateInfo({ route, navigation }) {
     fetchRestTags();
   }, []);
 
+  useEffect(() => {
+    setSelectedTags(defaultRestTags);
+  }, [defaultRestTags]);
+
+  const openRestTagsModal = () => {
+    setIsRestTagsModalVisible(true);
+  };
+
+  const closeRestTagsModal = () => {
+    setIsRestTagsModalVisible(false);
+  };
+
+  const handleRestTagSelect = (selectedRestTag) => {
+    const isSelected = selectedRestTags.some(
+      (tag) => tag.key === selectedRestTag.key
+    );
+
+    if (isSelected) {
+      setSelectedRestTags(
+        selectedRestTags.filter((tag) => tag.key !== selectedRestTag.key)
+      );
+    } else {
+      setSelectedRestTags([...selectedTags, selectedRestTag]);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
@@ -232,23 +268,19 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
-        <Text style={styles.modalSelectTag}>Select Tags</Text>
-        <View
-          style={{ marginVertical: 15, paddingHorizontal: 0, width: "20%" }}
+        <TouchableOpacity
+          onPress={openRestTagsModal}
+          style={styles.tasteTagsButton}
         >
-          <MultipleSelectList
-            setSelected={(val) => setSelectedTags(val)}
-            data={availableTags}
-            save="key"
-            label="Tags"
-            boxStyles={{ backgroundColor: "", borderRadius: 10 }}
-            dropdownStyles={{
-              backgroundColor: "",
-              borderRadius: 10,
-              width: "100%",
-            }}
-          />
-        </View>
+          <Text style={styles.modalSelectTag}>Select Tags</Text>
+        </TouchableOpacity>
+        <TagModal
+          visible={isRestTagsModalVisible}
+          tags={availableTags}
+          selectedTags={selectedTags}
+          onSelect={handleRestTagSelect}
+          onClose={closeRestTagsModal}
+        />
 
         <Picker
           selectedValue={priceLevel}
@@ -394,6 +426,26 @@ const styles = StyleSheet.create({
   successMessageText: {
     color: "#ffffff",
     textAlign: "center",
+  },
+  modalSelectTag: {
+    fontSize: 15,
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+  modalSelectTag: {
+    fontSize: 15,
+  },
+  tasteTagsButton: {
+    backgroundColor: "#FFA500",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
   },
 });
 
