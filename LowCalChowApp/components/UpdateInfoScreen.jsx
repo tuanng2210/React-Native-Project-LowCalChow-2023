@@ -270,7 +270,7 @@ function UpdateInfo({ route, navigation }) {
 
         <TouchableOpacity
           onPress={openRestTagsModal}
-          style={styles.tasteTagsButton}
+          style={styles.tagsButton}
         >
           <Text style={styles.modalSelectTag}>Select Tags</Text>
         </TouchableOpacity>
@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
   modalSelectTag: {
     fontSize: 15,
   },
-  tasteTagsButton: {
+  tagsButton: {
     backgroundColor: "#FFA500",
     borderRadius: 8,
     padding: 10,
