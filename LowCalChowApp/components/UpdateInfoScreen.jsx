@@ -225,7 +225,7 @@ function UpdateInfo({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    setSelectedTags(defaultRestTags);
+    setSelectedTags(defaultRestTags.map((tag) => tag.key));
   }, [defaultRestTags]);
 
   const openRestTagsModal = () => {
@@ -237,16 +237,14 @@ function UpdateInfo({ route, navigation }) {
   };
 
   const handleRestTagSelect = (selectedRestTag) => {
-    const isSelected = selectedTags.some(
-      (tag) => tag.key === selectedRestTag.key
-    );
+    const isSelected = selectedTags.includes(selectedRestTag.key);
 
     if (isSelected) {
       setSelectedTags(
-        selectedTags.filter((tag) => tag.key !== selectedRestTag.key)
+        selectedTags.filter((tagKey) => tagKey !== selectedRestTag.key)
       );
     } else {
-      setSelectedTags([...selectedTags, selectedRestTag]);
+      setSelectedTags([...selectedTags, selectedRestTag.key]);
     }
   };
 
@@ -268,10 +266,7 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
-        <TouchableOpacity
-          onPress={openRestTagsModal}
-          style={styles.tasteTagsButton}
-        >
+        <TouchableOpacity onPress={openRestTagsModal} style={styles.tagsButton}>
           <Text style={styles.modalSelectTag}>Select Tags</Text>
         </TouchableOpacity>
         <TagModal
@@ -441,7 +436,7 @@ const styles = StyleSheet.create({
   modalSelectTag: {
     fontSize: 15,
   },
-  tasteTagsButton: {
+  tagsButton: {
     backgroundColor: "#FFA500",
     borderRadius: 8,
     padding: 10,
