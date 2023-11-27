@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput} from 'react-native';
+import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
+import logo from "../assets/icons8-carrot-94.png";
+
 function viewMenuItem({route, navigation}){
     const access = route.params.access;
     const mealID = route.params.id;
@@ -176,31 +178,51 @@ function viewMenuItem({route, navigation}){
     };
 
     return (
-      <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.menuBar}>
+
+      <View style={styles.container}>
+      <View style={styles.navbar}>
+       <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Settings Page", { access })}
+        >
+          <Icon name="gear" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        
+        <View style={styles.navbarItem}>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
+        <Text style={styles.navbarText}>Menu Item</Text>
+        </View>
+        <TouchableOpacity style={styles.navbarItem}
+          onPress={() => navigation.navigate("Bookmark", { access })}
+        >
+          <Icon name="bookmark" size={25} color="#000000" />
+        </TouchableOpacity>
+        </View>
+           {/* <SafeAreaView style={styles.menuBar}>
               
                <View style={styles.menuLeft}>
-                    {/* Home */}
+                    {/* Home 
                   <TouchableOpacity style={styles.homeButton}
-                  onPress={() => navigation.navigate('Patron Homepage',{/*} {access: access}*/})}>
+                  onPress={() => navigation.navigate('Patron Homepage', {access: access})}>
                   <Icon name="home" size={36} color="black" />
               
                   </TouchableOpacity>
-               </View>
+               </View>*/}
                
-  
+               <ScrollView> 
+      <View style={styles.mainContent}>
               {/*Menu Item Title */}
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{mealName}</Text>
              
               {/* Empty View*/}
                <View style={styles.menuRight}>
-                {/* Bookmark Button */}
+                {/* Bookmark Button 
               { showBookmarkButton && ( 
               <TouchableOpacity style={styles.menuButton} onPress={submitBKMKList}>
                 <Icon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={36} color="black" />
               
               </TouchableOpacity>
-              )}
+              )}*/}
               {/* Save Menu Item Button */}
               { showMenuItemButton && (
               <TouchableOpacity style={styles.menuButton} onPress={openFeedback}>
@@ -208,11 +230,13 @@ function viewMenuItem({route, navigation}){
                 
               </TouchableOpacity>
               )}
+              
                </View>
+              
 
 
               
-            </SafeAreaView>
+            {/*</SafeAreaView>*/}
             <SafeAreaView style={styles.container}>
               <Text style={styles.normText}>Calories: {mealCalories}</Text>
               <Text style={styles.normText}>Price: ${mealPrice}</Text>
@@ -286,16 +310,39 @@ function viewMenuItem({route, navigation}){
                 </View>
               </Modal>
             </View>
-          </SafeAreaView>
+            </View>
+           </ScrollView>
+           <View style={styles.buttonContainer}>
+       
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={26} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
+        </View>
+        </View>
     );
 }
  
     const styles = StyleSheet.create({
       container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 16,
+        flexDirection: "column",
       },
       menuBar: {
         flexDirection: 'row',
@@ -404,7 +451,38 @@ function viewMenuItem({route, navigation}){
         alignItems: 'center',
         marginTop:50,
       },
-
-        
+  mainContent: {
+    padding: 20,
+    flex: 2,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "center",
+  },
+  navbar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "#FFA500",
+    padding: 10,
+  },
+  navbarItem: {
+    backgroundColor: "#FFA500",
+    alignItems: "center",
+    flexDirection: "row", // Align icon and text horizontally
+  },
+  navbarText: {
+    color: "#000000",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },    
     });
     export default viewMenuItem;

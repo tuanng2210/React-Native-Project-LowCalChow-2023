@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -322,6 +323,7 @@ function Search({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
+      
       <ScrollView>
         <View style={styles.mainContent}>
           <View style={styles.root}>
@@ -363,6 +365,7 @@ function Search({ navigation, route }) {
                   Select Restriction Tags
                 </Text>
               </TouchableOpacity>
+              
               <TagModal
                 visible={isRestrictionTagsModalVisible}
                 tags={dietaryRestrictionTags}
@@ -398,23 +401,25 @@ function Search({ navigation, route }) {
                 onSelect={handleAllergyTagSelect}
                 onClose={closeAllergyTagsModal}
               />
-
+              
               <TouchableOpacity
                 onPress={openIngredientTagsModal}
                 style={styles.tasteTagsButton}
               >
                 <Text style={styles.modalSelectTag}>
-                  Select Dislike Ingredients{" "}
+                  Select Disliked Ingredients{" "}
                 </Text>
               </TouchableOpacity>
+              
+              
               <TagModal
                 visible={isIngredientTagsModalVisible}
                 tags={dislikedIngredients}
                 selectedTags={selectedIngredientTags}
                 onSelect={handleIngredientSelect}
                 onClose={closeIngredientTagsModal}
-              />
-
+                />
+                
               <TextInput
                 style={styles.input}
                 placeholder="Min Price"
@@ -468,6 +473,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   mainContent: {
+    flex: 2,
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
@@ -550,6 +556,7 @@ const styles = StyleSheet.create({
     justifyContent: "left",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    height: 200,
   },
   resultsContainer: {
     marginTop: 20,
@@ -572,9 +579,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  modalSelectTag: {
-    fontSize: 15,
-  },
   buttonContainer: {
     flex: "end",
     flexDirection: "row",
@@ -587,10 +591,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   tasteTagsButton: {
-    backgroundColor: "#FFA500",
+    backgroundColor: 'rgba(255, 165, 0, 0.5)',
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
   },
 });
 export default Search;

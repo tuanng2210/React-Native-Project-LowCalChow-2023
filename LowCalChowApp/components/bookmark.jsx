@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     mainContent: {
-        flex: 1,
+        flex: 2,
         padding: 20,
         backgroundColor: "#fff",
         justifyContent: "top",
@@ -204,6 +204,14 @@ const styles = StyleSheet.create({
         marginTop: 16,
         marginBottom: 12,
         width: "25%",
+      },
+      buttonContainer: {
+        flex: "end",
+        flexDirection: "row",
+        backgroundColor: "#FFA500",
+        width: "100%",
+        justifyContent: "space-around",
+        padding: 10,
       },
     title: {
         fontSize: 30,
