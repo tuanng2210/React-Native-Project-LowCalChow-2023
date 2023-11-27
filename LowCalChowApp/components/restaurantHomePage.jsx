@@ -19,6 +19,7 @@ import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
 import TagModal from "./tagModal";
 
+
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const [rating, setRating] = useState("");
@@ -153,16 +154,14 @@ function RestaurantHomepage({ navigation, route }) {
   }, [isFocused]);
 
   const handleRestTagSelect = (selectedRestTag) => {
-    const isSelected = tagSelect.some(
-      (tag) => tag.key === selectedRestTag.key
-    );
+    const isSelected = tagSelect.includes(selectedRestTag.key);
 
     if (isSelected) {
       setTagSelect(
-        tagSelect.filter((tag) => tag.key !== selectedRestTag.key)
+        tagSelect.filter((tagKey) => tagKey !== selectedRestTag.key)
       );
     } else {
-      setTagSelect([...tagSelect, selectedRestTag]);
+      setTagSelect([...tagSelect, selectedRestTag.key]);
     }
   };
 
@@ -399,26 +398,6 @@ function RestaurantHomepage({ navigation, route }) {
                 ))}
               </Picker>
 
-              {/* <Text style={styles.modalSelectTag}>Select Tags</Text> */}
-              {/* <View
-                style={{
-                  marginVertical: 15,
-                  paddingHorizontal: 0,
-                  width: "50%",
-                }}
-              >
-                <MultipleSelectList
-                  setSelected={(val) => setTagSelect(val)}
-                  data={tags}
-                  save="key"
-                  label="Tags"
-                  boxStyles={{ borderRadius: 10, width: "100%" }}
-                  dropdownStyles={{
-                    borderRadius: 10,
-                    width: "100%",
-                  }}
-                />
-              </View> */}
               <TouchableOpacity
                 onPress={openRestTagsModal}
                 style={styles.tagsButton}
