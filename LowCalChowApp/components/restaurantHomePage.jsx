@@ -19,7 +19,6 @@ import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
 import TagModal from "./tagModal";
 
-
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
   const [rating, setRating] = useState("");
@@ -382,6 +381,13 @@ function RestaurantHomepage({ navigation, route }) {
                 value={newRestaurantName}
                 onChangeText={(text) => setNewRestaurantName(text)}
                 placeholder="Restaurant Name"
+              />
+
+              <TextInput
+                style={styles.input}
+                value={rating}
+                onChangeText={(text) => setRating(text)}
+                placeholder="Rating"
               />
 
               <Picker
