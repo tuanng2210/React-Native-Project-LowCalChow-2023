@@ -163,13 +163,13 @@ function Search({ navigation, route }) {
     );
 
     if (isSelected) {
-      setSelectedTasteTags(
+      setSelectedRestrictionTags(
         selectedRestrictionTags.filter(
           (tag) => tag.key !== selectedRestrictionTag.key
         )
       );
     } else {
-      setSelectedTasteTags([
+      setSelectedRestrictionTags([
         ...selectedRestrictionTags,
         selectedRestrictionTag,
       ]);

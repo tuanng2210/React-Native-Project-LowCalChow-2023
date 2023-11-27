@@ -237,16 +237,16 @@ function UpdateInfo({ route, navigation }) {
   };
 
   const handleRestTagSelect = (selectedRestTag) => {
-    const isSelected = selectedRestTags.some(
+    const isSelected = selectedTags.some(
       (tag) => tag.key === selectedRestTag.key
     );
 
     if (isSelected) {
-      setSelectedRestTags(
-        selectedRestTags.filter((tag) => tag.key !== selectedRestTag.key)
+      setSelectedTags(
+        selectedTags.filter((tag) => tag.key !== selectedRestTag.key)
       );
     } else {
-      setSelectedRestTags([...selectedTags, selectedRestTag]);
+      setSelectedTags([...selectedTags, selectedRestTag]);
     }
   };
 
