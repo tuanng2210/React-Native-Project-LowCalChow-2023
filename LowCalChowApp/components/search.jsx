@@ -99,11 +99,10 @@ function Search({ navigation, route }) {
   }, []);
 
   useEffect(() => {
-    console.log("Default Taste Tags:", defaultTasteTags);
-    setSelectedRestrictionTags(defaultRestrictionTags);
-    setSelectedTasteTags(defaultTasteTags);
-    setSelectedAllergyTags(defaultAllergyTags);
-    setSelectedIngredientTags(defaultIngredientTags);
+    setSelectedRestrictionTags(defaultRestrictionTags.map((tag) => tag.key));
+    setSelectedTasteTags(defaultTasteTags.map((tag) => tag.key));
+    setSelectedAllergyTags(defaultAllergyTags.map((tag) => tag.key));
+    setSelectedIngredientTags(defaultIngredientTags.map((tag) => tag.key));
   }, [
     defaultTasteTags,
     defaultRestrictionTags,
@@ -143,68 +142,132 @@ function Search({ navigation, route }) {
     setIsIngredientTagsModalVisible(false);
   };
 
+  // const handleTasteTagSelect = (selectedTasteTag) => {
+  //   const isSelected = selectedTasteTags.some(
+  //     (tag) => tag.key === selectedTasteTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedTasteTags(
+  //       selectedTasteTags.filter((tag) => tag.key !== selectedTasteTag.key)
+  //     );
+  //   } else {
+  //     setSelectedTasteTags([...selectedTasteTags, selectedTasteTag]);
+  //   }
+  // };
+
+  // const handleRestrictionTagSelect = (selectedRestrictionTag) => {
+  //   const isSelected = selectedRestrictionTags.some(
+  //     (tag) => tag.key === selectedRestrictionTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedRestrictionTags(
+  //       selectedRestrictionTags.filter(
+  //         (tag) => tag.key !== selectedRestrictionTag.key
+  //       )
+  //     );
+  //   } else {
+  //     setSelectedRestrictionTags([
+  //       ...selectedRestrictionTags,
+  //       selectedRestrictionTag,
+  //     ]);
+  //   }
+  // };
+
+  // const handleAllergyTagSelect = (selectedAllergyTag) => {
+  //   const isSelected = selectedAllergyTags.some(
+  //     (tag) => tag.key === selectedAllergyTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedAllergyTags(
+  //       selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
+  //     );
+  //   } else {
+  //     setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
+  //   }
+  // };
+
+  // const handleIngredientSelect = (selectedIngredientTag) => {
+  //   const isSelected = selectedIngredientTags.some(
+  //     (tag) => tag.key === selectedIngredientTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedIngredientTags(
+  //       selectedIngredientTags.filter(
+  //         (tag) => tag.key !== selectedIngredientTag.key
+  //       )
+  //     );
+  //   } else {
+  //     setSelectedIngredientTags([
+  //       ...selectedIngredientTags,
+  //       selectedIngredientTag,
+  //     ]);
+  //   }
+  // };
+
   const handleTasteTagSelect = (selectedTasteTag) => {
-    const isSelected = selectedTasteTags.some(
-      (tag) => tag.key === selectedTasteTag.key
-    );
+    const isSelected = selectedTasteTags.includes(selectedTasteTag.key);
 
     if (isSelected) {
       setSelectedTasteTags(
-        selectedTasteTags.filter((tag) => tag.key !== selectedTasteTag.key)
+        selectedTasteTags.filter((tagKey) => tagKey !== selectedTasteTag.key)
       );
     } else {
-      setSelectedTasteTags([...selectedTasteTags, selectedTasteTag]);
+      setSelectedTasteTags([...selectedTasteTags, selectedTasteTag.key]);
     }
   };
 
   const handleRestrictionTagSelect = (selectedRestrictionTag) => {
-    const isSelected = selectedRestrictionTags.some(
-      (tag) => tag.key === selectedRestrictionTag.key
+    const isSelected = selectedRestrictionTags.includes(
+      selectedRestrictionTag.key
     );
 
     if (isSelected) {
       setSelectedRestrictionTags(
         selectedRestrictionTags.filter(
-          (tag) => tag.key !== selectedRestrictionTag.key
+          (tagKey) => tagKey !== selectedRestrictionTag.key
         )
       );
     } else {
       setSelectedRestrictionTags([
         ...selectedRestrictionTags,
-        selectedRestrictionTag,
+        selectedRestrictionTag.key,
       ]);
     }
   };
 
   const handleAllergyTagSelect = (selectedAllergyTag) => {
-    const isSelected = selectedAllergyTags.some(
-      (tag) => tag.key === selectedAllergyTag.key
-    );
+    const isSelected = selectedAllergyTags.includes(selectedAllergyTag.key);
 
     if (isSelected) {
       setSelectedAllergyTags(
-        selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
+        selectedAllergyTags.filter(
+          (tagKey) => tagKey !== selectedAllergyTag.key
+        )
       );
     } else {
-      setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
+      setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag.key]);
     }
   };
 
   const handleIngredientSelect = (selectedIngredientTag) => {
-    const isSelected = selectedIngredientTags.some(
-      (tag) => tag.key === selectedIngredientTag.key
+    const isSelected = selectedIngredientTags.includes(
+      selectedIngredientTag.key
     );
 
     if (isSelected) {
       setSelectedIngredientTags(
         selectedIngredientTags.filter(
-          (tag) => tag.key !== selectedIngredientTag.key
+          (tagKey) => tagKey !== selectedIngredientTag.key
         )
       );
     } else {
       setSelectedIngredientTags([
         ...selectedIngredientTags,
-        selectedIngredientTag,
+        selectedIngredientTag.key,
       ]);
     }
   };
@@ -323,7 +386,7 @@ function Search({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView>
         <View style={styles.mainContent}>
           <View style={styles.root}>
@@ -365,7 +428,7 @@ function Search({ navigation, route }) {
                   Select Restriction Tags
                 </Text>
               </TouchableOpacity>
-              
+
               <TagModal
                 visible={isRestrictionTagsModalVisible}
                 tags={dietaryRestrictionTags}
@@ -401,7 +464,7 @@ function Search({ navigation, route }) {
                 onSelect={handleAllergyTagSelect}
                 onClose={closeAllergyTagsModal}
               />
-              
+
               <TouchableOpacity
                 onPress={openIngredientTagsModal}
                 style={styles.tasteTagsButton}
@@ -410,16 +473,15 @@ function Search({ navigation, route }) {
                   Select Disliked Ingredients{" "}
                 </Text>
               </TouchableOpacity>
-              
-              
+
               <TagModal
                 visible={isIngredientTagsModalVisible}
                 tags={dislikedIngredients}
                 selectedTags={selectedIngredientTags}
                 onSelect={handleIngredientSelect}
                 onClose={closeIngredientTagsModal}
-                />
-                
+              />
+
               <TextInput
                 style={styles.input}
                 placeholder="Min Price"
@@ -591,13 +653,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   tasteTagsButton: {
-    backgroundColor: 'rgba(255, 165, 0, 0.5)',
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
   },
