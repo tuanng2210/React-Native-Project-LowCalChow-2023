@@ -279,6 +279,10 @@ function RestaurantHomepage({ navigation, route }) {
     });
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
   const handleDeleteRestaurant = async (restaurantId) => {
     try {
       const response = await fetch(
@@ -495,7 +499,9 @@ function RestaurantHomepage({ navigation, route }) {
 
               {Object.keys(openingHours).map((day) => (
                 <View key={day}>
-                  <Text style={styles.dayTitle}>{day}</Text>
+                  <Text style={styles.dayTitle}>
+                    {capitalizeFirstLetter(day)}
+                  </Text>
                   <View style={styles.operatingHoursInput}>
                     <TextInput
                       style={styles.input}
