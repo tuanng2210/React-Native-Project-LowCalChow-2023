@@ -33,13 +33,13 @@ function RestaurantHomepage({ navigation, route }) {
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [openingHours, setOpeningHours] = useState({
-    mon: { open: "", close: "" },
-    tue: { open: "", close: "" },
-    wed: { open: "", close: "" },
-    thu: { open: "", close: "" },
-    fri: { open: "", close: "" },
-    sat: { open: "", close: "" },
-    sun: { open: "", close: "" },
+    mon: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    tue: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    wed: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    thu: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    fri: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sat: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sun: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
   });
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -196,6 +196,17 @@ function RestaurantHomepage({ navigation, route }) {
     </TouchableOpacity>
   );
 
+  const formatTime = (hours, ampm) => {
+    let formattedHours = parseInt(hours, 10);
+    if (ampm === "PM" && formattedHours !== 12) {
+      formattedHours += 12;
+    } else if (ampm === "AM" && formattedHours === 12) {
+      formattedHours = 0;
+    }
+
+    return `${formattedHours.toString().padStart(2, "0")}:00:00`;
+  };
+
   const handleAddRestaurant = () => {
     setModalVisible(true);
   };
@@ -203,6 +214,19 @@ function RestaurantHomepage({ navigation, route }) {
   const confirmAddRestaurant = async () => {
     try {
       setModalVisible(false);
+
+      const formattedOpeningHours = {};
+      Object.keys(openingHours).forEach((day) => {
+        const { open, close, openAmPm, closeAmPm } = openingHours[day];
+
+        if (open && close) {
+          formattedOpeningHours[`${day}_open`] = formatTime(open, openAmPm);
+          formattedOpeningHours[`${day}_close`] = formatTime(close, closeAmPm);
+        } else {
+          formattedOpeningHours[`${day}_open`] = "";
+          formattedOpeningHours[`${day}_close`] = "";
+        }
+      });
 
       const newRestaurantData = {
         name: newRestaurantName,
@@ -215,6 +239,7 @@ function RestaurantHomepage({ navigation, route }) {
         city: city,
         state: state,
         zip_code: zipCode,
+        ...formattedOpeningHours,
       };
       console.log("Input data sent to the server:", newRestaurantData);
       const response = await fetch("http://localhost:8000/restaurants/", {
@@ -252,6 +277,10 @@ function RestaurantHomepage({ navigation, route }) {
       restaurantId: restaurant.id,
       access,
     });
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
   const handleDeleteRestaurant = async (restaurantId) => {
@@ -468,6 +497,65 @@ function RestaurantHomepage({ navigation, route }) {
                 placeholder="Zip code"
               />
 
+              {Object.keys(openingHours).map((day) => (
+                <View key={day}>
+                  <Text style={styles.dayTitle}>
+                    {capitalizeFirstLetter(day)}
+                  </Text>
+                  <View style={styles.operatingHoursInput}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Open"
+                      value={openingHours[day].open}
+                      onChangeText={(text) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], open: text },
+                        })
+                      }
+                    />
+                    <Picker
+                      selectedValue={openingHours[day].openAmPm}
+                      onValueChange={(value) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], openAmPm: value },
+                        })
+                      }
+                      style={styles.amPmPicker}
+                    >
+                      <Picker.Item label="AM" value="AM" />
+                      <Picker.Item label="PM" value="PM" />
+                    </Picker>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Close"
+                      value={openingHours[day].close}
+                      onChangeText={(text) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], close: text },
+                        })
+                      }
+                    />
+                    <Picker
+                      selectedValue={openingHours[day].closeAmPm}
+                      onValueChange={(value) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], closeAmPm: value },
+                        })
+                      }
+                      style={styles.amPmPicker}
+                      itemStyle={styles.amPmPickerItem}
+                    >
+                      <Picker.Item label="AM" value="AM" />
+                      <Picker.Item label="PM" value="PM" />
+                    </Picker>
+                  </View>
+                </View>
+              ))}
+
               <View style={styles.modalButtons}>
                 <TouchableOpacity
                   style={[styles.button]}
@@ -639,6 +727,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
+    marginRight: 10,
+    marginLeft: 10,
   },
   modalButtons: {
     marginTop: 40,
@@ -656,9 +746,33 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
-    marginTop: 0 ,
+    marginTop: 0,
     width: "100%",
-    marginBottom: 20
+    marginBottom: 20,
+  },
+  operatingHoursInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  amPmPicker: {
+    width: 80,
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  amPmPickerItem: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dayTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
   },
 });
 
