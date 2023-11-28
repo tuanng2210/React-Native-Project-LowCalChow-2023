@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: "100%",
+    height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
@@ -656,6 +656,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
+    marginTop: 0 ,
+    width: "100%",
+    marginBottom: 20
   },
 });
 
