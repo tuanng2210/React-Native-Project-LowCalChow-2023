@@ -313,13 +313,10 @@ function UpdateInfo({ route, navigation }) {
     const [hours, minutes] = time.split(":").map(Number);
 
     if (amPm === "PM" && hours !== 12) {
-      // Convert PM hours to 24-hour format
       return `${hours + 12}:${minutes}`;
     } else if (amPm === "AM" && hours === 12) {
-      // Convert 12:00 AM to 00:00
       return `00:${minutes}`;
     } else {
-      // Keep the time as is
       return `${hours}:${minutes}`;
     }
   };
