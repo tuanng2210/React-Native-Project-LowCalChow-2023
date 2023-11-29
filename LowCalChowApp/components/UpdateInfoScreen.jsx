@@ -131,48 +131,53 @@ function UpdateInfo({ route, navigation }) {
         if (!selectedState) setSelectedState(data.state);
         if (!zipCode) setZipCode(data.zip_code);
 
+        const getAmPm = (time) => {
+          const [hour] = time.split(":");
+          return parseInt(hour, 10) >= 12 ? "PM" : "AM";
+        };
+
         setOpeningHours((prev) => ({
           mon: {
             open: formatTime12Hour(data.mon_open),
             close: formatTime12Hour(data.mon_close),
-            openAmPm: data.mon_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.mon_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.mon_open),
+            closeAmPm: getAmPm(data.mon_close),
           },
           tue: {
             open: formatTime12Hour(data.tue_open),
             close: formatTime12Hour(data.tue_close),
-            openAmPm: data.tue_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.tue_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.tue_open),
+            closeAmPm: getAmPm(data.tue_close),
           },
           wed: {
             open: formatTime12Hour(data.wed_open),
             close: formatTime12Hour(data.wed_close),
-            openAmPm: data.wed_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.wed_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.wed_open),
+            closeAmPm: getAmPm(data.wed_close),
           },
           thu: {
             open: formatTime12Hour(data.thu_open),
             close: formatTime12Hour(data.thu_close),
-            openAmPm: data.thu_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.thu_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.thu_open),
+            closeAmPm: getAmPm(data.thu_close),
           },
           fri: {
             open: formatTime12Hour(data.fri_open),
             close: formatTime12Hour(data.fri_close),
-            openAmPm: data.fri_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.fri_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.fri_open),
+            closeAmPm: getAmPm(data.fri_close),
           },
           sat: {
             open: formatTime12Hour(data.sat_open),
             close: formatTime12Hour(data.sat_close),
-            openAmPm: data.sat_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.sat_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.sat_open),
+            closeAmPm: getAmPm(data.sat_close),
           },
           sun: {
             open: formatTime12Hour(data.sun_open),
             close: formatTime12Hour(data.sun_close),
-            openAmPm: data.sun_open.endsWith("AM") ? "AM" : "PM",
-            closeAmPm: data.sun_close.endsWith("AM") ? "AM" : "PM",
+            openAmPm: getAmPm(data.sun_open),
+            closeAmPm: getAmPm(data.sun_close),
           },
         }));
 
@@ -190,7 +195,6 @@ function UpdateInfo({ route, navigation }) {
     }
   };
 
-  // Helper function to format time in 12-hour format
   const formatTime12Hour = (time24Hour) => {
     const [hours, minutes] = time24Hour.split(":");
     const formattedHours = parseInt(hours, 10) % 12 || 12;
@@ -298,11 +302,26 @@ function UpdateInfo({ route, navigation }) {
     }
   };
 
-  const formatTime24Hour = (time12Hour, amPm) => {
-    const [hours, minutes] = time12Hour.split(":");
-    const formattedHours =
-      amPm === "PM" ? parseInt(hours, 10) + 12 : parseInt(hours, 10);
-    return `${formattedHours.toString().padStart(2, "0")}:${minutes}:00`;
+  // const formatTime24Hour = (time12Hour, amPm) => {
+  //   const [hours, minutes] = time12Hour.split(":");
+  //   const formattedHours =
+  //     amPm === "PM" ? parseInt(hours, 10) + 12 : parseInt(hours, 10);
+  //   return `${formattedHours.toString().padStart(2, "0")}:${minutes}:00`;
+  // };
+
+  const formatTime24Hour = (time, amPm) => {
+    const [hours, minutes] = time.split(":").map(Number);
+
+    if (amPm === "PM" && hours !== 12) {
+      // Convert PM hours to 24-hour format
+      return `${hours + 12}:${minutes}`;
+    } else if (amPm === "AM" && hours === 12) {
+      // Convert 12:00 AM to 00:00
+      return `00:${minutes}`;
+    } else {
+      // Keep the time as is
+      return `${hours}:${minutes}`;
+    }
   };
 
   const fetchRestTags = async () => {
