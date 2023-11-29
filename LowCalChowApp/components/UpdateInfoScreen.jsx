@@ -65,7 +65,7 @@ function UpdateInfo({ route, navigation }) {
     "WI",
     "WY",
   ];
-  const [existingData, setExistingData] = useState(null);
+  // const [existingData, setExistingData] = useState(null);
 
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [rating, setRating] = useState("");
@@ -81,6 +81,15 @@ function UpdateInfo({ route, navigation }) {
   const [successMessageVisible, setSuccessMessageVisible] = useState(false);
   const [isRestTagsModalVisible, setIsRestTagsModalVisible] = useState(false);
   const [defaultRestTags, setDefaultRestTags] = useState([]);
+  const [openingHours, setOpeningHours] = useState({
+    mon: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    tue: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    wed: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    thu: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    fri: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sat: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sun: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+  });
 
   const formatPhoneNumber = (input) => {
     const cleaned = input.replace(/\D/g, "");
@@ -111,12 +120,9 @@ function UpdateInfo({ route, navigation }) {
 
       if (response.ok) {
         const data = await response.json();
-        // const restaurantData = data;
-        // setExistingData(restaurantData);
 
         if (!newRestaurantName) setNewRestaurantName(data.name);
         if (!rating) setRating(data.rating);
-        // if (selectedTags.length === 0) setSelectedTags(data.tags);
         if (!priceLevel) setPriceLevel(data.price_level);
         if (!phoneNumber) setPhoneNumber(data.phone_number);
         if (!website) setWebsite(data.website);
@@ -124,6 +130,51 @@ function UpdateInfo({ route, navigation }) {
         if (!city) setCity(data.city);
         if (!selectedState) setSelectedState(data.state);
         if (!zipCode) setZipCode(data.zip_code);
+
+        setOpeningHours((prev) => ({
+          mon: {
+            open: formatTime12Hour(data.mon_open),
+            close: formatTime12Hour(data.mon_close),
+            openAmPm: data.mon_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.mon_close.endsWith("AM") ? "AM" : "PM",
+          },
+          tue: {
+            open: formatTime12Hour(data.tue_open),
+            close: formatTime12Hour(data.tue_close),
+            openAmPm: data.tue_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.tue_close.endsWith("AM") ? "AM" : "PM",
+          },
+          wed: {
+            open: formatTime12Hour(data.wed_open),
+            close: formatTime12Hour(data.wed_close),
+            openAmPm: data.wed_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.wed_close.endsWith("AM") ? "AM" : "PM",
+          },
+          thu: {
+            open: formatTime12Hour(data.thu_open),
+            close: formatTime12Hour(data.thu_close),
+            openAmPm: data.thu_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.thu_close.endsWith("AM") ? "AM" : "PM",
+          },
+          fri: {
+            open: formatTime12Hour(data.fri_open),
+            close: formatTime12Hour(data.fri_close),
+            openAmPm: data.fri_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.fri_close.endsWith("AM") ? "AM" : "PM",
+          },
+          sat: {
+            open: formatTime12Hour(data.sat_open),
+            close: formatTime12Hour(data.sat_close),
+            openAmPm: data.sat_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.sat_close.endsWith("AM") ? "AM" : "PM",
+          },
+          sun: {
+            open: formatTime12Hour(data.sun_open),
+            close: formatTime12Hour(data.sun_close),
+            openAmPm: data.sun_open.endsWith("AM") ? "AM" : "PM",
+            closeAmPm: data.sun_close.endsWith("AM") ? "AM" : "PM",
+          },
+        }));
 
         const RestTags = data.tags.map((tag) => ({
           key: tag.id,
@@ -139,6 +190,13 @@ function UpdateInfo({ route, navigation }) {
     }
   };
 
+  // Helper function to format time in 12-hour format
+  const formatTime12Hour = (time24Hour) => {
+    const [hours, minutes] = time24Hour.split(":");
+    const formattedHours = parseInt(hours, 10) % 12 || 12;
+    return `${formattedHours}:${minutes}`;
+  };
+
   const handleUpdateInfo = async () => {
     const data = {
       name: newRestaurantName,
@@ -151,6 +209,62 @@ function UpdateInfo({ route, navigation }) {
       city: city,
       state: selectedState,
       zip_code: zipCode,
+      mon_open: formatTime24Hour(
+        openingHours.mon.open,
+        openingHours.mon.openAmPm
+      ),
+      mon_close: formatTime24Hour(
+        openingHours.mon.close,
+        openingHours.mon.closeAmPm
+      ),
+      tue_open: formatTime24Hour(
+        openingHours.tue.open,
+        openingHours.tue.openAmPm
+      ),
+      tue_close: formatTime24Hour(
+        openingHours.tue.close,
+        openingHours.tue.closeAmPm
+      ),
+      wed_open: formatTime24Hour(
+        openingHours.wed.open,
+        openingHours.wed.openAmPm
+      ),
+      wed_close: formatTime24Hour(
+        openingHours.wed.close,
+        openingHours.wed.closeAmPm
+      ),
+      thu_open: formatTime24Hour(
+        openingHours.thu.open,
+        openingHours.thu.openAmPm
+      ),
+      thu_close: formatTime24Hour(
+        openingHours.thu.close,
+        openingHours.thu.closeAmPm
+      ),
+      fri_open: formatTime24Hour(
+        openingHours.fri.open,
+        openingHours.fri.openAmPm
+      ),
+      fri_close: formatTime24Hour(
+        openingHours.fri.close,
+        openingHours.fri.closeAmPm
+      ),
+      sat_open: formatTime24Hour(
+        openingHours.sat.open,
+        openingHours.sat.openAmPm
+      ),
+      sat_close: formatTime24Hour(
+        openingHours.sat.close,
+        openingHours.sat.closeAmPm
+      ),
+      sun_open: formatTime24Hour(
+        openingHours.sun.open,
+        openingHours.sun.openAmPm
+      ),
+      sun_close: formatTime24Hour(
+        openingHours.sun.close,
+        openingHours.sun.closeAmPm
+      ),
     };
     console.log(data);
     try {
@@ -167,16 +281,6 @@ function UpdateInfo({ route, navigation }) {
       );
       if (response.ok) {
         console.log("Restaurant information updated successfully!");
-        // setNewRestaurantName("");
-        // setRating("");
-        // setSelectedTags([]);
-        // setPriceLevel("");
-        // setPhoneNumber("");
-        // setWebsite("");
-        // setStreetName("");
-        // setCity("");
-        // setSelectedState("");
-        // setZipCode("");
 
         setSuccessMessageVisible(true);
         setTimeout(() => {
@@ -192,6 +296,13 @@ function UpdateInfo({ route, navigation }) {
     } catch (error) {
       console.error("Error updating restaurant information:", error);
     }
+  };
+
+  const formatTime24Hour = (time12Hour, amPm) => {
+    const [hours, minutes] = time12Hour.split(":");
+    const formattedHours =
+      amPm === "PM" ? parseInt(hours, 10) + 12 : parseInt(hours, 10);
+    return `${formattedHours.toString().padStart(2, "0")}:${minutes}:00`;
   };
 
   const fetchRestTags = async () => {
@@ -227,6 +338,10 @@ function UpdateInfo({ route, navigation }) {
   useEffect(() => {
     setSelectedTags(defaultRestTags.map((tag) => tag.key));
   }, [defaultRestTags]);
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
 
   const openRestTagsModal = () => {
     setIsRestTagsModalVisible(true);
@@ -334,6 +449,63 @@ function UpdateInfo({ route, navigation }) {
           onChangeText={(text) => setZipCode(text)}
           value={zipCode}
         />
+
+        {Object.keys(openingHours).map((day) => (
+          <View key={day}>
+            <Text style={styles.dayTitle}>{capitalizeFirstLetter(day)}</Text>
+            <View style={styles.operatingHoursInput}>
+              <TextInput
+                style={styles.input}
+                placeholder="Open"
+                value={openingHours[day].open}
+                onChangeText={(text) =>
+                  setOpeningHours({
+                    ...openingHours,
+                    [day]: { ...openingHours[day], open: text },
+                  })
+                }
+              />
+              <Picker
+                selectedValue={openingHours[day].openAmPm}
+                onValueChange={(value) =>
+                  setOpeningHours({
+                    ...openingHours,
+                    [day]: { ...openingHours[day], openAmPm: value },
+                  })
+                }
+                style={styles.amPmPicker}
+              >
+                <Picker.Item label="AM" value="AM" />
+                <Picker.Item label="PM" value="PM" />
+              </Picker>
+              <TextInput
+                style={styles.input}
+                placeholder="Close"
+                value={openingHours[day].close}
+                onChangeText={(text) =>
+                  setOpeningHours({
+                    ...openingHours,
+                    [day]: { ...openingHours[day], close: text },
+                  })
+                }
+              />
+              <Picker
+                selectedValue={openingHours[day].closeAmPm}
+                onValueChange={(value) =>
+                  setOpeningHours({
+                    ...openingHours,
+                    [day]: { ...openingHours[day], closeAmPm: value },
+                  })
+                }
+                style={styles.amPmPicker}
+                itemStyle={styles.amPmPickerItem}
+              >
+                <Picker.Item label="AM" value="AM" />
+                <Picker.Item label="PM" value="PM" />
+              </Picker>
+            </View>
+          </View>
+        ))}
 
         <TouchableOpacity style={styles.button} onPress={handleUpdateInfo}>
           <Text style={styles.buttonText}>Update</Text>
@@ -444,6 +616,30 @@ const styles = StyleSheet.create({
     width: "20%",
     marginBottom: 20,
     marginTop: 0,
+  },
+  operatingHoursInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  amPmPicker: {
+    width: 80,
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  amPmPickerItem: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dayTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
   },
 });
 
