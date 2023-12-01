@@ -15,141 +15,9 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 function AdminHomepage() {
   const route = useRoute();
   const navigation = useNavigation();
-  const {access, adminId} = route.params;
-  const [restaurantTags, setRestaurantTags] = useState([]);
-  const [newTag, setNewTag] = useState(""); // State for user input
-  const [editTag, setEditTag] = useState(null); // State to store the tag being edited
-   const [editedTag, setEditedTag] = useState(""); // State for edited tag
+  const { access, adminId } = route.params;
 
-useEffect(() => {
-  const getRestaurantTags = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/restaurants/resttags/`,
-        {
-           method: "GET",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data); // Log the data
-        setRestaurantTags(data);
-      } else {
-        console.error("API Error:", response.status);
-        console.error(await response.text()); // Log the response content
-      }
-    } catch (error) {
-      console.error("Network Error:", error);
-    }
-  };
-
-
-   getRestaurantTags();
-}, [access]);
-  const addTag = async () => {
-    if (newTag) {
-      try {
-        const response = await fetch(
-          `http://localhost:8000/restaurants/resttags/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${access}`,
-            },
-            body: JSON.stringify({ title: newTag }),
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          // Update the local list with the new tag
-          setRestaurantTags([...restaurantTags, data]);
-          setNewTag(""); // Clear the input
-        } else {
-          console.error("API Error:", response.status);
-          console.error(await response.text()); // Log the response content
-        }
-      } catch (error) {
-        console.error("Network Error:", error);
-      }
-    }
-  };
-
-const handleEditTag = (tag) => {
-    setEditedTag(tag.title);
-    setEditTag(tag);
-  };
-
-  const cancelEdit = () => {
-    setEditTag(null);
-    setEditedTag(""); // Clear the edited tag state
-  };
-
-  const submitEdit = async () => {
-    if (editedTag && editTag) {
-      try {
-        const response = await fetch(
-          `http://localhost:8000/restaurants/resttags/${editTag.id}/`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${access}`,
-            },
-            body: JSON.stringify({ title: editedTag }),
-          }
-        );
-
-        if (response.ok) {
-          // Update the local list with the edited tag
-          setRestaurantTags((prevTags) =>
-            prevTags.map((tag) =>
-              tag.id === editTag.id ? { ...tag, title: editedTag } : tag
-            )
-          );
-          // Clear the edit state
-          setEditTag(null);
-        } else {
-          console.error("API Error:", response.status);
-          console.error(await response.text()); // Log the response content check
-        }
-      } catch (error) {
-        console.error("Network Error:", error);
-      }
-    }
-  };
-
-const handleDeleteTag = async (tagId) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8000/restaurants/resttags/${tagId}/`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      }
-    );
-
-    if (response.ok) {
-      // Remove the deleted tag from the local list
-      const updatedTags = restaurantTags.filter((tag) => tag.id !== tagId);
-      setRestaurantTags(updatedTags);
-    } else {
-      console.error("API Error:", response.status);
-      console.error(await response.text());
-    }
-  } catch (error) {
-    console.error("Network Error:", error);
-  }
-};
-
-  return (
+    return (
     <View style={styles.container}>
       {/* Header in an orange box */}
       <View style={styles.headerContainer}>
@@ -160,51 +28,29 @@ const handleDeleteTag = async (tagId) => {
         />
       </View>
 
-      <View style={styles.tagsBox}>
-        <Text style={styles.tagsHeader}>RestTags</Text>
-
-        {/* Add a TextInput for the user to enter a new tag */}
-        <TextInput
-          style={styles.input}
-          placeholder="Add a new tag"
-          value={newTag}
-          onChangeText={(text) => setNewTag(text)}
-        />
-
-        {/* Add button to add a new tag */}
-        <Button title="Add" onPress={addTag} />
-
-        {/* List of Restaurant Tags */}
-        <FlatList
-          data={restaurantTags}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.tagContainer}>
-              <Text style={styles.tagText}>{item.title}</Text>
-              <View style={styles.buttonContainer}>
-                <Button title="Edit" onPress={() => handleEditTag(item)} />
-                <View style={styles.buttonSpacer} /> {/* Add vertical space */}
-                <Button title="Delete" onPress={() => handleDeleteTag(item.id)} />
-              </View>
-            </View>
-          )}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-        />
-        {editTag && (
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Edit Tag</Text>
-          <TextInput
-            style={styles.modalInput}
-            placeholder="Enter new tag"
-            value={editedTag}
-            onChangeText={(text) => setEditedTag(text)}
-          />
-          <View style={styles.modalButtonContainer}>
-            <Button title="Cancel" onPress={cancelEdit} />
-            <Button title="Submit" onPress={submitEdit} />
-          </View>
+      {/* New Container for Tag Management */}
+      <View style={styles.tagManagementContainer}>
+        {/* Header for Tag Management */}
+        <View style={styles.tagManagementHeader}>
+          <Text style={styles.tagManagementHeaderText}>Tag Management</Text>
         </View>
-      )}
+
+        {/* Buttons for different tag categories */}
+        <View style={styles.tagButtonsContainer}>
+          <Button
+            title="Rest Tags"
+            onPress={() => navigation.navigate("Admin RestTags", { access })}
+            color="orange"
+            style={styles.tagButton}
+          />
+          {/* Add other buttons similarly */}
+          <Button
+            title="Food Type Tags"
+            onPress={() => navigation.navigate("Admin Food Type Tags", { access })}
+            color="green"
+          />
+          {/* ... Add other buttons for different tag categories */}
+        </View>
       </View>
     </View>
   );
@@ -288,6 +134,31 @@ const styles = StyleSheet.create({
   },
    addButtonContainer: {
     marginBottom: 32, // Add margin to create space between "Add" button and the first tag
+  },
+  tagManagementContainer: {
+    backgroundColor: "green",
+    padding: 16,
+    marginTop: 20,
+    borderRadius: 8,
+  },
+  tagManagementHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#fff",
+    paddingBottom: 8,
+    marginBottom: 8,
+  },
+  tagManagementHeaderText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  tagButtonsContainer: {
+    // Update button style to make them orange
+    marginTop: 10,
+    flexDirection: "column",
+  },
+  tagButton: {
+    marginBottom: 8,
   },
 });
 

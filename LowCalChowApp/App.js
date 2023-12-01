@@ -27,8 +27,8 @@ import UpdateInfo from './components/UpdateInfoScreen';
 import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import viewMenuItem from './components/patronViewMenuItem';
 import SearchResultsScreen from './components/searchResults';
-
-
+import Admin_RestTags from "./components/Admin_Resttags";
+import Admin_FoodTypeTags from "./components/Admin_FoodTypeTags";
 
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +61,9 @@ const App = () => {
         <Stack.Screen name="Update Info" component={UpdateInfo} />
         <Stack.Screen name="Search Results" component={SearchResultsScreen} />
         <Stack.Screen name="Menu Item History" component={MenuItemHistory} />
+        <Stack.Screen name="Admin FAQ Page" component={AdminFAQPage} />
+        <Stack.Screen name="Admin RestTags" component={Admin_RestTags} />
+        <Stack.Screen name="Admin Food Type Tags" component={Admin_FoodTypeTags} />
       </Stack.Navigator>
     </NavigationContainer>
   );
