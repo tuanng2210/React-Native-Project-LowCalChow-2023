@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
+  FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import logo from "../assets/icons8-carrot-94.png";
+import TagModal from "./tagModal";
 
 function Search({ navigation, route }) {
   const { access } = route.params;
@@ -28,6 +31,246 @@ function Search({ navigation, route }) {
   const [selectedTasteTags, setSelectedTasteTags] = useState([]);
   const [selectedIngredientTags, setSelectedIngredientTags] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [isTasteTagsModalVisible, setIsTasteTagsModalVisible] = useState(false);
+  const [isRestrictionTagsModalVisible, setIsRestrictionTagsModalVisible] =
+    useState(false);
+  const [isAllergyTagsModalVisible, setIsAllergyTagsModalVisible] =
+    useState(false);
+  const [isIngredientTagsModalVisible, setIsIngredientTagsModalVisible] =
+    useState(false);
+  const [defaultRestrictionTags, setDefaultRestrictionTags] = useState([]);
+  const [defaultTasteTags, setDefaultTasteTags] = useState([]);
+  const [defaultAllergyTags, setDefaultAllergyTags] = useState([]);
+  const [defaultIngredientTags, setDefaultIngredientTags] = useState([]);
+
+  const fetchDefaultTags = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/patrons/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+
+        const patronRestrictionTags =
+          responseData[0].patron_restriction_tag.map((tag) => ({
+            key: tag.id,
+            value: tag.title,
+          }));
+
+        const patronTasteTags = responseData[0].patron_taste_tag.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const patronAllergyTags = responseData[0].patron_allergy_tag.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
+        const patronIngredientTags = responseData[0].disliked_ingredients.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
+        setDefaultRestrictionTags(patronRestrictionTags);
+        setDefaultTasteTags(patronTasteTags);
+        setDefaultAllergyTags(patronAllergyTags);
+        setDefaultIngredientTags(patronIngredientTags);
+      } else {
+        console.error(await response.json());
+      }
+    } catch (error) {
+      console.error("Error fetching default taste tags", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDefaultTags();
+  }, []);
+
+  useEffect(() => {
+    setSelectedRestrictionTags(defaultRestrictionTags.map((tag) => tag.key));
+    setSelectedTasteTags(defaultTasteTags.map((tag) => tag.key));
+    setSelectedAllergyTags(defaultAllergyTags.map((tag) => tag.key));
+    setSelectedIngredientTags(defaultIngredientTags.map((tag) => tag.key));
+  }, [
+    defaultTasteTags,
+    defaultRestrictionTags,
+    defaultAllergyTags,
+    defaultIngredientTags,
+  ]);
+
+  const openTasteTagsModal = () => {
+    setIsTasteTagsModalVisible(true);
+  };
+
+  const closeTasteTagsModal = () => {
+    setIsTasteTagsModalVisible(false);
+  };
+
+  const openRestrictionTagsModal = () => {
+    setIsRestrictionTagsModalVisible(true);
+  };
+
+  const closeRestrictionTagsModal = () => {
+    setIsRestrictionTagsModalVisible(false);
+  };
+
+  const openAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(true);
+  };
+
+  const closeAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(false);
+  };
+
+  const openIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(true);
+  };
+
+  const closeIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(false);
+  };
+
+  // const handleTasteTagSelect = (selectedTasteTag) => {
+  //   const isSelected = selectedTasteTags.some(
+  //     (tag) => tag.key === selectedTasteTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedTasteTags(
+  //       selectedTasteTags.filter((tag) => tag.key !== selectedTasteTag.key)
+  //     );
+  //   } else {
+  //     setSelectedTasteTags([...selectedTasteTags, selectedTasteTag]);
+  //   }
+  // };
+
+  // const handleRestrictionTagSelect = (selectedRestrictionTag) => {
+  //   const isSelected = selectedRestrictionTags.some(
+  //     (tag) => tag.key === selectedRestrictionTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedRestrictionTags(
+  //       selectedRestrictionTags.filter(
+  //         (tag) => tag.key !== selectedRestrictionTag.key
+  //       )
+  //     );
+  //   } else {
+  //     setSelectedRestrictionTags([
+  //       ...selectedRestrictionTags,
+  //       selectedRestrictionTag,
+  //     ]);
+  //   }
+  // };
+
+  // const handleAllergyTagSelect = (selectedAllergyTag) => {
+  //   const isSelected = selectedAllergyTags.some(
+  //     (tag) => tag.key === selectedAllergyTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedAllergyTags(
+  //       selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
+  //     );
+  //   } else {
+  //     setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
+  //   }
+  // };
+
+  // const handleIngredientSelect = (selectedIngredientTag) => {
+  //   const isSelected = selectedIngredientTags.some(
+  //     (tag) => tag.key === selectedIngredientTag.key
+  //   );
+
+  //   if (isSelected) {
+  //     setSelectedIngredientTags(
+  //       selectedIngredientTags.filter(
+  //         (tag) => tag.key !== selectedIngredientTag.key
+  //       )
+  //     );
+  //   } else {
+  //     setSelectedIngredientTags([
+  //       ...selectedIngredientTags,
+  //       selectedIngredientTag,
+  //     ]);
+  //   }
+  // };
+
+  const handleTasteTagSelect = (selectedTasteTag) => {
+    const isSelected = selectedTasteTags.includes(selectedTasteTag.key);
+
+    if (isSelected) {
+      setSelectedTasteTags(
+        selectedTasteTags.filter((tagKey) => tagKey !== selectedTasteTag.key)
+      );
+    } else {
+      setSelectedTasteTags([...selectedTasteTags, selectedTasteTag.key]);
+    }
+  };
+
+  const handleRestrictionTagSelect = (selectedRestrictionTag) => {
+    const isSelected = selectedRestrictionTags.includes(
+      selectedRestrictionTag.key
+    );
+
+    if (isSelected) {
+      setSelectedRestrictionTags(
+        selectedRestrictionTags.filter(
+          (tagKey) => tagKey !== selectedRestrictionTag.key
+        )
+      );
+    } else {
+      setSelectedRestrictionTags([
+        ...selectedRestrictionTags,
+        selectedRestrictionTag.key,
+      ]);
+    }
+  };
+
+  const handleAllergyTagSelect = (selectedAllergyTag) => {
+    const isSelected = selectedAllergyTags.includes(selectedAllergyTag.key);
+
+    if (isSelected) {
+      setSelectedAllergyTags(
+        selectedAllergyTags.filter(
+          (tagKey) => tagKey !== selectedAllergyTag.key
+        )
+      );
+    } else {
+      setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag.key]);
+    }
+  };
+
+  const handleIngredientSelect = (selectedIngredientTag) => {
+    const isSelected = selectedIngredientTags.includes(
+      selectedIngredientTag.key
+    );
+
+    if (isSelected) {
+      setSelectedIngredientTags(
+        selectedIngredientTags.filter(
+          (tagKey) => tagKey !== selectedIngredientTag.key
+        )
+      );
+    } else {
+      setSelectedIngredientTags([
+        ...selectedIngredientTags,
+        selectedIngredientTag.key,
+      ]);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -130,196 +373,161 @@ function Search({ navigation, route }) {
           }
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
 
+        <View style={styles.navbarItem}>
+          <Image source={logo} style={{ width: 30, height: 30 }} />
+          <Text style={styles.navbarText}>Search</Text>
+        </View>
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Search</Text>
+      </View>
+
+      <ScrollView>
+        <View style={styles.mainContent}>
+          <View style={styles.root}>
+            <Text style={styles.title}>Search for a Menu Item</Text>
+            <View style={styles.container}>
+              <View
+                style={
+                  !clicked
+                    ? styles.searchBar__unclicked
+                    : styles.searchBar__clicked
+                }
+              >
+                <Feather
+                  name="search"
+                  size={20}
+                  color="black"
+                  style={{ marginLeft: 1 }}
+                />
+                <TextInput
+                  style={styles.inputSearch}
+                  placeholder="Search"
+                  value={query}
+                  onChangeText={(text) => setQuery(text)}
+                />
+              </View>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Calorie Limit"
+                value={calorieLimit}
+                onChangeText={(text) => setCalorieLimit(text)}
+              />
+
+              <TouchableOpacity
+                onPress={openRestrictionTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>
+                  Select Restriction Tags
+                </Text>
+              </TouchableOpacity>
+
+              <TagModal
+                visible={isRestrictionTagsModalVisible}
+                tags={dietaryRestrictionTags}
+                selectedTags={selectedRestrictionTags}
+                onSelect={handleRestrictionTagSelect}
+                onClose={closeRestrictionTagsModal}
+              />
+
+              <TouchableOpacity
+                onPress={openTasteTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
+              </TouchableOpacity>
+              <TagModal
+                visible={isTasteTagsModalVisible}
+                tags={patronTasteTags}
+                selectedTags={selectedTasteTags}
+                onSelect={handleTasteTagSelect}
+                onClose={closeTasteTagsModal}
+              />
+
+              <TouchableOpacity
+                onPress={openAllergyTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
+              </TouchableOpacity>
+              <TagModal
+                visible={isAllergyTagsModalVisible}
+                tags={allergyTags}
+                selectedTags={selectedAllergyTags}
+                onSelect={handleAllergyTagSelect}
+                onClose={closeAllergyTagsModal}
+              />
+
+              <TouchableOpacity
+                onPress={openIngredientTagsModal}
+                style={styles.tasteTagsButton}
+              >
+                <Text style={styles.modalSelectTag}>
+                  Select Disliked Ingredients{" "}
+                </Text>
+              </TouchableOpacity>
+
+              <TagModal
+                visible={isIngredientTagsModalVisible}
+                tags={dislikedIngredients}
+                selectedTags={selectedIngredientTags}
+                onSelect={handleIngredientSelect}
+                onClose={closeIngredientTagsModal}
+              />
+
+              <TextInput
+                style={styles.input}
+                placeholder="Min Price"
+                value={priceMin}
+                onChangeText={(text) => setPriceMin(text)}
+              />
+
+              <TextInput
+                style={styles.input}
+                placeholder="Max Price"
+                value={priceMax}
+                onChangeText={(text) => setPriceMax(text)}
+              />
+            </View>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Patron Homepage", { access })}
         >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
+          <Icon name="home" size={26} color="#000000" />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.navbarItem}
           onPress={() => navigation.navigate("Search", { access })}
         >
           <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-      </View>
 
-      <View style={styles.mainContent}>
-        <View style={styles.root}>
-        <Image source={logo} style={{ width: 30, height: 30 }} />
-          <Text style={styles.title}>Search for a Menu Item</Text>
-          <View style={styles.container}>
-            <View
-              style={
-                !clicked
-                  ? styles.searchBar__unclicked
-                  : styles.searchBar__clicked
-              }
-            >
-              <Feather
-                name="search"
-                size={20}
-                color="black"
-                style={{ marginLeft: 1 }}
-              />
-              <TextInput
-                style={styles.inputSearch}
-                placeholder="Search"
-                value={query}
-                onChangeText={(text) => setQuery(text)}
-              />
-            </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Calorie Limit"
-              value={calorieLimit}
-              onChangeText={(text) => setCalorieLimit(text)}
-            />
-
-            <Text style={styles.modalSelectTag}>
-              Select Dietary Restriction Tags
-            </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
-              <MultipleSelectList
-                setSelected={(val) => setSelectedRestrictionTags(val)}
-                data={dietaryRestrictionTags}
-                save="key"
-                label="Tags"
-                boxStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-                dropdownStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-              />
-            </View>
-
-            <Text style={styles.modalSelectTag}>
-              Select Dietary Allergy Tags
-            </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0,  }}>
-              <MultipleSelectList
-                setSelected={(val) => setAllergyTags(val)}
-                data={allergyTags}
-                save="key"
-                label="Tags"
-                boxStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-                dropdownStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-              />
-            </View>
-
-            <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0,}}>
-              <MultipleSelectList
-                setSelected={(val) => setSelectedTasteTags(val)}
-                data={patronTasteTags}
-                save="key"
-                label="Tags"
-                boxStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-                dropdownStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-              />
-            </View>
-
-            <Text style={styles.modalSelectTag}>
-              Select Disliked Ingredient Tags
-            </Text>
-            <View style={{ marginVertical: 5, paddingHorizontal: 0, }}>
-              <MultipleSelectList
-                setSelected={(val) => setSelectedIngredientTags(val)}
-                data={dislikedIngredients}
-                save="key"
-                label="Tags"
-                boxStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-                dropdownStyles={{
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                  borderRadius: 15,
-                  width: "100%",
-                }}
-              />
-            </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Min Price"
-              value={priceMin}
-              onChangeText={(text) => setPriceMin(text)}
-            />
-
-            <TextInput
-              style={styles.input}
-              placeholder="Max Price"
-              value={priceMax}
-              onChangeText={(text) => setPriceMax(text)}
-            />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
         <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate(("Login"))}>
-        <Text style={styles.buttonText}>Logout</Text>
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
         </TouchableOpacity>
       </View>
-
-      {/* {searchResults.length > 0 && (
-        <View style={styles.resultsContainer}>
-          <Text style={styles.resultsTitle}>Search Results</Text>
-          {searchResults.map((result) => (
-            <View key={result.id} style={styles.resultItem}>
-              <Text style={styles.resultText}>{result.item_name}</Text>
-              <Text style={styles.resultText}>Calories: {result.calories}</Text>
-              <Text style={styles.resultText}>Price: ${result.price}</Text>
-              <Text style={styles.resultText}>
-                Restaurant: {result.restaurant.name}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )} */}
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -327,6 +535,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   mainContent: {
+    flex: 2,
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
@@ -346,11 +555,11 @@ const styles = StyleSheet.create({
   navbarItem: {
     backgroundColor: "#FFA500",
     alignItems: "left",
-    flexDirection: "row", // Align icon and text horizontally
+    flexDirection: "row",
   },
   navbarText: {
     color: "#000000",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 10,
   },
@@ -388,7 +597,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: "16",
   },
   searchBar__clicked: {
     padding: 10,
@@ -409,6 +618,7 @@ const styles = StyleSheet.create({
     justifyContent: "left",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    height: 200,
   },
   resultsContainer: {
     marginTop: 20,
@@ -431,8 +641,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },
   modalSelectTag: {
     fontSize: 15,
+  },
+  tasteTagsButton: {
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
   },
 });
 export default Search;

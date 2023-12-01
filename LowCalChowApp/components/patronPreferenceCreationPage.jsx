@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
@@ -12,44 +12,104 @@ function PatronPreferenceCreationPage({ navigation }) {
   var data = route.params?.data
   const access = route.params?.access
 
-  const restrictionsTags = [
-    { label: 1, value: "Vegan" },
-    { label: "Vegetarian", value: "Vegetarian" },
-    { label: "Halal", value: "Halal" },
-    { label: "Kosher", value: "Kosher" },
-    { label: 'Keto', value: 'Keto' },
-    { label: "Pescetarian", value: "Pescetarian" },
-    { label: "Dairy-Free", value: "Dairy-Free" },
-    { label: "Paleo", value: "Paleo" }
-  ];
-
-  const allergyTags = [
-    { label: "Milk", value: "Milk" },
-    { label: "Sesame", value: "Sesame" },
-    { label: "Soybeans", value: "Soybeans" },
-    { label: "Wheat", value: "Wheat" },
-    { label: "Peanuts", value: "Peanuts" },
-    { label: "Tree-nuts", value: "Tree-nuts" },
-    { label: "Eggs", value: "Eggs" },
-    { label: "Shellfish", value: "Shellfish" },
-    { label: "Fish", value: "Fish" },
-    { label: "Celiac", value: "Celiac" }
-  ];
-
-  const tasteTags = [
-    { label: 'Salty', value: 'Salty' },
-    { label: "Sweet", value: "Sweet" },
-    { label: "Spicy", value: "Spicy" },
-    { label: "Umami", value: "Umami" },
-    { label: "Sour", value: "Sour" },
-    { label: "Bitter", value: "Bitter" },
-  ];
-
   const [errors, setErrors] = useState({});
   const [restrictions, setRestrictions] = useState([]);
   const [allergies, setAllergies] = useState([]);
   const [calorielimit, setCalorieLimit] = useState({});
   const [taste, setTaste] = useState([]);
+  const [disliked, setDislikedIngredients] = useState([]);
+
+  const [restrictionTags, setRestrictionTags] = useState([]);
+  const [allergyTags, setAllergyTags] = useState([]);
+  const [tasteTags, setTasteTags] = useState([]);
+  const [dislikedTags, setDislikedIngredientsTags] = useState([]);
+
+  const handlegetfoodTags = async () => {
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/ingredienttags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setDislikedIngredientsTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/tastetags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setTasteTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/restrictiontags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setRestrictionTags (formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/restaurants/allergytags/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const formTags = data.map(item => ({
+          key: item.id,
+          value: item.title,
+        }));
+        setAllergyTags(formTags);  
+      }
+    }catch (error) {
+      console.error("Error:", error);
+    }
+
+} 
+useEffect (() => {
+  handlegetfoodTags();
+}, []); 
 
   const handleSubmit = () => {
 
@@ -61,96 +121,6 @@ function PatronPreferenceCreationPage({ navigation }) {
 
     if (Object.keys(errors).length === 0) {
 
-      var restrictionsIDs = [];
-      var allergiesIDs = [];
-      var tasteIDs = [];
-
-      for (var i = 0; i < restrictions.length; i++) {
-        switch (restrictions[i]) {
-          case 'Vegan':
-            restrictionsIDs.push(1)
-            break;
-          case 'Vegetarian':
-            restrictionsIDs.push(2)
-            break;
-          case 'Halal':
-            restrictionsIDs.push(3)
-            break;
-          case 'Kosher':
-            restrictionsIDs.push(4)
-            break;
-          case 'Keto':
-            restrictionsIDs.push(5)
-            break;
-          case 'Pescetarian':
-            restrictionsIDs.push(6)
-            break;
-          case 'Dairy-Free':
-            restrictionsIDs.push(7)
-            break;
-          case 'Paleo':
-            restrictionsIDs.push(8)
-            break;
-        }
-      }
-
-      for (var i = 0; i < allergies.length; i++) {
-        switch (allergies[i]) {
-          case 'Milk':
-            allergiesIDs.push(1)
-            break;
-          case 'Sesame':
-            allergiesIDs.push(2)
-            break;
-          case 'Soybeans':
-            allergiesIDs.push(3)
-            break;
-          case 'Wheat':
-            allergiesIDs.push(4)
-            break;
-          case 'Peanuts':
-            allergiesIDs.push(5)
-            break;
-          case 'Tree-nuts':
-            allergiesIDs.push(6)
-            break;
-          case 'Eggs':
-            allergiesIDs.push(7)
-            break;
-          case 'Shellfish':
-            allergiesIDs.push(8)
-            break;
-          case 'Fish':
-            allergiesIDs.push(9)
-            break;
-          case 'Celiac':
-            allergiesIDs.push(10)
-            break;
-        }
-      }
-
-      for (var i = 0; i < taste.length; i++) {
-        switch (taste[i]) {
-          case 'Salty':
-            tasteIDs.push(1)
-            break;
-          case 'Sweet':
-            tasteIDs.push(2)
-            break;
-          case 'Spicy':
-            tasteIDs.push(3)
-            break;
-          case 'Umami':
-            tasteIDs.push(4)
-            break;
-          case 'Sour':
-            tasteIDs.push(5)
-            break;
-          case 'Bitter':
-            tasteIDs.push(6)
-            break;
-        }
-      }
 
       data = {
         name: data.name,
@@ -158,12 +128,14 @@ function PatronPreferenceCreationPage({ navigation }) {
         gender: data.gender,
         zipcode: data.zipcode,
         dob: data.dob,
-        patron_restriction_tag: restrictionsIDs,
-        patron_allergy_tag: allergiesIDs,
-        patron_taste_tag: tasteIDs,
-        disliked_ingredients: [],
+        patron_restriction_tag: restrictions,
+        patron_allergy_tag: allergies,
+        patron_taste_tag: taste,
+        disliked_ingredients: disliked,
         calorie_limit: parseInt(calorielimit)
       }
+
+      console.log(data)
 
       fetch("http://localhost:8000/patrons/", {
         method: "POST",
@@ -205,8 +177,8 @@ function PatronPreferenceCreationPage({ navigation }) {
         Dietary Restrictions?</Text>
           <MultipleSelectList
             setSelected={(val) => setRestrictions(val)}
-            data={restrictionsTags}
-            save="value"
+            data={restrictionTags}
+            save="key"
             //onSelect={() => alert(allergiesSelect)} 
             label="Restrictions"
             boxStyles={{
@@ -258,6 +230,27 @@ function PatronPreferenceCreationPage({ navigation }) {
             width: "100%",
           }}
         />
+
+        <Text style = {styles.modalSelectTag}>Disliked Ingredients?</Text>
+        <MultipleSelectList
+          setSelected={(val) => setDislikedIngredients(val)}
+          data={dislikedTags}
+          save="key"
+          //onSelect={() => alert(allergiesSelect)} 
+          label="Disliked Ingredients"
+          boxStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%"
+          }}
+          dropdownStyles={{
+            backgroundColor: 'rgba(255, 165, 0, 0.5)',
+            borderRadius: 15,
+            width: "100%",
+          }}
+        />
+
+
         </View>
         <Text style = {styles.modalSelectTag}>Calorie Limit? (9999 no limit)</Text>
         <TextInput

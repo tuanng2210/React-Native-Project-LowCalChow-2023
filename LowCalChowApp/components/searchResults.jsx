@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import logo from "../assets/icons8-carrot-94.png";
 
 
 
@@ -53,31 +53,20 @@ const SearchResultsScreen = ({navigation, route }) => {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
 
+        
+        <View style={styles.navbarItem}>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
+        <Text style={styles.navbarText}>Search Results</Text>
+        </View>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Search Results</Text>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Homepage", { access })}
-        >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", { access })}
-        >
-          <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
       </View>
+      <ScrollView>
       <View style={styles.mainContent}>
       {searchResults.map((result) => (
         <View style={styles.resultItem} key={result.id}>
@@ -92,7 +81,31 @@ const SearchResultsScreen = ({navigation, route }) => {
         
       ))}
       </View>
-     
+      </ScrollView>
+
+      <View style={styles.buttonContainer}>
+       
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={26} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
+        </View>
     </View>
   );
 };
@@ -137,9 +150,17 @@ const styles = StyleSheet.create({
   },
   navbarText: {
     color: "#000000",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 10,
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
 

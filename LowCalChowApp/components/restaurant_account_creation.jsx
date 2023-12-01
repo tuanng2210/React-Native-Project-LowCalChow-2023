@@ -123,10 +123,12 @@ function RestaurantAccountCreationPage({ navigation }) {
         </Text>
       ))}
 
-      <Button
-        title="Back to Login"
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate("Login")}
-      />
+      >
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }

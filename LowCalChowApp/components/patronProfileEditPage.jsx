@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
+import logo from "../assets/icons8-carrot-94.png";
 
 
 function PatronProfileEditPage({ navigation }) {
@@ -14,6 +15,10 @@ function PatronProfileEditPage({ navigation }) {
   const [errors, setErrors] = useState({});
 
   const [currentUserName, setCurrentUserName] = useState({});
+
+  const [firstName, setFirstName] = useState({});
+  const [lastName, setLastName] = useState({});
+
   const [currentGender, setCurrentGender] = useState({});
   const [currentPrice, setCurrentPrice] = useState({});
   const [currentZip, setCurrentZip] = useState({});
@@ -72,7 +77,9 @@ function PatronProfileEditPage({ navigation }) {
       if (response.status === 200 || response.status === 201) {
         const data = await response.json();
 
-        setCurrentUserName(data[0].name);
+        setFirstName(data[0].name.split(" ", 1));
+        setLastName(data[0].name.split(" "), slice(1).join(" "));
+
         setCurrentGender(data[0].gender);
         setCurrentPrice(data[0].price_max);
         setCurrentZip(data[0].zipcode);
@@ -125,7 +132,7 @@ function PatronProfileEditPage({ navigation }) {
 
 
     const data = {
-      name: currentUserName,
+      name: firstName + " " + lastName,
       price_max: parseFloat(currentPrice),
       gender: currentGender,
       zipcode: currentZip,
@@ -168,88 +175,86 @@ function PatronProfileEditPage({ navigation }) {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
+        <View style={styles.navbarItem}>
+          <Image source={logo} style={{ width: 30, height: 30 }} />
+          <Text style={styles.navbarText}>Patron Profile Edit</Text>
+        </View>
+        <View style={styles.navbarItem}>
+          <TouchableOpacity style={styles.navbarItem}
+            onPress={() => navigation.navigate("Bookmark", { access })}
+          >
+            <Icon name="bookmark" size={25} color="#000000" />
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity style={styles.navbarItem}
-          onPress={() => navigation.navigate("Bookmark", { access })}
-        >
-          <Icon name="bookmark" size={25} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Patron Profile Edit</Text>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Homepage", { access })}
-        >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", { access })}
-        >
-          <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
       </View>
+      <ScrollView>
+        <View style={styles.mainContent}>
 
-      <View style={styles.mainContent}>
+          <Text style={styles.otherText}>First Name:</Text>
 
-        <Text style={styles.otherText}>Username:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={`${firstName}`}
+            value={firstName}
+            onChangeText={(text) => setFirstName(text)}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder={`${currentUserName}`}
-          value={currentUserName}
-          onChangeText={(text) => setCurrentUserName(text)}
-        />
+          <Text style={styles.otherText}>Last Name:</Text>
 
-        <Text style={styles.otherText}>Gender:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={`${lastName}`}
+            value={lastName}
+            onChangeText={(text) => setLastName(text)}
+          />
 
-        <Picker
-          selectedValue={`${currentGender}`}
-          style={{ height: 40, width: "60%", }}
-          onValueChange={(itemValue, itemIndex) =>
-            setCurrentGender(itemValue)
-          }>
+          <Text style={styles.otherText}>Gender:</Text>
 
-          <Picker.Item label="Gender" value="" />
-          <Picker.Item label="Female" value="Female" />
-          <Picker.Item label="Male" value="Male" />
-          <Picker.Item label="Other" value="Other" />
+          <Picker
+            selectedValue={`${currentGender}`}
+            style={{ height: 40, width: "60%", }}
+            onValueChange={(itemValue, itemIndex) =>
+              setCurrentGender(itemValue)
+            }>
 
-        </Picker>
+            <Picker.Item label="Gender" value="" />
+            <Picker.Item label="Female" value="Female" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Other" value="Other" />
 
-        <Text style={styles.text}>Price Preference:</Text>
+          </Picker>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Max Price (in USD)"
-          value={currentPrice}
-          onChangeText={(text) => setCurrentPrice(text)}
-        />
+          <Text style={styles.text}>Price Preference:</Text>
 
-        <Text style={styles.otherText}>Zipcode:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Max Price (in USD)"
+            value={currentPrice}
+            onChangeText={(text) => setCurrentPrice(text)}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder={`${currentZip}`}
-          value={currentZip}
-          onChangeText={(text) => setCurrentZip(text)}
-        />
+          <Text style={styles.otherText}>Zipcode:</Text>
 
-        <Text style={styles.otherText}>Calorie Limit:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={`${currentZip}`}
+            value={currentZip}
+            onChangeText={(text) => setCurrentZip(text)}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder={`${currentCalorieLimit}`}
-          value={currentCalorieLimit}
-          onChangeText={(text) => setCurrentCalorieLimit(text)}
-        />
+          <Text style={styles.otherText}>Calorie Limit:</Text>
 
-        {/*todo*/}
-        {/* <Text style={styles.label}>Restrictions:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={`${currentCalorieLimit}`}
+            value={currentCalorieLimit}
+            onChangeText={(text) => setCurrentCalorieLimit(text)}
+          />
+
+          {/*todo*/}
+          {/* <Text style={styles.label}>Restrictions:</Text>
 
         <MultipleSelectList 
               setSelected={(val) => setCurrentRestrictions(val)} 
@@ -290,16 +295,36 @@ function PatronProfileEditPage({ navigation }) {
             /> */}
 
 
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => updateInfo()}
+          >
+            <Text style={styles.buttonText}>Update Info</Text>
+          </TouchableOpacity>
+
+        </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+
         <TouchableOpacity
-          style={[styles.button]}
-          onPress={() => updateInfo()}
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
         >
-          <Text style={styles.buttonText}>Update Info</Text>
+          <Icon name="home" size={26} color="#000000" />
         </TouchableOpacity>
+
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate(("Login"))}>
-          <Text style={styles.buttonText}>Logout</Text>
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
         </TouchableOpacity>
       </View>
     </View>
@@ -358,19 +383,16 @@ const styles = StyleSheet.create({
   },
   navbarText: {
     color: "#000000",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 10,
-  },
-  mainItem: {
-
   },
   mainContent: {
     padding: 20,
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",
-
+    flex: 2,
   },
   otherText: {
     paddingTop: 5,
@@ -378,7 +400,15 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingTop: 15,
-  }
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },
 });
 
 export default PatronProfileEditPage;

@@ -115,7 +115,7 @@ function PatronProfileCreationPage({ navigation }) {
 
         <TextInput
           style={styles.input}
-          placeholder="Zipcode"
+          placeholder="Zip code"
           value={zip}
           onChangeText={(text) => setZip(text)}
         />

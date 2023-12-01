@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Button } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
@@ -44,34 +44,23 @@ function PatronSettingsPage({ navigation, route }) {
           onPress={() => navigation.navigate("Patron Settings Page", { access })}
         >
           <Icon name="gear" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-
+        <View style={styles.navbarItem}>
+        <Image source={logo} style={{ width: 30, height: 30 }} />
+        <Text style={styles.navbarText}>Settings</Text>
+        </View>
         <TouchableOpacity style={styles.navbarItem}
           onPress={() => navigation.navigate("Bookmark", { access })}
         >
           <Icon name="bookmark" size={25} color="#000000" />
           <Text style={styles.navbarText}></Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Settings</Text>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Homepage", { access })}
-        >
-          <Icon name="home" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", { access })}
-        >
-          <Icon name="search" size={24} color="#000000" />
-          <Text style={styles.navbarText}></Text>
-        </TouchableOpacity>
+        
+        
       </View>
-
+<ScrollView>
       <View style={styles.mainContent}>
-      <Image source={logo} style={{ width: 30, height: 30 }} />
+      
       <View style={styles.resultItem}>
       <Text style={styles.mainText}>Name: {profile.name}
       </Text>
@@ -79,7 +68,7 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
-       <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+       {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -99,13 +88,13 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Date of Birth: {profile.dob}
       </Text>
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-      </Text>
+      </Text> */}
       </View>
       <TouchableOpacity
-          style={styles.button}
+          style={styles.logoutButton}
           onPress={() => navigation.navigate("Patron Profile Edit Page", { access })}>
-          <Icon name="edit" size={20} color="#000000" />
-          <Text style={styles.buttonText}>  Edit Profile</Text>
+          {/*<Icon style= {styles.buttonIcon} name="edit" size={20} color="#000000" paddingLeft="15"  />*/}
+          <Text style={styles.buttonText}> Edit Profile</Text>
         </TouchableOpacity>
       
       <TouchableOpacity
@@ -114,6 +103,30 @@ function PatronSettingsPage({ navigation, route }) {
         <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
     </View>
+    </ScrollView> 
+      <View style={styles.buttonContainer}>
+       
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Patron Homepage", { access })}
+        >
+          <Icon name="home" size={26} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Search", { access })}
+        >
+          <Icon name="search" size={24} color="#000000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navbarItem}
+          onPress={() => navigation.navigate("Menu Item History", { access })}
+        >
+          <Icon name="book" size={24} color="#000000" />
+        </TouchableOpacity>
+        </View>
     </View>
   );
 }
@@ -138,7 +151,7 @@ const styles = StyleSheet.create({
   },
   navbarText: {
     color: "#000000",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 10,
   },
@@ -178,7 +191,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: "center",
-    marginTop: 16,
+    alignContent: "center",
+    marginTop: 12,
     marginBottom: 12,
     width: "20%",
     flexDirection: "row",
@@ -190,16 +204,25 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       paddingVertical: 10,
       alignItems: "center",
-      marginTop: 16,
+      marginTop: 12,
       marginBottom: 12,
       width: "20%",
     
   },
+ 
   buttonText: {
     color: "#000000",
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
+  },
+  buttonContainer: {
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
   },
 },
 );

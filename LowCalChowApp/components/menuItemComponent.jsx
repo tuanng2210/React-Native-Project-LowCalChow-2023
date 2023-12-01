@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
@@ -14,12 +14,17 @@ const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
 
   const ScreenName = screenName;
   console.log(screenName);
-  console.log(ScreenName);
+  {/*console.log(ScreenName);*/}
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {id: item.id, access: access, ...(RestID && { restaurantId: RestID })})}>
-        <View style={{ padding: 16, borderWidth: 1, borderBottomColor: '#ccc', margin: 5, borderRadius: 15, backgroundColor: '#FECA83' }}>
-          <Text>{item.item_name}</Text>
+        <View style={styles.menuItem}>
+          <Text style={styles.itemName}>{item.item_name}</Text>
+          <Text>Calories: {item.calories}</Text>
+          <Text>Price: ${item.price}</Text>
+          <Text>Restaurant: {item.restaurant.name}</Text>
+
+
         </View>
       </TouchableOpacity>
     );
@@ -34,5 +39,19 @@ const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  menuItem: {
+      backgroundColor: 'rgba(255, 165, 0, 0.5)',
+      borderRadius: 8,
+      padding: 15,
+      marginBottom: 15,
+  },
+  itemName: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 5,
+    }
+  },);
 
 export default MenuComponent;
