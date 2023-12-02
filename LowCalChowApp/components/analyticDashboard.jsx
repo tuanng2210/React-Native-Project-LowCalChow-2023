@@ -51,7 +51,7 @@ const AnalyticsDashboard = () => {
       }
 
       const labels = Object.values(data).map((item) => item.title);
-      // const values = Object.values(data).map((item) => item.count);
+      const values = Object.values(data).map((item) => item.count);
 
       const chartData = {
         labels,
