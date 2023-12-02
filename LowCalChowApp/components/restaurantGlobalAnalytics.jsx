@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  ScrollView,
+  Image,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import logo from "../assets/icons8-carrot-94.png";
 
 function RestaurantAnalyticsOverview({ navigation, route }) {
   const [analyticsData, setAnalyticsData] = useState([]);
@@ -73,14 +76,53 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
 
       {/* Main content */}
       <View style={styles.mainContent}>
-        <Text style={styles.sectionTitle}>Restaurant Analytics Overview</Text>
-        <FlatList
+        <View style={styles.sectionTitleContainer}>
+        <Image source={logo} style={{ width: 60, height: 60 }} />
+          <Text style={styles.sectionTitle}>Restaurant Analytics Overview</Text>
+        {/*<FlatList
           data={analyticsData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
-        />
+        />*/}
+        </View>
+        
+        <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Calorie Analytics</Text>
       </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Restriction Tag Analytics</Text>
+      </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Allergy Tag Analytics</Text>
+      </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Ingredient Analytics</Text>
+      </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Taste Tag Analytics</Text>
+      </View>
+    </TouchableOpacity>
+
+    <TouchableOpacity>
+      <View style={styles.restaurantItem}>
+        <Text style={styles.restaurantName}>Cook Style Analytics</Text>
+      </View>
+    </TouchableOpacity>
     </View>
+     </View>
   );
 }
 
@@ -118,12 +160,51 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    paddingLeft: 100,
+  },
+  listContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   activeSidebarItem: {
     backgroundColor: "#FFC107", // Change the background color for active item
   },
   smallSidebar: {
     width: 100,
+  },
+  viewButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  restaurantItem: {
+    backgroundColor: "#E0E0E0",
+    borderRadius: 10,
+    padding: 20,
+    margin: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+    width: "50%",
+  },
+  restaurantName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  sectionTitleContainer: {
+    flexDirection: "row",
+    alignItems: "left",
+    marginBottom: 20,
   },
 });
 

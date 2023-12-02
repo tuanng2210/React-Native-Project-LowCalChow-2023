@@ -367,7 +367,7 @@ function RestaurantHomepage({ navigation, route }) {
       <View style={styles.mainContent}>
         {/* Section Title and Add Restaurant Button */}
         <View style={styles.sectionTitleContainer}>
-          <Image source={logo} style={{ width: 80, height: 80 }} />
+          <Image source={logo} style={{ width: 60, height: 60 }} />
           <Text style={styles.sectionTitle}>List of Restaurants</Text>
           <TouchableOpacity
             style={styles.addButton}

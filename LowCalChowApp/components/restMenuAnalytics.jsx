@@ -63,8 +63,7 @@ return (
         },
         titleText: {
           color: "#000000",
-          fontSize: 30,
-          fontWeight: "bold",
+          fontSize: 18,
           marginLeft: 10,
         },
       });
