@@ -27,6 +27,7 @@ import UpdateInfo from './components/UpdateInfoScreen';
 import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
 import viewMenuItem from './components/patronViewMenuItem';
 import SearchResultsScreen from './components/searchResults';
+import RestMenuAnalytics from './components/restMenuAnalytics';
 
 
 
@@ -60,6 +61,7 @@ const App = () => {
         <Stack.Screen name="Update Info" component={UpdateInfo} />
         <Stack.Screen name="Search Results" component={SearchResultsScreen} />
         <Stack.Screen name="Menu Item History" component={MenuItemHistory} />
+        <Stack.Screen name="Restaurant Menu Analytics" component={RestMenuAnalytics} />
       </Stack.Navigator>
     </NavigationContainer>
   );

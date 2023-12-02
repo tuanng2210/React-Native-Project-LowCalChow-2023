@@ -76,6 +76,12 @@ function RestaurantDashboard() {
         </TouchableOpacity>
       </View>
       {/* Render other restaurant dashboard content */}
+      <TouchableOpacity
+          onPress={() => navigation.navigate("Restaurant Menu Analytics", {access, restaurantId} )}
+          style={styles.navItem}
+        >
+          <Text style={styles.navText}>analytics</Text>
+        </TouchableOpacity>
     </View>
   );
 }
