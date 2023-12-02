@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "react-native-dotenv": "^3.4.9"
+  },
+  "dependencies": {
+    "react-native-web": "^0.19.9"
   }
 }
