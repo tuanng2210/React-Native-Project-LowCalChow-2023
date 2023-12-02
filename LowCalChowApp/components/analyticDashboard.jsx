@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { BarChart } from "react-native-chart-kit";
 
 const AnalyticsDashboard = () => {
   const [data, setData] = useState([]);
@@ -32,6 +33,7 @@ const AnalyticsDashboard = () => {
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
+      console.error("Fetch Error:", error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -39,7 +41,48 @@ const AnalyticsDashboard = () => {
   };
 
   const renderChart = (entry) => {
-    const renderBarChart = (data, title) => {};
+    const renderBarChart = (data, title) => {
+      if (!data) {
+        return (
+          <View style={styles.barChartContainer}>
+            <Text style={styles.chartTitle}>{`${title}: None`}</Text>
+          </View>
+        );
+      }
+
+      const labels = Object.values(data).map((item) => item.title);
+      // const values = Object.values(data).map((item) => item.count);
+
+      const chartData = {
+        labels,
+        datasets: [
+          {
+            data: values,
+          },
+        ],
+      };
+
+      const chartConfig = {
+        backgroundColor: "#f0f0f0",
+        backgroundGradientFrom: "#f0f0f0",
+        backgroundGradientTo: "#f0f0f0",
+        decimalPlaces: 0,
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+      };
+
+      return (
+        <View style={styles.barChartContainer}>
+          <Text style={styles.chartTitle}>{title}</Text>
+          <BarChart
+            data={chartData}
+            width={300}
+            height={200}
+            yAxisLabel=""
+            chartConfig={chartConfig}
+          />
+        </View>
+      );
+    };
 
     return (
       <View>
@@ -117,20 +160,6 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 16,
     marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 4,
   },
 });
 
