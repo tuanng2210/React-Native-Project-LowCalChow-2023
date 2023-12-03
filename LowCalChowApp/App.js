@@ -39,7 +39,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Login" component={LoginPage} />
+        <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="Sign Up" component={SignUpPage} />
         <Stack.Screen name="Menu" component={MenuPage} />
         <Stack.Screen name="Edit Menu" component={EditMenuPage} />
@@ -65,7 +65,7 @@ const App = () => {
         <Stack.Screen name="Restaurant Menu Analytics" component={RestMenuAnalytics} />
         <Stack.Screen name="Admin FAQ Page" component={AdminFAQPage} />
         <Stack.Screen name="Admin RestTags" component={Admin_RestTags} />
-        <Stack.Screen name="Admin Food Type Tags" component={Admin_FoodTypeTags} /> */}
+        <Stack.Screen name="Admin Food Type Tags" component={Admin_FoodTypeTags} /> 
         <Stack.Screen name="Analytic Dashboard" component={AnalyticsDashboard} />
       </Stack.Navigator>
     </NavigationContainer>
