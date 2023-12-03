@@ -86,9 +86,12 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
         />*/}
         </View>
         
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() =>
+            navigation.navigate("Analytic Dashboard", { access })
+          }>
       <View style={styles.restaurantItem}>
         <Text style={styles.restaurantName}>Calorie Analytics</Text>
+        
       </View>
     </TouchableOpacity>
 

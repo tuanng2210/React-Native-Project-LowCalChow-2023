@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 function RestMenuAnalytics() {
     const route = useRoute();
     const navigation = useNavigation();
-    const { access, restaurantId } = route.params;
+    const { access, restaurantId, menuItemId } = route.params;
 
 return (
     <View style={styles.container}>
@@ -23,7 +23,8 @@ return (
       <ScrollView>
 
       </ScrollView>
-      </View>)
+      </View>
+      )
 }
 
 
