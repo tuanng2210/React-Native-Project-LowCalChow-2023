@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image } from 'react-native';
+import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
 import logo from "../assets/icons8-carrot-94.png";
 
 function viewMenuItem({ route, navigation }) {
-  const access = route.params.access;
-  const mealID = route.params.id;
-  const [bookmarkID, setBookmarkID] = useState('null');
-  if (route.params.bookmarkID) { setBookmarkID(route.params.bookmarkID); }
+  //const access = route.params.access;
+  //const mealID = route.params.id;
+  //const [bookmarkID, setBookmarkID] = useState('null');
+  //if (route.params.bookmarkID) { setBookmarkID(route.params.bookmarkID); }
 
-  //const mealID = 1;
-  //const bookmarkID = null;
-  //const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA3MjA4LCJpYXQiOjE2OTk0MDAwMDgsImp0aSI6IjM0YjFkZTYxZDE0NzQ0Yzg5ODJhYjVjYzE0NzdkNzlkIiwidXNlcl9pZCI6NH0.UVUoWGeWFjnya_kz6NfOD9gfSdN2ZUGYwk-XP2mmeV4';
+  const mealID = 1;
+  const bookmarkID = 23;
+  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNjQzMTQ1LCJpYXQiOjE3MDE2MzU5NDUsImp0aSI6IjE5NTZhNzViMWU4NzQwMTQ4OGRmNDFkYzdlZDNjN2NkIiwidXNlcl9pZCI6NH0.TM5a4Jl1dqoBDkmx4rgxr41oJdELVk92uGSf97FLJ0w';
+  
   const showBookmarkButton = true;
   const [isBookmarked, setIsBookmarked] = useState(false);
   const showMenuItemButton = true;
@@ -33,6 +34,12 @@ function viewMenuItem({ route, navigation }) {
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
   const [reviewVisible, setReviewVisible] = useState(false);
+  /*const [isBkmkModalVisible, setisBkmkModalVisible] = useState(false);
+  const [isRmBkmkModalVisible, setisRmBkmkModalVisible] = useState(false);
+  const [isMIHModalVisible, setisMIHModalVisible] = useState(false);*/
+  const [successPopupVisible, setSuccessPopupVisible] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
 
   const handleGetMeal = async () => {
     try {
@@ -66,7 +73,6 @@ function viewMenuItem({ route, navigation }) {
     handleGetMeal();
   }, []);
 
-  //todo add to bookmark list
   const handleAddToBookmark = async () => {
     const data =
     {
@@ -83,8 +89,30 @@ function viewMenuItem({ route, navigation }) {
         },
         body: JSON.stringify(data),
       });
-      if (response.status === 200) {
+      if (response.status === 201) {
+        showSuccessPopup(`${mealName} bookmarked successfully!`);
         setIsBookmarked(true);
+        const data = await response.json();
+
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  const handleRemoveBookmark = async () => {
+
+    try {
+      const response = await fetch(`localhost:8000/patrons/bookmarks/${bookmarkID}/`, {
+        method: "DELETE",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 204) {
+        setIsBookmarked(false);
         const data = await response.json();
       }
     } catch (error) {
@@ -92,7 +120,6 @@ function viewMenuItem({ route, navigation }) {
     }
   }
 
-  //todo add to menu item history list
   const handleAddToMenuItemHistory = async () => {
     console.log(feedbackID);
     let data = {
@@ -117,8 +144,9 @@ function viewMenuItem({ route, navigation }) {
         },
         body: JSON.stringify(data),
       });
-      if (response.status === 200) {
+      if (response.status === 201) {
         const data = await response.json();
+        showSuccessPopup(`${mealName} added to Menu Item History!`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -164,18 +192,27 @@ function viewMenuItem({ route, navigation }) {
   function subFeedback() {
     setReviewVisible(false);
     handleSubmitFeedback();
-    //handleAddToMenuItemHistory();
   }
   function submitBKMKList() {
     handleAddToBookmark();
+  }
+  function removeBookmark() {
+    handleRemoveBookmark();
   }
   const toggleReview = () => {
     setReviewVisible(!reviewVisible);
     console.log(reviewVisible);
   };
-  const handleReviewSubmit = (review) => {
+  /*const handleReviewSubmit = (review) => {
 
-  };
+  };*/
+  function showSuccessPopup(message) {
+    setSuccessMessage(message);
+    setSuccessPopupVisible(true);
+    setTimeout(() => {
+      setSuccessPopupVisible(false);
+    }, 2000); // Close the popup after 2 seconds (adjust as needed)
+  }
 
   return (
 
@@ -216,13 +253,21 @@ function viewMenuItem({ route, navigation }) {
 
           {/* Empty View*/}
           <View style={styles.menuRight}>
-            {/* Bookmark Button 
+            {/*} Bookmark Button */}
               { showBookmarkButton && ( 
               <TouchableOpacity style={styles.menuButton} onPress={submitBKMKList}>
                 <Icon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={36} color="black" />
               
               </TouchableOpacity>
-              )}*/}
+              )}
+            {/*} unBookmark Button */}
+              { !showBookmarkButton && ( 
+              <TouchableOpacity style={styles.menuButton} onPress={removeBookmark}>
+                <Icon name={'bookmark'} size={36} color="black" />
+              
+              </TouchableOpacity>
+              )}
+
             {/* Save Menu Item Button */}
             {showMenuItemButton && (
               <TouchableOpacity style={styles.menuButton} onPress={openFeedback}>
@@ -273,7 +318,17 @@ function viewMenuItem({ route, navigation }) {
             </View>
             <Text style={styles.normText}>Time Available: {mealTOD}</Text>
           </View>
-
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={successPopupVisible}
+             onRequestClose={() => {
+              setSuccessPopupVisible(false)
+            }}>
+            <View style={styles.successPopup}>
+              <Text style={styles.successPopupText}>{successMessage}</Text>
+            </View>
+          </Modal>
           <Modal
             animationType='slide'
             transparent={true}
@@ -311,6 +366,7 @@ function viewMenuItem({ route, navigation }) {
               </View>
             </View>
           </Modal>
+          
 
         </View>
 
@@ -338,6 +394,7 @@ function viewMenuItem({ route, navigation }) {
           <Icon name="book" size={24} color="#000000" />
         </TouchableOpacity>
       </View>
+      
     </View>
   );
 }
@@ -505,6 +562,22 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     padding: 10,
+  },
+  successPopup: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green',
+    padding: 20,
+    borderRadius: 10,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+  },
+  successPopupText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 export default viewMenuItem;
