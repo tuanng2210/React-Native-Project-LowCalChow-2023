@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image} from 'react-native';
+import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
@@ -12,8 +12,8 @@ function viewMenuItem({ route, navigation }) {
   //if (route.params.bookmarkID) { setBookmarkID(route.params.bookmarkID); }
 
   const mealID = 1;
-  const bookmarkID = 23;
-  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNjQzMTQ1LCJpYXQiOjE3MDE2MzU5NDUsImp0aSI6IjE5NTZhNzViMWU4NzQwMTQ4OGRmNDFkYzdlZDNjN2NkIiwidXNlcl9pZCI6NH0.TM5a4Jl1dqoBDkmx4rgxr41oJdELVk92uGSf97FLJ0w';
+  const bookmarkID = 47;
+  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNjg4OTMxLCJpYXQiOjE3MDE2ODE3MzEsImp0aSI6IjVhZDYyY2VhNDQ5ZDQ0ZjZhM2UyODc3MDZjMGQ4MDlmIiwidXNlcl9pZCI6NH0.H6HNGD9-T3ScEzre98gWYTpyvLDMspNMf2MB10xjTGI';
   
   const showBookmarkButton = true;
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -33,12 +33,12 @@ function viewMenuItem({ route, navigation }) {
   const [feedbackID, setFeedbackID] = useState('');
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
-  const [reviewVisible, setReviewVisible] = useState(false);
-  /*const [isBkmkModalVisible, setisBkmkModalVisible] = useState(false);
-  const [isRmBkmkModalVisible, setisRmBkmkModalVisible] = useState(false);
-  const [isMIHModalVisible, setisMIHModalVisible] = useState(false);*/
+  const [reviewVisible, setReviewVisible] = useState(false)
   const [successPopupVisible, setSuccessPopupVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [FailPopupVisible, setFailPopupVisible] = useState(false);
+  const [failMessage, setFailMessage] = useState('');
+  const [feedbackData, setFeedbackData] = useState([]);
 
 
   const handleGetMeal = async () => {
@@ -72,7 +72,28 @@ function viewMenuItem({ route, navigation }) {
   useEffect(() => {
     handleGetMeal();
   }, []);
+  const handleGetFeedback = async () => {
+    try {
+      /* TODO MODIFY LINK TO WORK LATER */
+      const response = await fetch(`http://localhost:8000/feedback/menuitems/${mealID}`, {
+        method: "GET",
 
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200) {
+        const newdata = await response.json();
+        setFeedbackData(newdata);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }  
+  useEffect(() => {
+    handleGetFeedback();
+  }, []);
   const handleAddToBookmark = async () => {
     const data =
     {
@@ -94,6 +115,8 @@ function viewMenuItem({ route, navigation }) {
         setIsBookmarked(true);
         const data = await response.json();
 
+      }else {
+        showFailPopup(`${mealname} bookmarking failed.`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -147,6 +170,8 @@ function viewMenuItem({ route, navigation }) {
       if (response.status === 201) {
         const data = await response.json();
         showSuccessPopup(`${mealName} added to Menu Item History!`);
+      }else {
+        showFailPopup(`${mealname} adding to Menu Item History failed.`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -213,6 +238,29 @@ function viewMenuItem({ route, navigation }) {
       setSuccessPopupVisible(false);
     }, 2000); // Close the popup after 2 seconds (adjust as needed)
   }
+  function showFailPopup(message) {
+    setFailMessage(message);
+    setFailPopupVisible(true);
+    setTimeout(() => {
+      setFalsePopupVisible(false);
+    }, 2000); // Close the popup after 2 seconds (adjust as needed)
+  }
+  const renderFeedbackItem = ({ item }) => (
+    <View style={styles.feedbackItem}>
+      <StarRating
+                    rating={rating}
+                    onChange={setRating}
+                    maxStars={5}
+                    starSize={64}
+                    color="#5CCD28"
+                    borderColor="#000000"
+                    enableSwiping='true'
+
+                  />
+      <Text style={styles.feedbackText}>{item.review}</Text>
+      
+    </View>
+  );
 
   return (
 
@@ -256,7 +304,7 @@ function viewMenuItem({ route, navigation }) {
             {/*} Bookmark Button */}
               { showBookmarkButton && ( 
               <TouchableOpacity style={styles.menuButton} onPress={submitBKMKList}>
-                <Icon name={isBookmarked ? 'bookmark' : 'bookmark-o'} size={36} color="black" />
+                <Icon name={'bookmark-o'} size={36} color="black" />
               
               </TouchableOpacity>
               )}
@@ -283,6 +331,15 @@ function viewMenuItem({ route, navigation }) {
 
           {/*</SafeAreaView>*/}
           <View style={styles.container}>
+            {/* Feedback FlatList */}
+            <FlatList
+              data={feedbackData}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderFeedbackItem}
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.feedbackList}
+            />
             <Text style={styles.normText}>Calories: {mealCalories}</Text>
             <Text style={styles.normText}>Price: ${mealPrice}</Text>
             <Text style={styles.normText}>Food Type: {mealFoodType}</Text>
@@ -327,6 +384,17 @@ function viewMenuItem({ route, navigation }) {
             }}>
             <View style={styles.successPopup}>
               <Text style={styles.successPopupText}>{successMessage}</Text>
+            </View>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={FailPopupVisible}
+             onRequestClose={() => {
+              setFailPopupVisible(false)
+            }}>
+            <View style={styles.failPopup}>
+              <Text style={styles.successPopupText}>{failMessage}</Text>
             </View>
           </Modal>
           <Modal
@@ -574,10 +642,39 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -50 }, { translateY: -50 }],
   },
+  failPopup: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+    padding: 20,
+    borderRadius: 10,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+  },
   successPopupText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  feedbackList: {
+    marginTop: 20,
+  },
+  feedbackItem: {
+    backgroundColor: '#EFEFEF',
+    borderRadius: 10,
+    padding: 10,
+    marginRight: 10,
+    width: 200, // Adjust the width as needed
+  },
+  feedbackText: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  feedbackRating: {
+    fontSize: 12,
+    color: '#888888',
   },
 });
 export default viewMenuItem;
