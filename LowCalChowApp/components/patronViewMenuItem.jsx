@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, Image, FlatList} from 'react-native';
+import { Modal, TouchableOpacity, View, Text, StyleSheet, ScrollView, TextInput, Image, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import StarRating from 'react-native-star-svg-rating';
+import {StarRatingDisplay} from 'react-native-star-svg-rating';
 import logo from "../assets/icons8-carrot-94.png";
 
 function viewMenuItem({ route, navigation }) {
@@ -12,8 +13,8 @@ function viewMenuItem({ route, navigation }) {
   //if (route.params.bookmarkID) { setBookmarkID(route.params.bookmarkID); }
 
   const mealID = 1;
-  const bookmarkID = 47;
-  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNjg4OTMxLCJpYXQiOjE3MDE2ODE3MzEsImp0aSI6IjVhZDYyY2VhNDQ5ZDQ0ZjZhM2UyODc3MDZjMGQ4MDlmIiwidXNlcl9pZCI6NH0.H6HNGD9-T3ScEzre98gWYTpyvLDMspNMf2MB10xjTGI';
+  const bookmarkID = 48;
+  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNzI1OTEwLCJpYXQiOjE3MDE3MTg3MTAsImp0aSI6ImJlOWNiYTg2NjAzNzQ5MGZiOTI1ZjVmNGY3ZDFhMzVmIiwidXNlcl9pZCI6NH0.qrGsGZ6H7320hDfQLgmXAZOWTzFQ6a5K7xsTzMjGb6E';
   
   const showBookmarkButton = true;
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -31,6 +32,7 @@ function viewMenuItem({ route, navigation }) {
   const [mealRestrictions, setmealRestrictions] = useState([]);
 
   const [feedbackID, setFeedbackID] = useState('');
+  const [feedbackSubmit, setFeedbackSubmit] = useState(false);
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
   const [reviewVisible, setReviewVisible] = useState(false)
@@ -75,7 +77,7 @@ function viewMenuItem({ route, navigation }) {
   const handleGetFeedback = async () => {
     try {
       /* TODO MODIFY LINK TO WORK LATER */
-      const response = await fetch(`http://localhost:8000/feedback/menuitems/${mealID}`, {
+      const response = await fetch(`http://localhost:8000/feedback/menuitems/${mealID}/`, {
         method: "GET",
 
         headers: {
@@ -170,16 +172,20 @@ function viewMenuItem({ route, navigation }) {
       if (response.status === 201) {
         const data = await response.json();
         showSuccessPopup(`${mealName} added to Menu Item History!`);
+        setFeedbackSubmit(false);
       }else {
-        showFailPopup(`${mealname} adding to Menu Item History failed.`);
+        showFailPopup(`${mealName} adding to Menu Item History failed.`);
+        setFeedbackSubmit(false);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   }
   useEffect(() => {
-    handleAddToMenuItemHistory();
-  }, [feedbackID]);
+    if(feedbackSubmit){
+      handleAddToMenuItemHistory();
+    }
+  }, [feedbackSubmit]);
 
 
   const handleSubmitFeedback = async () => {
@@ -204,6 +210,7 @@ function viewMenuItem({ route, navigation }) {
         const newdata = await response.json();
 
         setFeedbackID(newdata.id);
+        setFeedbackSubmit(true);
 
       }
     } catch (error) {
@@ -242,19 +249,18 @@ function viewMenuItem({ route, navigation }) {
     setFailMessage(message);
     setFailPopupVisible(true);
     setTimeout(() => {
-      setFalsePopupVisible(false);
+      setFailPopupVisible(false);
     }, 2000); // Close the popup after 2 seconds (adjust as needed)
   }
   const renderFeedbackItem = ({ item }) => (
     <View style={styles.feedbackItem}>
-      <StarRating
-                    rating={rating}
-                    onChange={setRating}
+      <StarRatingDisplay
+                    rating={item.rating}
                     maxStars={5}
-                    starSize={64}
+                    starSize={20}
                     color="#5CCD28"
                     borderColor="#000000"
-                    enableSwiping='true'
+                    enableSwiping='false'
 
                   />
       <Text style={styles.feedbackText}>{item.review}</Text>
@@ -295,9 +301,20 @@ function viewMenuItem({ route, navigation }) {
                </View>*/}
 
       <ScrollView>
+      <View style={styles.mainContent}>
+        {/*Menu Item Title */}
+        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{mealName}</Text>
+      </View>
+      <FlatList
+              data={feedbackData}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderFeedbackItem}
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.feedbackList}
+            />
         <View style={styles.mainContent}>
-          {/*Menu Item Title */}
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{mealName}</Text>
+
 
           {/* Empty View*/}
           <View style={styles.menuRight}>
@@ -325,21 +342,10 @@ function viewMenuItem({ route, navigation }) {
             )}
 
           </View>
-
-
-
-
-          {/*</SafeAreaView>*/}
-          <View style={styles.container}>
+          
             {/* Feedback FlatList */}
-            <FlatList
-              data={feedbackData}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={renderFeedbackItem}
-              horizontal
-              showsHorizontalScrollIndicator={true}
-              contentContainerStyle={styles.feedbackList}
-            />
+            <View style={styles.mainContent}>
+
             <Text style={styles.normText}>Calories: {mealCalories}</Text>
             <Text style={styles.normText}>Price: ${mealPrice}</Text>
             <Text style={styles.normText}>Food Type: {mealFoodType}</Text>
@@ -437,8 +443,8 @@ function viewMenuItem({ route, navigation }) {
           
 
         </View>
-
       </ScrollView>
+
       <View style={styles.buttonContainer}>
 
         <TouchableOpacity
@@ -462,7 +468,7 @@ function viewMenuItem({ route, navigation }) {
           <Icon name="book" size={24} color="#000000" />
         </TouchableOpacity>
       </View>
-      
+
     </View>
   );
 }
@@ -471,7 +477,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
+    width: '100%'
   },
   menuBar: {
     flexDirection: 'row',
@@ -659,14 +666,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   feedbackList: {
+    flex: 1,
     marginTop: 20,
+    width: '80%',
   },
   feedbackItem: {
     backgroundColor: '#EFEFEF',
     borderRadius: 10,
     padding: 10,
     marginRight: 10,
-    width: 200, // Adjust the width as needed
+    width: 175, 
   },
   feedbackText: {
     fontSize: 14,
