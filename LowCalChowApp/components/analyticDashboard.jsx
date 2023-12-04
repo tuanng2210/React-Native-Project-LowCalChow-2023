@@ -2,22 +2,19 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
-const AnalyticsDashboard = () => {
+const AnalyticsDashboard = ({ route }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const adminAccessToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNTU3Njc4LCJpYXQiOjE3MDE1NTA0NzgsImp0aSI6IjIwZmZkODZiOTRhYjQ4MDBhOTEzMjhiM2RlZTljYTBmIiwidXNlcl9pZCI6OX0.E1l_WHR7QkwGCWWEhWrs81RKiKQ4BdGfTueOI1jln3g";
-
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(route.params.analyticsType, route.params.access);
+  }, [route.params.analyticsType]);
 
-  const fetchData = async () => {
+  const fetchData = async (analyticsType, adminAccessToken) => {
     try {
       const response = await fetch(
-        "http://localhost:8000/analytics/overall/calories/",
+        `http://localhost:8000/analytics/overall/${analyticsType}/`,
         {
           headers: {
             Authorization: `Bearer ${adminAccessToken}`,
@@ -111,7 +108,9 @@ const AnalyticsDashboard = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Analytics Dashboard</Text>
+      <Text style={styles.header}>
+        Analytics Dashboard - {route.params.title}
+      </Text>
       {data.map((entry) => (
         <View key={entry.id} style={styles.entryContainer}>
           <Text style={styles.date}>
@@ -123,7 +122,6 @@ const AnalyticsDashboard = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
