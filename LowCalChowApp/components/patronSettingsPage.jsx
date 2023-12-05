@@ -68,7 +68,7 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
-       {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+        <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -81,14 +81,14 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Disliked Ingredients: {profile.disliked_ingredients}
       </Text> 
-      <Text style={styles.mainText}>Price Preference: {profile.price_max}
+      <Text style={styles.mainText}>Max Price: {profile.price_max}
       </Text>
       <Text style={styles.mainText}>Zipcode: {profile.zipcode}
       </Text>
       <Text style={styles.mainText}>Date of Birth: {profile.dob}
       </Text>
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-      </Text> */}
+      </Text> 
       </View>
       <TouchableOpacity
           style={styles.logoutButton}
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: "#fff",
   },
   navbar: {
     flexDirection: "row",
@@ -182,9 +183,10 @@ const styles = StyleSheet.create({
     alignItems: "left",
   },
   mainText: {
-    backgroundColor: "#fff",
+    backgroundColor: 'rgba(255, 165, 0, 0.5)',
     fontSize: 20,
     padding: 10,
+    marginLeft: 10,
   },
   button: {
     backgroundColor: "#FFA500",
@@ -223,6 +225,10 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     padding: 10,
+  },
+  resultItem: {
+    width:"100%",
+    justifyContent: "left",
   },
 },
 );
