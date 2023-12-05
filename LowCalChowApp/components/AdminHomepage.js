@@ -7,7 +7,7 @@ import {
   TextInput,
   Button,
   Alert,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { PieChart } from "react-native-svg-charts";
@@ -74,14 +74,18 @@ function AdminHomepage() {
       <View style={styles.faqContainer}>
         <Text style={styles.faqHeader}>FAQ</Text>
         <View style={styles.faqContent}>
+              <Text style={styles.descriptionText}>
+      Frequently Asked Questions (FAQ) serve as a repository of common queries and their detailed answers. This section aims to provide clarity on various aspects of our platform, addressing concerns that users and administrators frequently encounter. Access the FAQ to gain insights, find solutions, and streamline your experience effortlessly.
+    </Text>
           {/* Add FAQ content here */}
-          <Text style={styles.faqText}>Frequently Asked Questions...</Text>
           {/* Add an Orange Button here */}
-          <Button
-            title="FAQ"
-            onPress={() => navigation.navigate("Admin FAQ Page")}
-            color="orange"
-          />
+    <View style={{ marginTop: 10 }}>
+      <Button
+        title="FAQ"
+        onPress={() => navigation.navigate("Admin FAQ Page")}
+        color="orange"
+      />
+    </View>
         </View>
       </View>
 
@@ -92,20 +96,70 @@ function AdminHomepage() {
           <Text style={styles.tagManagementHeaderText}>Tag Management</Text>
         </View>
 
+          <View style={styles.descriptionContainer}>
+      <Text style={styles.descriptionText}>
+      Tag Management enables control over various tag categories, including Rest Tags, Food Type Tags, Cook Style Tags, Taste Tags, Restriction Tags, Allergy Tags, Ingredient Tags, and more. Navigate between categories to add, delete, or modify tags within each category as needed.
+      </Text>
+    </View>
         {/* Buttons for different tag categories */}
         <View style={styles.tagButtonsContainer}>
+          <View style={{ marginBottom: 10 }}>
           <Button
             title="Rest Tags"
             onPress={() => navigation.navigate("Admin RestTags", { access })}
             color="orange"
-            style={styles.tagButton}
+            style={[styles.tagButton, { marginBottom: 10 }]}
           />
+            </View>
           {/* Add other buttons similarly */}
+          <View style={{ marginBottom: 10 }}>
           <Button
             title="Food Type Tags"
             onPress={() => navigation.navigate("Admin Food Type Tags", { access })}
             color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
           />
+           </View>
+          <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Cook Style Tags"
+            onPress={() => navigation.navigate("Admin Cook Style Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Taste Tags"
+            onPress={() => navigation.navigate("Admin Taste Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Restriction Tags"
+            onPress={() => navigation.navigate("Admin Restriction Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Allergy Tags"
+            onPress={() => navigation.navigate("Admin Allergy Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Ingredient Tags"
+            onPress={() => navigation.navigate("Admin Ingredient Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
           {/* ... Add other buttons for different tag categories */}
         </View>
       </View>
@@ -116,6 +170,9 @@ function AdminHomepage() {
           style={styles.analyticsBackgroundImage}>
           <View style={styles.analyticsContent}>
             <Text style={styles.analyticsHeader}>Analytics</Text>
+            <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
+        The Analytics section offers comprehensive insights into user demographics and restaurant statistics. Explore data on user age demographics, total users, restaurant patrons, and menu item statistics through informative charts and figures, providing a holistic view of platform engagement and usage.
+      </Text>
             {/* Render the analytics data here */}
             {analyticsData.map((dataPoint) => (
               <View key={dataPoint.id}>
@@ -298,7 +355,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     alignItems: 'center',
-    backgroundColor: '#ddd',
+    backgroundColor: '#RRGGBB',
     borderRadius: 8,
     marginTop: 20,
     padding: 16,
@@ -397,6 +454,8 @@ const styles = StyleSheet.create({
   tagButtonsContainer: {
     flexDirection: 'column',
     marginTop: 10,
+    width: 150,
+    alightItems: 'center',
   },
   tagContainer: {
     alignItems: 'center',
@@ -409,6 +468,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
     padding: 16,
+    alignItems: 'center',
   },
   tagManagementHeader: {
     alignItems: 'center',
@@ -464,6 +524,12 @@ totalUsers: {
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 8,
+  },
+    analyticsDescription: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
 

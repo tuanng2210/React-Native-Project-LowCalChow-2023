@@ -31,6 +31,12 @@ import RestMenuAnalytics from './components/restMenuAnalytics';
 import Admin_RestTags from "./components/Admin_Resttags";
 import Admin_FoodTypeTags from "./components/Admin_FoodTypeTags";
 import AnalyticsDashboard from './components/analyticDashboard';
+import Admin_CookStyleTags from "./components/Admin_CookStyleTags";
+import Admin_TasteTags from "./components/Admin_TasteTags";
+import Admin_RestrictionTags from "./components/Admin_RestrictionTags";
+import Admin_AllergyTags from "./components/Admin_AllergyTags";
+import Admin_IngredientTags from "./components/Admin_IngredientTags";
+
 
 
 const Stack = createNativeStackNavigator();
@@ -65,8 +71,13 @@ const App = () => {
         <Stack.Screen name="Restaurant Menu Analytics" component={RestMenuAnalytics} />
         <Stack.Screen name="Admin FAQ Page" component={AdminFAQPage} />
         <Stack.Screen name="Admin RestTags" component={Admin_RestTags} />
-        <Stack.Screen name="Admin Food Type Tags" component={Admin_FoodTypeTags} /> 
+        <Stack.Screen name="Admin Food Type Tags" component={Admin_FoodTypeTags} />
         <Stack.Screen name="Analytic Dashboard" component={AnalyticsDashboard} />
+        <Stack.Screen name="Admin Cook Style Tags" component={Admin_CookStyleTags} />
+        <Stack.Screen name="Admin Taste Tags" component={Admin_TasteTags} />
+        <Stack.Screen name="Admin Restriction Tags" component={Admin_RestrictionTags} />
+        <Stack.Screen name="Admin Allergy Tags" component={Admin_AllergyTags} />
+        <Stack.Screen name="Admin Ingredient Tags" component={Admin_IngredientTags} />
       </Stack.Navigator>
     </NavigationContainer>
   );
