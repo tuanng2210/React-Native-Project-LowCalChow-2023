@@ -62,10 +62,12 @@ function RestaurantAccountCreationPage({ navigation }) {
         .then((responseData) => {
           console.log("API response:", responseData);
 
-          if (responseData.message === "success") {
+          if (responseData.message === "User Created Successfully") {
             const { email, username, user_type } = responseData.content;
+
+            const access = responseData.tokens.access;
             console.log("User details:", { email, username, user_type });
-            navigation.navigate("SuccessScreen");
+            navigation.navigate("Restaurant Homepage", { access: access });
           } else {
             console.log("Message :", responseData.message);
           }
