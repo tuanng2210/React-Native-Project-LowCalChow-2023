@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import logo from "../assets/icons8-carrot-94.png";
+import TrendComponent from "./TrendComponent";
 
 function RestaurantAnalyticsOverview({ navigation, route }) {
   const [analyticsData, setAnalyticsData] = useState([]);
@@ -60,6 +61,9 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
         <View style={styles.sectionTitleContainer}>
           <Image source={logo} style={{ width: 60, height: 60 }} />
           <Text style={styles.sectionTitle}>Restaurant Analytics Overview</Text>
+
+          
+
           {/*<FlatList
           data={analyticsData}
           renderItem={renderItem}
@@ -86,6 +90,8 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
             <Text style={styles.restaurantName}>Allergy Tag Analytics</Text>
           </View>
         </TouchableOpacity> */}
+
+        <TrendComponent xCoefficients={[-1.00, 2.30, 0.50, 0.10, 2.00, 1.00]}/>
 
         <TouchableOpacity
           onPress={() =>
