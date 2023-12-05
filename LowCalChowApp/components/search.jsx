@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   FlatList,
+  Switch,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -42,6 +43,7 @@ function Search({ navigation, route }) {
   const [defaultTasteTags, setDefaultTasteTags] = useState([]);
   const [defaultAllergyTags, setDefaultAllergyTags] = useState([]);
   const [defaultIngredientTags, setDefaultIngredientTags] = useState([]);
+  const [isAdvancedSearch, setAdvancedSearch] = useState(false);
 
   const fetchDefaultTags = async () => {
     try {
@@ -272,6 +274,10 @@ function Search({ navigation, route }) {
     }
   };
 
+  const toggleAdvancedSearch = () => {
+    setAdvancedSearch((prev) => !prev);
+  };
+
   const handleSubmit = async () => {
     try {
       const searchData = {
@@ -386,7 +392,7 @@ function Search({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
-
+      {/* 
       <ScrollView>
         <View style={styles.mainContent}>
           <View style={styles.root}>
@@ -501,6 +507,139 @@ function Search({ navigation, route }) {
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>
+      </ScrollView> */}
+      <ScrollView>
+        <View style={styles.mainContent}>
+          <View style={styles.root}>
+            <Text style={styles.title}>Search for a Menu Item</Text>
+
+            {/* Search Bar */}
+            <View
+              style={
+                !isAdvancedSearch
+                  ? styles.searchBar__unclicked
+                  : styles.searchBar__clicked
+              }
+            >
+              <Feather
+                name="search"
+                size={20}
+                color="black"
+                style={{ marginLeft: 1 }}
+              />
+              <TextInput
+                style={styles.inputSearch}
+                placeholder="Search"
+                value={query}
+                onChangeText={(text) => setQuery(text)}
+              />
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Calorie Limit"
+              value={calorieLimit}
+              onChangeText={(text) => setCalorieLimit(text)}
+            />
+
+            {/* Additional Fields */}
+            {isAdvancedSearch && (
+              <View style={styles.additionalFieldsContainer}>
+                <TouchableOpacity
+                  onPress={openRestrictionTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>
+                    Select Restriction Tags
+                  </Text>
+                </TouchableOpacity>
+
+                <TagModal
+                  visible={isRestrictionTagsModalVisible}
+                  tags={dietaryRestrictionTags}
+                  selectedTags={selectedRestrictionTags}
+                  onSelect={handleRestrictionTagSelect}
+                  onClose={closeRestrictionTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openTasteTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
+                </TouchableOpacity>
+                <TagModal
+                  visible={isTasteTagsModalVisible}
+                  tags={patronTasteTags}
+                  selectedTags={selectedTasteTags}
+                  onSelect={handleTasteTagSelect}
+                  onClose={closeTasteTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openAllergyTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
+                </TouchableOpacity>
+                <TagModal
+                  visible={isAllergyTagsModalVisible}
+                  tags={allergyTags}
+                  selectedTags={selectedAllergyTags}
+                  onSelect={handleAllergyTagSelect}
+                  onClose={closeAllergyTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openIngredientTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>
+                    Select Disliked Ingredients{" "}
+                  </Text>
+                </TouchableOpacity>
+
+                <TagModal
+                  visible={isIngredientTagsModalVisible}
+                  tags={dislikedIngredients}
+                  selectedTags={selectedIngredientTags}
+                  onSelect={handleIngredientSelect}
+                  onClose={closeIngredientTagsModal}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Min Price"
+                  value={priceMin}
+                  onChangeText={(text) => setPriceMin(text)}
+                />
+
+                <TextInput
+                  style={styles.input}
+                  placeholder="Max Price"
+                  value={priceMax}
+                  onChangeText={(text) => setPriceMax(text)}
+                />
+              </View>
+            )}
+
+            {/* Toggle Switch */}
+            <View style={styles.toggleContainer}>
+              <Text>Advanced Search</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isAdvancedSearch ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleAdvancedSearch}
+                value={isAdvancedSearch}
+              />
+            </View>
+          </View>
+
+          {/* Submit Button */}
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
 
       <View style={styles.buttonContainer}>
@@ -570,6 +709,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
+    marginTop: 12,
     marginBottom: 12,
   },
   root: {
