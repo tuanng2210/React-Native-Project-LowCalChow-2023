@@ -11,11 +11,13 @@ import {
   Button as RNButton,
   Picker,
   Image,
+  ScrollView,
 } from "react-native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
+import TagModal from "./tagModal";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
@@ -31,19 +33,20 @@ function RestaurantHomepage({ navigation, route }) {
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [openingHours, setOpeningHours] = useState({
-    mon: { open: "", close: "" },
-    tue: { open: "", close: "" },
-    wed: { open: "", close: "" },
-    thu: { open: "", close: "" },
-    fri: { open: "", close: "" },
-    sat: { open: "", close: "" },
-    sun: { open: "", close: "" },
+    mon: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    tue: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    wed: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    thu: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    fri: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sat: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sun: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
   });
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
   const { access } = route.params;
   const isFocused = useIsFocused();
+  const [isRestTagsModalVisible, setIsRestTagsModalVisible] = useState(false);
   const stateOptions = [
     "AL",
     "AK",
@@ -149,6 +152,26 @@ function RestaurantHomepage({ navigation, route }) {
     }
   }, [isFocused]);
 
+  const handleRestTagSelect = (selectedRestTag) => {
+    const isSelected = tagSelect.includes(selectedRestTag.key);
+
+    if (isSelected) {
+      setTagSelect(
+        tagSelect.filter((tagKey) => tagKey !== selectedRestTag.key)
+      );
+    } else {
+      setTagSelect([...tagSelect, selectedRestTag.key]);
+    }
+  };
+
+  const openRestTagsModal = () => {
+    setIsRestTagsModalVisible(true);
+  };
+
+  const closeRestTagsModal = () => {
+    setIsRestTagsModalVisible(false);
+  };
+
   const renderItem = ({ item }) => (
     <TouchableOpacity>
       <View style={styles.restaurantItem}>
@@ -173,6 +196,17 @@ function RestaurantHomepage({ navigation, route }) {
     </TouchableOpacity>
   );
 
+  const formatTime = (hours, ampm) => {
+    let formattedHours = parseInt(hours, 10);
+    if (ampm === "PM" && formattedHours !== 12) {
+      formattedHours += 12;
+    } else if (ampm === "AM" && formattedHours === 12) {
+      formattedHours = 0;
+    }
+
+    return `${formattedHours.toString().padStart(2, "0")}:00:00`;
+  };
+
   const handleAddRestaurant = () => {
     setModalVisible(true);
   };
@@ -180,6 +214,19 @@ function RestaurantHomepage({ navigation, route }) {
   const confirmAddRestaurant = async () => {
     try {
       setModalVisible(false);
+
+      const formattedOpeningHours = {};
+      Object.keys(openingHours).forEach((day) => {
+        const { open, close, openAmPm, closeAmPm } = openingHours[day];
+
+        if (open && close) {
+          formattedOpeningHours[`${day}_open`] = formatTime(open, openAmPm);
+          formattedOpeningHours[`${day}_close`] = formatTime(close, closeAmPm);
+        } else {
+          formattedOpeningHours[`${day}_open`] = "";
+          formattedOpeningHours[`${day}_close`] = "";
+        }
+      });
 
       const newRestaurantData = {
         name: newRestaurantName,
@@ -192,6 +239,7 @@ function RestaurantHomepage({ navigation, route }) {
         city: city,
         state: state,
         zip_code: zipCode,
+        ...formattedOpeningHours,
       };
       console.log("Input data sent to the server:", newRestaurantData);
       const response = await fetch("http://localhost:8000/restaurants/", {
@@ -229,6 +277,10 @@ function RestaurantHomepage({ navigation, route }) {
       restaurantId: restaurant.id,
       access,
     });
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
   const handleDeleteRestaurant = async (restaurantId) => {
@@ -315,7 +367,7 @@ function RestaurantHomepage({ navigation, route }) {
       <View style={styles.mainContent}>
         {/* Section Title and Add Restaurant Button */}
         <View style={styles.sectionTitleContainer}>
-          <Image source={logo} style={{ width: 80, height: 80 }} />
+          <Image source={logo} style={{ width: 60, height: 60 }} />
           <Text style={styles.sectionTitle}>List of Restaurants</Text>
           <TouchableOpacity
             style={styles.addButton}
@@ -346,114 +398,181 @@ function RestaurantHomepage({ navigation, route }) {
         }}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Enter Restaurant Info</Text>
-            <TextInput
-              style={styles.input}
-              value={newRestaurantName}
-              onChangeText={(text) => setNewRestaurantName(text)}
-              placeholder="Restaurant Name"
-            />
-            <TextInput
-              style={styles.input}
-              value={rating}
-              onChangeText={(text) => setRating(text)}
-              placeholder="Rating"
-            />
-
-            <Text style={styles.modalSelectTag}>Select Tags</Text>
-            <View
-              style={{ marginVertical: 15, paddingHorizontal: 0, width: "50%" }}
-            >
-              <MultipleSelectList
-                setSelected={(val) => setTagSelect(val)}
-                data={tags}
-                save="key"
-                label="Tags"
-                boxStyles={{ borderRadius: 10, width: "100%" }}
-                dropdownStyles={{
-                  borderRadius: 10,
-                  width: "100%",
-                }}
+          <ScrollView
+            contentContainerStyle={styles.modalContentScroll}
+            showsVerticalScrollIndicator={true}
+          >
+            <View style={styles.modalContent}>
+              {/* ... (existing modal content) */}
+              <Text style={styles.modalTitle}>Enter Restaurant Info</Text>
+              <TextInput
+                style={styles.input}
+                value={newRestaurantName}
+                onChangeText={(text) => setNewRestaurantName(text)}
+                placeholder="Restaurant Name"
               />
-            </View>
 
-            <Picker
-              selectedValue={priceLevel}
-              onValueChange={(itemValue, itemIndex) => setPriceLevel(itemValue)}
-              style={styles.input}
-            >
-              <Picker.Item label="Select Price Level" value="" />{" "}
-              {/* default empty option */}
-              {priceLevelOptions.map((option, index) => (
-                <Picker.Item label={option} value={option} key={index} />
-              ))}
-            </Picker>
+              <TextInput
+                style={styles.input}
+                value={rating}
+                onChangeText={(text) => setRating(text)}
+                placeholder="Rating"
+              />
 
-            <TextInput
-              style={styles.input}
-              value={phoneNumber}
-              onChangeText={handlePhoneNumberInput}
-              placeholder="Phone Number"
-            />
-
-            <TextInput
-              style={styles.input}
-              value={website}
-              onChangeText={(text) => setWebsite(text)}
-              placeholder="Website - Example: https://www.website.com"
-            />
-
-            <TextInput
-              style={styles.input}
-              value={streetName}
-              onChangeText={(text) => setStreetName(text)}
-              placeholder="Street name"
-            />
-
-            <TextInput
-              style={styles.input}
-              value={city}
-              onChangeText={(text) => setCity(text)}
-              placeholder="City"
-            />
-
-            <Picker
-              selectedValue={state}
-              onValueChange={(itemValue, itemIndex) => setState(itemValue)}
-              style={styles.input}
-            >
-              <Picker.Item label="Select State" value="" />{" "}
-              {/* default empty option */}
-              {stateOptions.map((stateCode, index) => (
-                <Picker.Item label={stateCode} value={stateCode} key={index} />
-              ))}
-            </Picker>
-
-            <TextInput
-              style={styles.input}
-              value={zipCode}
-              onChangeText={(text) => setZipCode(text)}
-              placeholder="Zip code"
-            />
-
-            <View style={styles.modalButtons}>
-            
-              <TouchableOpacity
-                style={styles.button}
-                onPress={confirmAddRestaurant}
+              <Picker
+                selectedValue={priceLevel}
+                onValueChange={(itemValue, itemIndex) =>
+                  setPriceLevel(itemValue)
+                }
+                style={styles.input}
               >
-                <Text style={styles.buttonText}>Confirm</Text>
-              </TouchableOpacity>
+                <Picker.Item label="Select Price Level" value="" />{" "}
+                {/* default empty option */}
+                {priceLevelOptions.map((option, index) => (
+                  <Picker.Item label={option} value={option} key={index} />
+                ))}
+              </Picker>
 
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => setModalVisible(false)}
+                onPress={openRestTagsModal}
+                style={styles.tagsButton}
               >
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.modalSelectTag}>Select Tags</Text>
               </TouchableOpacity>
+              <TagModal
+                visible={isRestTagsModalVisible}
+                tags={tags}
+                selectedTags={tagSelect}
+                onSelect={handleRestTagSelect}
+                onClose={closeRestTagsModal}
+              />
+
+              <TextInput
+                style={styles.input}
+                value={phoneNumber}
+                onChangeText={handlePhoneNumberInput}
+                placeholder="Phone Number"
+              />
+
+              <TextInput
+                style={styles.input}
+                value={website}
+                onChangeText={(text) => setWebsite(text)}
+                placeholder="Website - Example: https://www.website.com"
+              />
+
+              <TextInput
+                style={styles.input}
+                value={streetName}
+                onChangeText={(text) => setStreetName(text)}
+                placeholder="Street name"
+              />
+
+              <TextInput
+                style={styles.input}
+                value={city}
+                onChangeText={(text) => setCity(text)}
+                placeholder="City"
+              />
+              <Picker
+                selectedValue={state}
+                onValueChange={(itemValue, itemIndex) => setState(itemValue)}
+                style={styles.input}
+              >
+                <Picker.Item label="Select State" value="" />{" "}
+                {/* default empty option */}
+                {stateOptions.map((stateCode, index) => (
+                  <Picker.Item
+                    label={stateCode}
+                    value={stateCode}
+                    key={index}
+                  />
+                ))}
+              </Picker>
+
+              <TextInput
+                style={styles.input}
+                value={zipCode}
+                onChangeText={(text) => setZipCode(text)}
+                placeholder="Zip code"
+              />
+
+              {Object.keys(openingHours).map((day) => (
+                <View key={day}>
+                  <Text style={styles.dayTitle}>
+                    {capitalizeFirstLetter(day)}
+                  </Text>
+                  <View style={styles.operatingHoursInput}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Open"
+                      value={openingHours[day].open}
+                      onChangeText={(text) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], open: text },
+                        })
+                      }
+                    />
+                    <Picker
+                      selectedValue={openingHours[day].openAmPm}
+                      onValueChange={(value) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], openAmPm: value },
+                        })
+                      }
+                      style={styles.amPmPicker}
+                    >
+                      <Picker.Item label="AM" value="AM" />
+                      <Picker.Item label="PM" value="PM" />
+                    </Picker>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Close"
+                      value={openingHours[day].close}
+                      onChangeText={(text) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], close: text },
+                        })
+                      }
+                    />
+                    <Picker
+                      selectedValue={openingHours[day].closeAmPm}
+                      onValueChange={(value) =>
+                        setOpeningHours({
+                          ...openingHours,
+                          [day]: { ...openingHours[day], closeAmPm: value },
+                        })
+                      }
+                      style={styles.amPmPicker}
+                      itemStyle={styles.amPmPickerItem}
+                    >
+                      <Picker.Item label="AM" value="AM" />
+                      <Picker.Item label="PM" value="PM" />
+                    </Picker>
+                  </View>
+                </View>
+              ))}
+
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={[styles.button]}
+                  onPress={confirmAddRestaurant}
+                >
+                  <Text style={styles.buttonText}>Confirm</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     </View>
@@ -507,7 +626,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 3, // for Android
+    elevation: 3,
     width: "50%",
   },
   restaurantName: {
@@ -533,7 +652,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: 100,
+    width: "40%",
   },
   addButton: {
     backgroundColor: "#FF9800",
@@ -584,13 +703,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    height: "100%"
+    height: "100%",
   },
   modalContent: {
     backgroundColor: "#fff",
-    padding: 20,
+    padding: 60,
     borderRadius: 10,
-    width: "30%",
     alignItems: "center",
   },
   modalTitle: {
@@ -602,19 +720,59 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    width: "50%",
-    height: "100%",
+    width: "100%",
+    height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
+    marginRight: 10,
+    marginLeft: 10,
   },
   modalButtons: {
     marginTop: 40,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: "100%",
+  },
+  modalContentScroll: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tagsButton: {
+    backgroundColor: "#FFA500",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
+    marginTop: 0,
+    width: "100%",
+    marginBottom: 20,
+  },
+  operatingHoursInput: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  amPmPicker: {
+    width: 80,
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  amPmPickerItem: {
+    fontSize: 16,
+    color: "#333",
+  },
+  dayTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
   },
 });
 

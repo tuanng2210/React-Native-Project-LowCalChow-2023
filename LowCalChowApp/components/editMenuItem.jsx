@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 //import MultiSelect from 'react-native-multiple-select';
 
@@ -292,14 +292,16 @@ function EditMenu({route, navigation}){
     }
     
     return (
-      <ScrollView style = {{ flex: 1}}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Add Meal</Text>
-    
-          {/*Meal Name*/}
-          <Text style={styles.label}>Meal Name:</Text>
+      <View style={styles.container}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Add Meal</Text>
+          </View>
 
+          <View style={styles.mainContainer}>
+          {/*Meal Name*/}
+          <ScrollView >
+          <Text style={styles.label}>Meal Name:</Text>
+          
           <TextInput
             style={styles.input}
             placeholder={`${mealName}`}
@@ -426,27 +428,27 @@ function EditMenu({route, navigation}){
           
     
           {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
-          <Button title="Update Meal" 
-           onPress={() => submitMeal()}
-           style={styles.button}
-          />
-          <Button title="Delete Meal" 
-           onPress={() => deleteMeal()}
-           style={styles.button}
-          />
+          <TouchableOpacity style={styles.button} onPress={ () => submitMeal()}>
+            <Text style={styles.buttonText}>Update Menu Item</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={ () => deleteMeal()}>
+            <Text style={styles.buttonText}>Delete Menu Item</Text>
+          </TouchableOpacity>
+         
+          </ScrollView>
         </View>
-        
-        </SafeAreaView>
-        </ScrollView>
- 
+        </View>
       );
     }
 
     
     const styles = StyleSheet.create({
-      container: {
+      container:{
         flex: 1,
+      },
+      mainContainer: {
         justifyContent: 'center',
+        backgroundColor: "#fff",
         alignItems: 'center',
         padding: 16,
       },
@@ -461,12 +463,19 @@ function EditMenu({route, navigation}){
         paddingRight: 30,
       },
       title: {
+        flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "left",
+          backgroundColor: "#FFA500",
+          padding: 10,
+      },
+      titleText:{
         fontSize: 24,
-        marginBottom: 16,
+        fontWeight: "bold",
       },
       label: {
         fontSize: 18,
-        textAlign: 'left',
+        textAlign: 'center',
         marginBottom: 6,
     },
       normText: {
@@ -475,7 +484,7 @@ function EditMenu({route, navigation}){
         marginTop: 18,
       },
       input: {
-        width: '60%',
+        width: '100%',
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
@@ -500,7 +509,21 @@ function EditMenu({route, navigation}){
           color: 'red',
           fontSize: 20,
           marginBottom: 12,
-      }
+      },
+      button: {
+        backgroundColor: "#FFA500",
+        borderRadius: 8,
+        paddingVertical: 10,
+        alignItems: "center",
+        marginTop: 16,
+        marginBottom: 12,
+        width: "100%",
+        paddingHorizontal: 10,
+      },
+      buttonText: {
+        fontWeight: "bold",
+        fontSize: "16",
+      },
     });
     export default EditMenu;
     

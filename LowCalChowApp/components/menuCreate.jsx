@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 import MenuPage from './menu';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 function MenuCreate({route, navigation}){
     
-    const access = route.params.access;
+    const { access, restaurantId } = route.params;
     const restID = route.params.restaurantId;
 
     const [ingredientTags, setIngredientTags] =useState([]);
@@ -207,17 +209,43 @@ function MenuCreate({route, navigation}){
     }, []); 
 
     return (
-      <ScrollView style = {{ flex: 1}}>
-      <SafeAreaView style={{ flex: 1 }}>
+      
+      <SafeAreaView>
+      <View style={styles.navBar}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Restaurant Dashboard", { access, restaurantId })}
+              style={styles.navItem}
+            >
+              <Icon name="home" size={30} color="black" />
+              <Text style={styles.navText}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Menu", { access, restaurantId })}
+              style={styles.navItem}
+            >
+              <Icon name="restaurant-menu" size={30} color="black" />
+              <Text style={styles.navText}>Menu</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Settings", { access, restaurantId })}
+              style={styles.navItem}
+            >
+              <Icon name="settings" size={30} color="black" />
+              <Text style={styles.navText}>Settings</Text>
+            </TouchableOpacity>
+            
+            
+            </View>
+      <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.title}>Add Meal</Text>
+          <Text style={styles.title}>Add Menu Item</Text>
     
           {/*Meal Name*/}
-          <Text style={styles.label}>Meal Name:</Text>
+          <Text style={styles.label}>Menu Item Name:</Text>
 
           <TextInput
             style={styles.input}
-            placeholder="Meal Name"
+            placeholder="Menu Item Name"
             value={mealName}
             onChangeText={(text) => setMealname(text)}
           />
@@ -231,20 +259,20 @@ function MenuCreate({route, navigation}){
           /> */}
 
           {/*Meal Price*/}
-          <Text style={styles.label}>Price of meal:</Text>
+          <Text style={styles.label}>Price of Menu Item:</Text>
 
           <TextInput
             style={styles.input}
-            placeholder="Enter the meal's price"
+            placeholder="Enter the menu item's price"
             value={mealPrice}
             onChangeText={(text) => setPrice(text)}
           />
 
           {/*Meal Calories*/}
-          <Text style={styles.label}>Meal's calories:</Text>
+          <Text style={styles.label}>Menu Item Calories:</Text>
           <TextInput
             style={styles.input}
-            placeholder="How many calories is this meal?"
+            placeholder="How many calories is this menu item?"
             value={mealCalories}
             onChangeText={(text) => setCalories(text)}
           />
@@ -337,11 +365,15 @@ function MenuCreate({route, navigation}){
           
     
           {/*<Button title="Back to Menu" onPress={() => navigation.navigate('Menu')}/>*/}
-          <Button title="Submit Meal" onPress={() => submitMeal()}/>
+          <TouchableOpacity
+          style={[styles.button]}
+           onPress={() => submitMeal()}>
+           <Text style={styles.buttonText}>Submit Menu Item</Text>
+          </TouchableOpacity>
         </View>
-        
-        </SafeAreaView>
         </ScrollView>
+        </SafeAreaView>
+        
       );
     }
 
@@ -352,6 +384,7 @@ function MenuCreate({route, navigation}){
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+        backgroundColor: "#fff",
       },
       title: {
         fontSize: 24,
@@ -368,7 +401,7 @@ function MenuCreate({route, navigation}){
         marginTop: 18,
       },
       input: {
-        width: '100%',
+        width: '30%',
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
@@ -377,15 +410,17 @@ function MenuCreate({route, navigation}){
         marginBottom: 12,
       },
       button: {
-        backgroundColor: 'green',
+        backgroundColor: 'orange',
         borderRadius: 8,
         paddingVertical: 10,
         alignItems: 'center',
-        marginTop: 16,
+        marginTop: 30,
         marginBottom: 12,
+        marginHorizontal: 12,
+        width: "20%",
     },
       buttonText: {
-          color: '#fff',
+          color: '#000000',
           fontWeight: 'bold',
           fontSize: 16,
       },
@@ -393,7 +428,23 @@ function MenuCreate({route, navigation}){
           color: 'red',
           fontSize: 20,
           marginBottom: 12,
-      }
+      },
+      navBar: {
+        flexDirection: "row",
+        backgroundColor: "#FFA500", // Orange color
+        padding: 10,
+        justifyContent: "space-around",
+        alignItems: "center",
+      },
+      navItem: {
+        flexDirection: "row",
+        alignItems: "center",
+      },
+      navText: {
+        marginLeft: 8,
+        fontSize: 18,
+        color: "black",
+      },
     });
     
     export default MenuCreate;

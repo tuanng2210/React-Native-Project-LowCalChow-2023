@@ -26,7 +26,7 @@ const TagModal = ({ visible, tags, selectedTags, onSelect, onClose }) => {
               <TouchableOpacity onPress={() => onSelect(item)}>
                 <View style={styles.tagItem}>
                   <CheckBox
-                    value={selectedTags.some((tag) => tag.key === item.key)}
+                    value={selectedTags.includes(item.key)}
                     onValueChange={() => onSelect(item)}
                   />
                   <Text style={styles.tagText}>{item.value}</Text>
@@ -51,19 +51,22 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: "10%",
+    width: "35%",
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
+    maxHeight: "90%",
+    flexGrow: 1,
   },
   tagItem: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 8,
-    backgroundColor: "#FFA500",
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
     padding: 10,
+    marginRight: 20,
     borderRadius: 8,
   },
   tagText: {
