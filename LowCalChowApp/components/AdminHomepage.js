@@ -7,11 +7,13 @@ import {
   TextInput,
   Button,
   Alert,
-  ImageBackground,
+  ImageBackground, TouchableOpacity,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { PieChart } from "react-native-svg-charts";
 import { BarChart } from "react-native-chart-kit";
+import logo from "../assets/icons8-carrot-94.png";
+import TrendComponent from "./TrendComponent";
 
 
 function AdminHomepage() {
@@ -163,13 +165,14 @@ function AdminHomepage() {
           {/* ... Add other buttons for different tag categories */}
         </View>
       </View>
+
       {/* Display Analytics Data */}
       <View style={styles.analyticsContainer}>
         <ImageBackground
           source={require('../assets/SuperOrange_HoneyComb_Background.png')}
           style={styles.analyticsBackgroundImage}>
           <View style={styles.analyticsContent}>
-            <Text style={styles.analyticsHeader}>Analytics</Text>
+            <Text style={styles.analyticsHeader}> Global Analytics</Text>
             <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
         The Analytics section offers comprehensive insights into user demographics and restaurant statistics. Explore data on user age demographics, total users, restaurant patrons, and menu item statistics through informative charts and figures, providing a holistic view of platform engagement and usage.
       </Text>
@@ -252,6 +255,104 @@ function AdminHomepage() {
             </View>
                 </ImageBackground>
               </View>
+
+       <View style={styles.tagManagementContainer}>
+        {/* Restaurant Analytics Overview*/}
+        <View style={styles.tagManagementHeader}>
+          <Text style={styles.tagManagementHeaderText}>Restaurant Analytics Overview</Text>
+        </View>
+
+          <View style={styles.descriptionContainer}>
+      <Text style={styles.descriptionText}>
+
+Restaurant Analytics Overview provides a comprehensive breakdown of key restaurant performance metrics, including Calorie, Restriciton Tag, Allergy Tag, Ingredient Tag, Taste Tag, Cook Style Tag Analytics. </Text>
+    </View>
+        {/* Buttons for different tag categories */}
+   <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Calorie Analytics",
+              analyticsType: "calories",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Calorie Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Restriction Tag Analytics",
+              analyticsType: "restrictiontag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Restriction Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Allergy Tag Analytics",
+              analyticsType: "allergytag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Allergy Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Ingredient Tag Analytics",
+              analyticsType: "ingredienttag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Ingredient Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Taste Tag Analytics",
+              analyticsType: "tastetag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Taste Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Cook Style Analytics",
+              analyticsType: "cookstyletag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Cook Style Analytics</Text>
+          </View>
+        </TouchableOpacity>
+          {/* ... Add other buttons for different tag categories */}
+      </View>
          </View>
   );
 }
@@ -531,6 +632,44 @@ totalUsers: {
     textAlign: 'center',
     marginBottom: 20,
   },
+  mainContent: {
+    backgroundColor: '#BAD4AA',
+    borderRadius: 8,
+    marginTop: 20,
+    padding: 16,
+    alignItems: 'center',
+  },
+  sectionTitle: {
+  alignItems: 'center',
+    color: 'black',
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+   sectionTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+    restaurantItem: {
+    backgroundColor: "orange",
+      width: 250,
+    borderRadius: 10,
+    padding: 20,
+    margin: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+    restaurantName: {
+    fontSize: 18,
+    fontWeight: "bold",
+      color: "white",
+  }
 });
 
 
