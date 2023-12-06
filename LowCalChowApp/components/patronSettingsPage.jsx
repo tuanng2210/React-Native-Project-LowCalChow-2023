@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "rea
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
+import AppSatisfactionFeedback from "./appSatisfactionFeedback";
+
 
 function PatronSettingsPage({ navigation, route }) {
   const { access } = route.params;
@@ -30,6 +32,7 @@ function PatronSettingsPage({ navigation, route }) {
       setError("Error fetching data");
     }
   };
+  
 
   useEffect(() => {
     if (isFocused) {
@@ -68,7 +71,8 @@ function PatronSettingsPage({ navigation, route }) {
       </Text>
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
-        <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+
+        {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -88,7 +92,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Date of Birth: {profile.dob}
       </Text>
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-      </Text> 
+      </Text>  */}
       </View>
       <TouchableOpacity
           style={styles.logoutButton}
@@ -102,6 +106,9 @@ function PatronSettingsPage({ navigation, route }) {
         onPress={() => navigation.navigate(("Login"))}>
         <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
+
+        <AppSatisfactionFeedback navigation={navigation} access={access}/>
+
     </View>
     </ScrollView> 
       <View style={styles.buttonContainer}>

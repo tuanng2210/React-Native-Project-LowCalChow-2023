@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
+import TagModal from "./tagModal";
 
 
 function PatronProfileEditPage({ navigation }) {
@@ -28,42 +29,32 @@ function PatronProfileEditPage({ navigation }) {
   const [currentCalorieLimit, setCurrentCalorieLimit] = useState({});
   const [currentDisliked, setCurrentDisliked] = useState({});
 
+  const [allergyTags, setAllergyTags] = useState([]);
+  const [dietaryRestrictionTags, setDietaryRestrictionTags] = useState([]);
+  const [dislikedIngredients, setDislikedIngredients] = useState([]);
+  const [patronTasteTags, setPatronTasteTags] = useState([]);
+
+  const [defaultRestrictionTags, setDefaultRestrictionTags] = useState([]);
+  const [defaultTasteTags, setDefaultTasteTags] = useState([]);
+  const [defaultAllergyTags, setDefaultAllergyTags] = useState([]);
+  const [defaultIngredientTags, setDefaultIngredientTags] = useState([]);
+
+  const [selectedRestrictionTags, setSelectedRestrictionTags] = useState([]);
+  const [selectedAllergyTags, setSelectedAllergyTags] = useState([]);
+  const [selectedTasteTags, setSelectedTasteTags] = useState([]);
+  const [selectedIngredientTags, setSelectedIngredientTags] = useState([]);
+
+  const [isTasteTagsModalVisible, setIsTasteTagsModalVisible] = useState(false);
+  const [isRestrictionTagsModalVisible, setIsRestrictionTagsModalVisible] =
+    useState(false);
+  const [isAllergyTagsModalVisible, setIsAllergyTagsModalVisible] =
+    useState(false);
+  const [isIngredientTagsModalVisible, setIsIngredientTagsModalVisible] =
+    useState(false);
+
   const [dob, setDob] = useState({});
 
   const [patronId, setPatronId] = useState({});
-
-  const restrictionsTags = [
-    { label: 1, value: "Vegan" },
-    { label: "Vegetarian", value: "Vegetarian" },
-    { label: "Halal", value: "Halal" },
-    { label: "Kosher", value: "Kosher" },
-    { label: 'Keto', value: 'Keto' },
-    { label: "Pescetarian", value: "Pescetarian" },
-    { label: "Dairy-Free", value: "Dairy-Free" },
-    { label: "Paleo", value: "Paleo" }
-  ];
-
-  const allergyTags = [
-    { label: "Milk", value: "Milk" },
-    { label: "Sesame", value: "Sesame" },
-    { label: "Soybeans", value: "Soybeans" },
-    { label: "Wheat", value: "Wheat" },
-    { label: "Peanuts", value: "Peanuts" },
-    { label: "Tree-nuts", value: "Tree-nuts" },
-    { label: "Eggs", value: "Eggs" },
-    { label: "Shellfish", value: "Shellfish" },
-    { label: "Fish", value: "Fish" },
-    { label: "Celiac", value: "Celiac" }
-  ];
-
-  const tasteTags = [
-    { label: 'Salty', value: 'Salty' },
-    { label: "Sweet", value: "Sweet" },
-    { label: "Spicy", value: "Spicy" },
-    { label: "Umami", value: "Umami" },
-    { label: "Sour", value: "Sour" },
-    { label: "Bitter", value: "Bitter" },
-  ];
 
   const handleGetData = async () => {
 
@@ -100,13 +91,218 @@ function PatronProfileEditPage({ navigation }) {
 
   }
 
+  const fetchDefaultTags = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/patrons/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+
+        const patronRestrictionTags =
+          responseData[0].patron_restriction_tag.map((tag) => ({
+            key: tag.id,
+            value: tag.title,
+          }));
+
+        const patronTasteTags = responseData[0].patron_taste_tag.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const patronAllergyTags = responseData[0].patron_allergy_tag.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
+        const patronIngredientTags = responseData[0].disliked_ingredients.map(
+          (tag) => ({
+            key: tag.id,
+            value: tag.title,
+          })
+        );
+
+        setDefaultRestrictionTags(patronRestrictionTags);
+        setDefaultTasteTags(patronTasteTags);
+        setDefaultAllergyTags(patronAllergyTags);
+        setDefaultIngredientTags(patronIngredientTags);
+      } else {
+        console.error(await response.json());
+      }
+    } catch (error) {
+      console.error("Error fetching default taste tags", error);
+    }
+  };
+
   useEffect(() => {
     handleGetData();
   }, []);
 
+  useEffect(() => {
+    fetchDefaultTags();
+  }, []);
+
+  useEffect(() => {
+    setSelectedRestrictionTags(defaultRestrictionTags.map((tag) => tag.key));
+    setSelectedTasteTags(defaultTasteTags.map((tag) => tag.key));
+    setSelectedAllergyTags(defaultAllergyTags.map((tag) => tag.key));
+    setSelectedIngredientTags(defaultIngredientTags.map((tag) => tag.key));
+  }, [
+    defaultTasteTags,
+    defaultRestrictionTags,
+    defaultAllergyTags,
+    defaultIngredientTags,
+  ]);
+
+  const openTasteTagsModal = () => {
+    setIsTasteTagsModalVisible(true);
+  };
+
+  const closeTasteTagsModal = () => {
+    setIsTasteTagsModalVisible(false);
+  };
+
+  const openRestrictionTagsModal = () => {
+    setIsRestrictionTagsModalVisible(true);
+  };
+
+  const closeRestrictionTagsModal = () => {
+    setIsRestrictionTagsModalVisible(false);
+  };
+
+  const openAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(true);
+  };
+
+  const closeAllergyTagsModal = () => {
+    setIsAllergyTagsModalVisible(false);
+  };
+
+  const openIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(true);
+  };
+
+  const closeIngredientTagsModal = () => {
+    setIsIngredientTagsModalVisible(false);
+  };
+
   function updateInfo() {
     handleUpdateInfo();
   }
+
+  const handleTasteTagSelect = (selectedTasteTag) => {
+    const isSelected = selectedTasteTags.includes(selectedTasteTag.key);
+
+    if (isSelected) {
+      setSelectedTasteTags(
+        selectedTasteTags.filter((tagKey) => tagKey !== selectedTasteTag.key)
+      );
+    } else {
+      setSelectedTasteTags([...selectedTasteTags, selectedTasteTag.key]);
+    }
+  };
+
+  const handleRestrictionTagSelect = (selectedRestrictionTag) => {
+    const isSelected = selectedRestrictionTags.includes(
+      selectedRestrictionTag.key
+    );
+
+    if (isSelected) {
+      setSelectedRestrictionTags(
+        selectedRestrictionTags.filter(
+          (tagKey) => tagKey !== selectedRestrictionTag.key
+        )
+      );
+    } else {
+      setSelectedRestrictionTags([
+        ...selectedRestrictionTags,
+        selectedRestrictionTag.key,
+      ]);
+    }
+  };
+
+  const handleAllergyTagSelect = (selectedAllergyTag) => {
+    const isSelected = selectedAllergyTags.includes(selectedAllergyTag.key);
+
+    if (isSelected) {
+      setSelectedAllergyTags(
+        selectedAllergyTags.filter(
+          (tagKey) => tagKey !== selectedAllergyTag.key
+        )
+      );
+    } else {
+      setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag.key]);
+    }
+  };
+
+  const handleIngredientSelect = (selectedIngredientTag) => {
+    const isSelected = selectedIngredientTags.includes(
+      selectedIngredientTag.key
+    );
+
+    if (isSelected) {
+      setSelectedIngredientTags(
+        selectedIngredientTags.filter(
+          (tagKey) => tagKey !== selectedIngredientTag.key
+        )
+      );
+    } else {
+      setSelectedIngredientTags([
+        ...selectedIngredientTags,
+        selectedIngredientTag.key,
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8000/restaurants/tags/", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        const dietary_tags = data.restrictiontags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const allergy_tags = data.allergytags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const patron_taste_tags = data.tastetags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        const ingredient_tags = data.ingredienttags.map((tag) => ({
+          key: tag.id,
+          value: tag.title,
+        }));
+
+        setDietaryRestrictionTags(dietary_tags);
+        setAllergyTags(allergy_tags);
+        setPatronTasteTags(patron_taste_tags);
+        setDislikedIngredients(ingredient_tags);
+      })
+      .catch((error) => {
+        console.error("Errors:", error);
+      });
+  }, []);
 
   const handleUpdateInfo = async () => {
 
@@ -139,10 +335,10 @@ function PatronProfileEditPage({ navigation }) {
       gender: currentGender,
       zipcode: currentZip,
       dob: dob,
-      patron_restriction_tag: restrictionTagIds,
-      patron_allergy_tag: allergyTagIds,
-      patron_taste_tag: tasteTagIds,
-      disliked_ingredients: dislikedIngredientsTagIds,
+      patron_restriction_tag: selectedRestrictionTags,
+      patron_allergy_tag: selectedAllergyTags,
+      patron_taste_tag: selectedTasteTags,
+      disliked_ingredients: selectedIngredientTags,
       calorie_limit: parseInt(currentCalorieLimit)
     }
 
@@ -168,6 +364,8 @@ function PatronProfileEditPage({ navigation }) {
       })
 
   }
+
+
 
   return (
     <View style={styles.container}>
@@ -254,6 +452,68 @@ function PatronProfileEditPage({ navigation }) {
             value={currentCalorieLimit}
             onChangeText={(text) => setCurrentCalorieLimit(text)}
           />
+
+                <TouchableOpacity
+                  onPress={openRestrictionTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>
+                    Select Restriction Tags
+                  </Text>
+                </TouchableOpacity>
+
+                <TagModal
+                  visible={isRestrictionTagsModalVisible}
+                  tags={dietaryRestrictionTags}
+                  selectedTags={selectedRestrictionTags}
+                  onSelect={handleRestrictionTagSelect}
+                  onClose={closeRestrictionTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openTasteTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
+                </TouchableOpacity>
+                <TagModal
+                  visible={isTasteTagsModalVisible}
+                  tags={patronTasteTags}
+                  selectedTags={selectedTasteTags}
+                  onSelect={handleTasteTagSelect}
+                  onClose={closeTasteTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openAllergyTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
+                </TouchableOpacity>
+                <TagModal
+                  visible={isAllergyTagsModalVisible}
+                  tags={allergyTags}
+                  selectedTags={selectedAllergyTags}
+                  onSelect={handleAllergyTagSelect}
+                  onClose={closeAllergyTagsModal}
+                />
+
+                <TouchableOpacity
+                  onPress={openIngredientTagsModal}
+                  style={styles.tasteTagsButton}
+                >
+                  <Text style={styles.modalSelectTag}>
+                    Select Disliked Ingredients{" "}
+                  </Text>
+                </TouchableOpacity>
+
+                <TagModal
+                  visible={isIngredientTagsModalVisible}
+                  tags={dislikedIngredients}
+                  selectedTags={selectedIngredientTags}
+                  onSelect={handleIngredientSelect}
+                  onClose={closeIngredientTagsModal}
+                />
 
           {/*todo*/}
           {/* <Text style={styles.label}>Restrictions:</Text>
@@ -410,6 +670,27 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     padding: 10,
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+  },
+  tasteTagsButton: {
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
+  },
+  modalSelectTag: {
+    fontSize: 15,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "left",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    height: 200,
   },
 });
 

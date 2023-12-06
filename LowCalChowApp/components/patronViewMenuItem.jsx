@@ -199,9 +199,9 @@ function viewMenuItem({ route, navigation }) {
   const handleSubmitFeedback = async () => {
 
     const data = {
-      'menu_item': mealID,
-      'review': review,
-      'rating': rating,
+      menu_item: mealID,
+      review: review,
+      rating: rating,
     }
     console.log(data);
     try {
