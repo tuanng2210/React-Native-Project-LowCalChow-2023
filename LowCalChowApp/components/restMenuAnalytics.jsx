@@ -284,7 +284,8 @@ return (
               contentContainerStyle={styles.feedbackList}
             />
       </ScrollView>
-      </View>)
+      </View>
+      )
 }
 
 

@@ -7,11 +7,13 @@ import {
   TextInput,
   Button,
   Alert,
-  ImageBackground
+  ImageBackground, TouchableOpacity,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { PieChart } from "react-native-svg-charts";
 import { BarChart } from "react-native-chart-kit";
+import logo from "../assets/icons8-carrot-94.png";
+import TrendComponent from "./TrendComponent";
 
 
 function AdminHomepage() {
@@ -74,14 +76,18 @@ function AdminHomepage() {
       <View style={styles.faqContainer}>
         <Text style={styles.faqHeader}>FAQ</Text>
         <View style={styles.faqContent}>
+              <Text style={styles.descriptionText}>
+      Frequently Asked Questions (FAQ) serve as a repository of common queries and their detailed answers. This section aims to provide clarity on various aspects of our platform, addressing concerns that users and administrators frequently encounter. Access the FAQ to gain insights, find solutions, and streamline your experience effortlessly.
+    </Text>
           {/* Add FAQ content here */}
-          <Text style={styles.faqText}>Frequently Asked Questions...</Text>
           {/* Add an Orange Button here */}
-          <Button
-            title="FAQ"
-            onPress={() => navigation.navigate("Admin FAQ Page")}
-            color="orange"
-          />
+    <View style={{ marginTop: 10 }}>
+      <Button
+        title="FAQ"
+        onPress={() => navigation.navigate("Admin FAQ Page")}
+        color="orange"
+      />
+    </View>
         </View>
       </View>
 
@@ -92,30 +98,84 @@ function AdminHomepage() {
           <Text style={styles.tagManagementHeaderText}>Tag Management</Text>
         </View>
 
+          <View style={styles.descriptionContainer}>
+      <Text style={styles.descriptionText}>
+      Tag Management enables control over various tag categories, including Rest Tags, Food Type Tags, Cook Style Tags, Taste Tags, Restriction Tags, Allergy Tags, Ingredient Tags, and more. Navigate between categories to add, delete, or modify tags within each category as needed.
+      </Text>
+    </View>
         {/* Buttons for different tag categories */}
         <View style={styles.tagButtonsContainer}>
+          <View style={{ marginBottom: 10 }}>
           <Button
             title="Rest Tags"
             onPress={() => navigation.navigate("Admin RestTags", { access })}
             color="orange"
-            style={styles.tagButton}
+            style={[styles.tagButton, { marginBottom: 10 }]}
           />
+            </View>
           {/* Add other buttons similarly */}
+          <View style={{ marginBottom: 10 }}>
           <Button
             title="Food Type Tags"
             onPress={() => navigation.navigate("Admin Food Type Tags", { access })}
             color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
           />
+           </View>
+          <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Cook Style Tags"
+            onPress={() => navigation.navigate("Admin Cook Style Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Taste Tags"
+            onPress={() => navigation.navigate("Admin Taste Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Restriction Tags"
+            onPress={() => navigation.navigate("Admin Restriction Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Allergy Tags"
+            onPress={() => navigation.navigate("Admin Allergy Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
+           <View style={{ marginBottom: 10 }}>
+          <Button
+            title="Ingredient Tags"
+            onPress={() => navigation.navigate("Admin Ingredient Tags", { access })}
+            color="orange"
+            style={[styles.tagButton, { marginBottom: 10 }]}
+          />
+            </View>
           {/* ... Add other buttons for different tag categories */}
         </View>
       </View>
+
       {/* Display Analytics Data */}
       <View style={styles.analyticsContainer}>
         <ImageBackground
           source={require('../assets/SuperOrange_HoneyComb_Background.png')}
           style={styles.analyticsBackgroundImage}>
           <View style={styles.analyticsContent}>
-            <Text style={styles.analyticsHeader}>Analytics</Text>
+            <Text style={styles.analyticsHeader}> Global Analytics</Text>
+            <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
+        The Analytics section offers comprehensive insights into user demographics and restaurant statistics. Explore data on user age demographics, total users, restaurant patrons, and menu item statistics through informative charts and figures, providing a holistic view of platform engagement and usage.
+      </Text>
             {/* Render the analytics data here */}
             {analyticsData.map((dataPoint) => (
               <View key={dataPoint.id}>
@@ -195,6 +255,104 @@ function AdminHomepage() {
             </View>
                 </ImageBackground>
               </View>
+
+       <View style={styles.tagManagementContainer}>
+        {/* Restaurant Analytics Overview*/}
+        <View style={styles.tagManagementHeader}>
+          <Text style={styles.tagManagementHeaderText}>Restaurant Analytics Overview</Text>
+        </View>
+
+          <View style={styles.descriptionContainer}>
+      <Text style={styles.descriptionText}>
+
+Restaurant Analytics Overview provides a comprehensive breakdown of key restaurant performance metrics, including Calorie, Restriciton Tag, Allergy Tag, Ingredient Tag, Taste Tag, Cook Style Tag Analytics. </Text>
+    </View>
+        {/* Buttons for different tag categories */}
+   <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Calorie Analytics",
+              analyticsType: "calories",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Calorie Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Restriction Tag Analytics",
+              analyticsType: "restrictiontag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Restriction Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Allergy Tag Analytics",
+              analyticsType: "allergytag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Allergy Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Ingredient Tag Analytics",
+              analyticsType: "ingredienttag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Ingredient Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Taste Tag Analytics",
+              analyticsType: "tastetag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Taste Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Cook Style Analytics",
+              analyticsType: "cookstyletag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Cook Style Analytics</Text>
+          </View>
+        </TouchableOpacity>
+          {/* ... Add other buttons for different tag categories */}
+      </View>
          </View>
   );
 }
@@ -298,7 +456,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     alignItems: 'center',
-    backgroundColor: '#ddd',
+    backgroundColor: '#RRGGBB',
     borderRadius: 8,
     marginTop: 20,
     padding: 16,
@@ -397,6 +555,8 @@ const styles = StyleSheet.create({
   tagButtonsContainer: {
     flexDirection: 'column',
     marginTop: 10,
+    width: 150,
+    alightItems: 'center',
   },
   tagContainer: {
     alignItems: 'center',
@@ -409,6 +569,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
     padding: 16,
+    alignItems: 'center',
   },
   tagManagementHeader: {
     alignItems: 'center',
@@ -465,6 +626,50 @@ totalUsers: {
     fontWeight: 'bold',
     marginBottom: 8,
   },
+    analyticsDescription: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  mainContent: {
+    backgroundColor: '#BAD4AA',
+    borderRadius: 8,
+    marginTop: 20,
+    padding: 16,
+    alignItems: 'center',
+  },
+  sectionTitle: {
+  alignItems: 'center',
+    color: 'black',
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+   sectionTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+    restaurantItem: {
+    backgroundColor: "orange",
+      width: 250,
+    borderRadius: 10,
+    padding: 20,
+    margin: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+    restaurantName: {
+    fontSize: 18,
+    fontWeight: "bold",
+      color: "white",
+  }
 });
 
 

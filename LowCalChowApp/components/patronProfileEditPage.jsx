@@ -77,8 +77,10 @@ function PatronProfileEditPage({ navigation }) {
       if (response.status === 200 || response.status === 201) {
         const data = await response.json();
 
+        console.log(data)
+
         setFirstName(data[0].name.split(" ", 1));
-        setLastName(data[0].name.split(" "), slice(1).join(" "));
+        setLastName(data[0].name.split(" ").slice(1).join(" "));
 
         setCurrentGender(data[0].gender);
         setCurrentPrice(data[0].price_max);
@@ -157,7 +159,7 @@ function PatronProfileEditPage({ navigation }) {
       .then((response) => {
         response.json()
         if (response.status == "200" || response.status == "201") {
-          navigation.navigate("Patron Profile Edit", { access: access });
+          navigation.navigate("Patron Settings Page", { access: access });
         }
         else {
           alert("There was an issue.")

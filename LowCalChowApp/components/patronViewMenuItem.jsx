@@ -496,7 +496,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    width: '100%'
+    width: '100%',
+    backgroundColor: "#fff",
   },
   menuBar: {
     flexDirection: 'row',

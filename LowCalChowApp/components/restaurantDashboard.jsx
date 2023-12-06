@@ -5,16 +5,60 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MenuAnalyticsComponent from "./menuAnalComponent";
+import {useIsFocused} from '@react-navigation/native';
 
 function RestaurantDashboard() {
+  const isFocused = useIsFocused();
+  const [menuItems, setMenuItems] = useState([]);
+  const [alItems, setAlItems] = useState([]);
+  const ScreenName = "Restaurant Menu Analytics";
   const route = useRoute();
-  const navigation = useNavigation();
   const { access, restaurantId } = route.params;
+ 
+  const navigation = useNavigation();
   const [restaurantData, setRestaurantData] = useState(null);
+  
+  const handlegetMenuItems = async () => {
+    try{
+      const response = await fetch(`http://localhost:8000/analytics/${restaurantId}/menuitems/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access,
+      },
+    });
+    
+   
+    if (response.ok) 
+    {
+      const data = await response.json();
+      
+      setMenuItems(data);
+      console.log(menuItems);
+    } 
 
+  }catch (error) {
+    console.error("Error:", error);
+  }
+};
+useEffect (() => {
+  if(isFocused)
+  {
+    handlegetMenuItems();
+  }
+
+}, [isFocused]); 
+  console.log(menuItems);
+
+  /*useEffect (() => {
+    setMenuItems(alItems.map(item => item.menuItem_id));
+  }, [alItems]); */
+  
   useEffect(() => {
     const fetchRestaurantData = async () => {
       try {
@@ -49,6 +93,7 @@ function RestaurantDashboard() {
       </View>
     );
   }
+  
 
   return (
     <View style={styles.container}>
@@ -76,12 +121,15 @@ function RestaurantDashboard() {
         </TouchableOpacity>
       </View>
       {/* Render other restaurant dashboard content */}
-      <TouchableOpacity
-          onPress={() => navigation.navigate("Restaurant Menu Analytics", {access, restaurantId} )}
-          style={styles.navItem}
-        >
-          <Text style={styles.navText}>analytics</Text>
-        </TouchableOpacity>
+     
+        <ScrollView>
+      <View style={styles.mainContent}>
+      {menuItems.length > 0 && (
+        <MenuAnalyticsComponent menuItems={menuItems} accessToken={access} restIDToken= {restaurantId} screenName={ScreenName} />
+      )}
+    </View>
+    </ScrollView>
+        
     </View>
   );
 }
@@ -106,6 +154,13 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 18,
     color: "black",
+  },
+  mainContent: {
+    padding: 20,
+    flex: 2,
+    backgroundColor: "#fff",
+    justifyContent: "top",
+    alignItems: "center",
   },
 });
 
