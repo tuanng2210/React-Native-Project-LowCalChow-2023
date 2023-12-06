@@ -17,8 +17,6 @@ function viewMenuItem({ route, navigation }) {
     setBookmarkID(route.params.bookmarkID);
     setIsBookmarked(true);
     setShowBookmarkButton(false);
-
-    
   }
 
   //const mealID = 1;
