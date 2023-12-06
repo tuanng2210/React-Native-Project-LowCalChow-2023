@@ -150,63 +150,74 @@ const handleDeleteTag = async (tagId) => {
 };
 
   return (
-    <View style={styles.container}>
-      {/* Header in an orange box */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Tag Management - RestTags</Text>
-        <Button
-          title="Admin Dashboard"
-          onPress={() => navigation.navigate("Admin Homepage", {access})}
-        />
+  <View style={styles.container}>
+    {/* Header in an orange box */}
+    <View style={styles.headerContainer}>
+      <Text style={styles.headerText}>Tag Management - Rest Tags</Text>
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.tagsDescription}>
+          This section allows you to manage restaurant type tags. You can add new tags, delete existing ones, and edit the titles of the tags.
+        </Text>
       </View>
-
+      <View style={styles.buttonSpacer} /> {/* Add vertical space */}
+      <Button
+        title="Admin Dashboard"
+        onPress={() => navigation.navigate("Admin Homepage", {access})}
+        color="orange"
+      />
+    </View>
       <View style={styles.tagsBox}>
-        <Text style={styles.tagsHeader}>RestTags</Text>
 
-        {/* Add a TextInput for the user to enter a new tag */}
-        <TextInput
-          style={styles.input}
-          placeholder="Add a new tag"
-          value={newTag}
-          onChangeText={(text) => setNewTag(text)}
-        />
+<View style={styles.tagsBox}>
+  <Text style={styles.tagsHeader}>Rest Tags</Text>
 
-        {/* Add button to add a new tag */}
-        <Button title="Add" onPress={addTag} />
+  {/* Add a TextInput for the user to enter a new tag */}
+  <TextInput
+    style={styles.input}
+    placeholder="Add a new tag"
+    value={newTag}
+    onChangeText={(text) => setNewTag(text)}
+  />
+
+  {/* Add button to add a new tag */}
+  <Button title="Add" onPress={addTag} color="orange" />
+  <View style={styles.addButtonContainer} /> {/* Add vertical space */}
+
+  {/* List of Restaurant Tags */}
+  <FlatList
+    data={restaurantTags}
+    keyExtractor={(item) => item.id.toString()}
+    renderItem={({ item }) => (
+      <View style={styles.tagContainer}>
+        <Text style={styles.tagText}>{item.title}</Text>
+        <View style={styles.buttonContainer}>
+          <Button title="Edit" onPress={() => handleEditTag(item)} color="orange" />
           <View style={styles.buttonSpacer} /> {/* Add vertical space */}
-
-        {/* List of Restaurant Tags */}
-        <FlatList
-          data={restaurantTags}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.tagContainer}>
-              <Text style={styles.tagText}>{item.title}</Text>
-              <View style={styles.buttonContainer}>
-                <Button title="Edit" onPress={() => handleEditTag(item)} />
-                <View style={styles.buttonSpacer} /> {/* Add vertical space */}
-                <Button title="Delete" onPress={() => handleDeleteTag(item.id)} />
-              </View>
-            </View>
-          )}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-        />
-        {editTag && (
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Edit Tag</Text>
-          <TextInput
-            style={styles.modalInput}
-            placeholder="Enter new tag"
-            value={editedTag}
-            onChangeText={(text) => setEditedTag(text)}
-          />
-          <View style={styles.modalButtonContainer}>
-            <Button title="Cancel" onPress={cancelEdit} />
-            <Button title="Submit" onPress={submitEdit} />
-          </View>
+          <Button title="Delete" onPress={() => handleDeleteTag(item.id)} color="orange" />
         </View>
-      )}
       </View>
+    )}
+    ItemSeparatorComponent={() => <View style={styles.separator} />}
+  />
+
+  {/* Edit tag modal */}
+  {editTag && (
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalTitle}>Edit Tag</Text>
+      <TextInput
+        style={styles.modalInput}
+        placeholder="Enter new tag"
+        value={editedTag}
+        onChangeText={(text) => setEditedTag(text)}
+      />
+      <View style={styles.modalButtonContainer}>
+        <Button title="Cancel" onPress={cancelEdit} color="orange" />
+        <Button title="Submit" onPress={submitEdit} color="orange" />
+      </View>
+    </View>
+  )}
+</View>
+</View>
     </View>
   );
 }
@@ -218,7 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   headerContainer: {
-    backgroundColor: "orange",
+    backgroundColor: "#BAD4AA",
     padding: 16,
   },
   headerText: {
@@ -289,6 +300,13 @@ const styles = StyleSheet.create({
   },
    addButtonContainer: {
     marginBottom: 32, // Add margin to create space between "Add" button and the first tag
+  }, descriptionContainer: {
+    paddingHorizontal: 5, // Adjust padding horizontally
+    marginBottom: 10,
+  },
+  tagsDescription: {
+    fontSize: 16,
+    color: 'white', // Setting text color to white
   },
 });
 

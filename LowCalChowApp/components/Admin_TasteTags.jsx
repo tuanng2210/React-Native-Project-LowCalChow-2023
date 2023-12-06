@@ -12,20 +12,20 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 
 
 
-function Admin_FoodTypeTags() {
+function Admin_TasteTags() {
   const route = useRoute();
   const navigation = useNavigation();
   const {access, adminId} = route.params;
-  const [foodtypeTags, setfoodtypeTags] = useState([]);
+  const [tasteTags, setTasteTags] = useState([]);
   const [newTag, setNewTag] = useState(""); // State for user input
   const [editTag, setEditTag] = useState(null); // State to store the tag being edited
    const [editedTag, setEditedTag] = useState(""); // State for edited tag
 
 useEffect(() => {
-  const getfoodtypeTags = async () => {
+  const getTasteTags = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/restaurants/foodtypetags/`,
+        `http://localhost:8000/restaurants/tastetags/`,
         {
            method: "GET",
         headers: {
@@ -37,7 +37,7 @@ useEffect(() => {
       if (response.ok) {
         const data = await response.json();
         console.log(data); // Log the data
-        setfoodtypeTags(data);
+        setTasteTags(data);
       } else {
         console.error("API Error:", response.status);
         console.error(await response.text()); // Log the response content
@@ -48,13 +48,13 @@ useEffect(() => {
   };
 
 
-   getfoodtypeTags();
+   getTasteTags();
 }, [access]);
   const addTag = async () => {
     if (newTag) {
       try {
         const response = await fetch(
-          `http://localhost:8000/restaurants/foodtypetags/`,
+          `http://localhost:8000/restaurants/tastetags/`,
           {
             method: "POST",
             headers: {
@@ -68,7 +68,7 @@ useEffect(() => {
         if (response.ok) {
           const data = await response.json();
           // Update the local list with the new tag
-          setfoodtypeTags([...foodtypeTags, data]);
+          setTasteTags([...tasteTags, data]);
           setNewTag(""); // Clear the input
         } else {
           console.error("API Error:", response.status);
@@ -94,7 +94,7 @@ const handleEditTag = (tag) => {
     if (editedTag && editTag) {
       try {
         const response = await fetch(
-          `http://localhost:8000/restaurants/foodtypetags/${editTag.id}/`,
+          `http://localhost:8000/restaurants/tastetags/${editTag.id}/`,
           {
             method: "PUT",
             headers: {
@@ -107,7 +107,7 @@ const handleEditTag = (tag) => {
 
         if (response.ok) {
           // Update the local list with the edited tag
-          setfoodtypeTags((prevTags) =>
+          setTasteTags((prevTags) =>
             prevTags.map((tag) =>
               tag.id === editTag.id ? { ...tag, title: editedTag } : tag
             )
@@ -127,7 +127,7 @@ const handleEditTag = (tag) => {
 const handleDeleteTag = async (tagId) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/restaurants/foodtypetags/${tagId}/`,
+      `http://localhost:8000/restaurants/tastetags/${tagId}/`,
       {
         method: "DELETE",
         headers: {
@@ -138,8 +138,8 @@ const handleDeleteTag = async (tagId) => {
 
     if (response.ok) {
       // Remove the deleted tag from the local list
-      const updatedTags = foodtypeTags.filter((tag) => tag.id !== tagId);
-      setfoodtypeTags(updatedTags);
+      const updatedTags = tasteTags.filter((tag) => tag.id !== tagId);
+      setTasteTags(updatedTags);
     } else {
       console.error("API Error:", response.status);
       console.error(await response.text());
@@ -153,10 +153,10 @@ const handleDeleteTag = async (tagId) => {
   <View style={styles.container}>
     {/* Header in an orange box */}
     <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>Tag Management - Food Type Tags</Text>
+      <Text style={styles.headerText}>Tag Management - Taste Tags</Text>
       <View style={styles.descriptionContainer}>
         <Text style={styles.tagsDescription}>
-          This section allows you to manage food type tags. You can add new tags, delete existing ones, and edit the titles of the tags.
+          This section allows you to manage Taste tags. You can add new tags, delete existing ones, and edit the titles of the tags.
         </Text>
       </View>
       <View style={styles.buttonSpacer} /> {/* Add vertical space */}
@@ -169,7 +169,7 @@ const handleDeleteTag = async (tagId) => {
       <View style={styles.tagsBox}>
 
 <View style={styles.tagsBox}>
-  <Text style={styles.tagsHeader}>Food Type Tags</Text>
+  <Text style={styles.tagsHeader}>Taste Tags</Text>
 
   {/* Add a TextInput for the user to enter a new tag */}
   <TextInput
@@ -185,7 +185,7 @@ const handleDeleteTag = async (tagId) => {
 
   {/* List of Restaurant Tags */}
   <FlatList
-    data={foodtypeTags}
+    data={tasteTags}
     keyExtractor={(item) => item.id.toString()}
     renderItem={({ item }) => (
       <View style={styles.tagContainer}>
@@ -311,4 +311,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Admin_FoodTypeTags;
+export default Admin_TasteTags;
