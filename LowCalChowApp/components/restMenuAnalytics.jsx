@@ -85,6 +85,29 @@ function RestMenuAnalytics() {
       handleGetFeedback();
     }, [mealID]);
 
+    const handleGetTrends = async () => {
+      try {
+        /* TODO MODIFY LINK TO WORK LATER */
+        const response = await fetch(`localhost:8000/trends/${restaurantId}/menuitems/${mealAnalyticID}/`, {
+          method: "GET",
+  
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const newdata = await response.json();
+          console.log(newdata);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } 
+    useEffect(() => {
+      handleGetTrends();
+    }, [mealID]);
+
     useEffect(() => {
       if (adSet==true){
       console.log(analyticData);

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
+const MenuComponent = ({menuItems, accessToken, restIDToken, screenName, bookmarkID}) => {
   const navigation = useNavigation();
   const [RestID, setRestID] = useState('');
   const [BookmarkID, setBookmarkID] = useState('');
