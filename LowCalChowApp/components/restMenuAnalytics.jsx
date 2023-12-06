@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BarChart} from 'react-native-chart-kit';
@@ -11,9 +11,9 @@ function RestMenuAnalytics() {
     const route = useRoute();
     const navigation = useNavigation();
     //const { access, restaurantId, mealAnalyticID } = route.params;
-    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNzM4MjYyLCJpYXQiOjE3MDE3MzEwNjIsImp0aSI6ImQ5M2NiODVhMTJmZDRhYWZiMTE0OGY1MGE0N2Y5MDA4IiwidXNlcl9pZCI6MX0.oZ3LfH_lcoMoc-FENoNwaJZk5jQipXLBugPW32NETYE';
-    const restaurantId = 3;
-    const mealAnalyticID = 7;
+    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxODQ3MDkyLCJpYXQiOjE3MDE4Mzk4OTIsImp0aSI6ImY0NjQ0M2UyZWRhYTQ5MzVhOGFiMmFiMDY4Nzc3MWZmIiwidXNlcl9pZCI6M30.VUkOHta-jwcX76e_1mcR_WSCc36ez7k4-HSMlJhvhkk';
+    const restaurantId = 1;
+    const mealAnalyticID = 1;
 
     const [analyticData, setAnalyticData] = useState([]);
     const [adSet, setAdSet] = useState(false);
@@ -25,6 +25,8 @@ function RestMenuAnalytics() {
     const [ingredientData, setIngredientData] = useState(null);
     const [restrictionData, setRestrictionData] = useState(null);
     const [tasteData, setTasteData] = useState(null);
+    const [mealID, setMealID] = useState('');
+    const [feedbackData, setFeedbackData] = useState([]);
 
     const handleGetMeal = async () => {
       try {
@@ -40,6 +42,7 @@ function RestMenuAnalytics() {
           const data = await response.json();
           setAnalyticData(data);
           setAdSet(true);
+          setMealID(data.menuItem_id.id);
           const dateObject = new Date(data.date_stamp);
           setDateStamp(dateObject.toLocaleString());
           const dateObject2 = new Date(data.date_stamp);
@@ -58,6 +61,29 @@ function RestMenuAnalytics() {
     useEffect(() => {
       handleGetMeal();
     }, []);
+
+    const handleGetFeedback = async () => {
+      try {
+        /* TODO MODIFY LINK TO WORK LATER */
+        const response = await fetch(`http://localhost:8000/feedback/menuitems/${mealID}/`, {
+          method: "GET",
+  
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access,
+          },
+        });
+        if (response.status === 200) {
+          const newdata = await response.json();
+          setFeedbackData(newdata);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }  
+    useEffect(() => {
+      handleGetFeedback();
+    }, [mealID]);
 
     useEffect(() => {
       if (adSet==true){
@@ -129,7 +155,22 @@ function RestMenuAnalytics() {
         padding: 5,
         flex: 1,
       }
+      
     }
+    const renderFeedbackItem = ({ item }) => (
+      <View style={styles.feedbackItem}>
+        <StarRatingDisplay
+                      rating={item.rating}
+                      maxStars={5}
+                      starSize={20}
+                      color="#5CCD28"
+                      borderColor="#000000"
+                      enableSwiping='false'
+  
+                    />
+        <Text style={styles.feedbackText}>{item.review}</Text>
+      </View>
+    );
 
 return (
     <View style={styles.container}>
@@ -234,6 +275,14 @@ return (
        
         {/*Date Range MAYBE*/}
         {dateStampThree!='' && ( <Text style={styles.AnalysisSubText}>Analytics TimeStamp: {dateStampThree} to {dateStamp}</Text> )}
+        <FlatList
+              data={feedbackData}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderFeedbackItem}
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.feedbackList}
+            />
       </ScrollView>
       </View>)
 }
@@ -288,6 +337,27 @@ return (
         },
         graphStyle: {
           padding: 30,
-        }
+        },
+        feedbackList: {
+          flex: 1,
+          marginTop: 20,
+          width: '80%',
+          marginBottom: 20,
+        },
+        feedbackItem: {
+          backgroundColor: '#EFEFEF',
+          borderRadius: 10,
+          padding: 10,
+          marginRight: 10,
+          width: 175, 
+        },
+        feedbackText: {
+          fontSize: 14,
+          marginBottom: 5,
+        },
+        feedbackRating: {
+          fontSize: 12,
+          color: '#888888',
+        },
       });
       export default RestMenuAnalytics;
