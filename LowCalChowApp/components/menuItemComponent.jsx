@@ -5,19 +5,25 @@ import { useNavigation } from '@react-navigation/native';
 const MenuComponent = ({menuItems, accessToken, restIDToken, screenName}) => {
   const navigation = useNavigation();
   const [RestID, setRestID] = useState('');
+  const [BookmarkID, setBookmarkID] = useState('');
   const access = accessToken;
   useEffect(() => {
     if (restIDToken) {
       setRestID(restIDToken);
     }
   }, [restIDToken]);
+  useEffect(() => {
+    if (bookmarkID) {
+      setBookmarkID(bookmarkID);
+    }
+  }, [bookmarkID]);
 
   const ScreenName = screenName;
   console.log(screenName);
   {/*console.log(ScreenName);*/}
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {id: item.id, access: access, ...(RestID && { restaurantId: RestID })})}>
+      <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {id: item.id, access: access, ...(RestID && { restaurantId: RestID }), ...(BookmarkID &&{bookmarkID: BookmarkID})})}>
         <View style={styles.menuItem}>
           <Text style={styles.itemName}>{item.item_name}</Text>
           <Text>Calories: {item.calories}</Text>
