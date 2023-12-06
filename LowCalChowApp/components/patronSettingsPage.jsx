@@ -31,6 +31,7 @@ function PatronSettingsPage({ navigation, route }) {
       setError("Error fetching data");
     }
   };
+  
 
   useEffect(() => {
     if (isFocused) {
@@ -70,7 +71,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
 
-        <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+        {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -90,7 +91,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Date of Birth: {profile.dob}
       </Text>
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-      </Text> 
+      </Text>  */}
       </View>
       <TouchableOpacity
           style={styles.logoutButton}
