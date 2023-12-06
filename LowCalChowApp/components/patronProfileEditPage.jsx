@@ -56,26 +56,6 @@ function PatronProfileEditPage({ navigation }) {
 
   const [patronId, setPatronId] = useState({});
 
-  const restrictionsTags = [
-    { label: 1, value: "Vegan" },
-    { label: "Vegetarian", value: "Vegetarian" },
-    { label: "Halal", value: "Halal" },
-    { label: "Kosher", value: "Kosher" },
-    { label: 'Keto', value: 'Keto' },
-    { label: "Pescetarian", value: "Pescetarian" },
-    { label: "Dairy-Free", value: "Dairy-Free" },
-    { label: "Paleo", value: "Paleo" }
-  ];
-
-  const tasteTags = [
-    { label: 'Salty', value: 'Salty' },
-    { label: "Sweet", value: "Sweet" },
-    { label: "Spicy", value: "Spicy" },
-    { label: "Umami", value: "Umami" },
-    { label: "Sour", value: "Sour" },
-    { label: "Bitter", value: "Bitter" },
-  ];
-
   const handleGetData = async () => {
 
     try {

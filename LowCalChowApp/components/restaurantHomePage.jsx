@@ -18,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
 import TagModal from "./tagModal";
+import AppSatisfactionFeedback from "./appSatisfactionFeedback";
 
 function RestaurantHomepage({ navigation, route }) {
   const [restaurants, setRestaurants] = useState([]);
@@ -361,6 +362,11 @@ function RestaurantHomepage({ navigation, route }) {
             <Text style={styles.sidebarItemText}>Analytics</Text>
           )}
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.sidebarItem}>
+          <AppSatisfactionFeedback navigation={navigation} access={access}/>
+        </TouchableOpacity>
+      
       </View>
 
       {/* Main content */}
