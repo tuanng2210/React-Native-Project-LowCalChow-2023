@@ -7,17 +7,25 @@ import {StarRatingDisplay} from 'react-native-star-svg-rating';
 import logo from "../assets/icons8-carrot-94.png";
 
 function viewMenuItem({ route, navigation }) {
-  //const access = route.params.access;
-  //const mealID = route.params.id;
-  //const [bookmarkID, setBookmarkID] = useState('null');
-  //if (route.params.bookmarkID) { setBookmarkID(route.params.bookmarkID); }
+  const access = route.params.access;
+  const mealID = route.params.id;
 
-  const mealID = 1;
-  const bookmarkID = 48;
-  const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNzI1OTEwLCJpYXQiOjE3MDE3MTg3MTAsImp0aSI6ImJlOWNiYTg2NjAzNzQ5MGZiOTI1ZjVmNGY3ZDFhMzVmIiwidXNlcl9pZCI6NH0.qrGsGZ6H7320hDfQLgmXAZOWTzFQ6a5K7xsTzMjGb6E';
-  
-  const showBookmarkButton = true;
+  const [showBookmarkButton, setShowBookmarkButton] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [bookmarkID, setBookmarkID] = useState('null');
+  if (route.params.bookmarkID) { 
+    setBookmarkID(route.params.bookmarkID);
+    setIsBookmarked(true);
+    setShowBookmarkButton(false);
+
+    
+  }
+
+  //const mealID = 1;
+  //const bookmarkID = 149;
+  //const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNzI1OTEwLCJpYXQiOjE3MDE3MTg3MTAsImp0aSI6ImJlOWNiYTg2NjAzNzQ5MGZiOTI1ZjVmNGY3ZDFhMzVmIiwidXNlcl9pZCI6NH0.qrGsGZ6H7320hDfQLgmXAZOWTzFQ6a5K7xsTzMjGb6E';
+  
+
   const showMenuItemButton = true;
   const [isMIHistory, setIsMIHistory] = useState(false);
 
@@ -29,6 +37,7 @@ function viewMenuItem({ route, navigation }) {
   const [mealCookStyle, setmealCookStyle] = useState('');
   const [mealAllergies, setmealAllergies] = useState([]);
   const [mealTOD, setmealTOD] = useState([]);
+  const [mealTaste, setMealTaste] = useState([]);
   const [mealRestrictions, setmealRestrictions] = useState([]);
 
   const [feedbackID, setFeedbackID] = useState('');
@@ -65,6 +74,7 @@ function viewMenuItem({ route, navigation }) {
         setmealAllergies(data.menu_allergy_tag.map(tag => tag.title));
         setmealTOD(data.time_of_day_available);
         setmealRestrictions(data.menu_restriction_tag.map(tag => tag.title));
+        setMealTaste(data.taste_tags.map(tag => tag.title));
 
       }
     } catch (error) {
@@ -301,20 +311,10 @@ function viewMenuItem({ route, navigation }) {
                </View>*/}
 
       <ScrollView>
-      <View style={styles.mainContent}>
+     
+        <View style={styles.mainContent}>
         {/*Menu Item Title */}
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{mealName}</Text>
-      </View>
-      <FlatList
-              data={feedbackData}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={renderFeedbackItem}
-              horizontal
-              showsHorizontalScrollIndicator={true}
-              contentContainerStyle={styles.feedbackList}
-            />
-        <View style={styles.mainContent}>
-
 
           {/* Empty View*/}
           <View style={styles.menuRight}>
@@ -356,6 +356,15 @@ function viewMenuItem({ route, navigation }) {
               {mealIngredients.map((ingredient, index) => (
                 <View style={styles.tagBubble} key={index}>
                   <Text style={styles.tagText}>{ingredient}</Text>
+                </View>
+              ))}
+            </View>
+            {/* Display Taste Tags */}
+            <Text style={styles.normText}>Taste Tags:</Text>
+            <View style={styles.tagContainer}>
+              {mealTaste.map((taste, index) => (
+                <View style={styles.tagBubble} key={index}>
+                  <Text style={styles.tagText}>{taste}</Text>
                 </View>
               ))}
             </View>
@@ -443,7 +452,16 @@ function viewMenuItem({ route, navigation }) {
           
 
         </View>
+
       </ScrollView>
+      <FlatList
+              data={feedbackData}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderFeedbackItem}
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              contentContainerStyle={styles.feedbackList}
+            />
 
       <View style={styles.buttonContainer}>
 
@@ -669,6 +687,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     width: '80%',
+    marginBottom: 20,
   },
   feedbackItem: {
     backgroundColor: '#EFEFEF',
