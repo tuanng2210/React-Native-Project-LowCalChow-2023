@@ -91,7 +91,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
           </View>
         </TouchableOpacity> */}
 
-        <TrendComponent xCoefficients={[-1.00, 2.30, 0.50, 0.10, 2.00, 1.00]}/>
+        {/* <TrendComponent xCoefficients={[-1.00, 2.30, 0.50, 0.10, 2.00, 1.00]}/> */}
 
         <TouchableOpacity
           onPress={() =>
