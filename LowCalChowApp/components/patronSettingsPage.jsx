@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 import logo from "../assets/icons8-carrot-94.png";
 import AppSatisfactionFeedback from "./appSatisfactionFeedback";
 
+
 function PatronSettingsPage({ navigation, route }) {
   const { access } = route.params;
   const [profile, setProfile] = useState([]);

@@ -11,7 +11,9 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import logo from "../assets/icons8-carrot-94.png";
+import Icon from "react-native-vector-icons/FontAwesome";
 import StarRating from 'react-native-star-svg-rating';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 function AppSatisfactionFeedback({ navigation, access }) {
@@ -63,11 +65,16 @@ function AppSatisfactionFeedback({ navigation, access }) {
         //handleAddToMenuItemHistory();
       }
 
+      function closeFeedback(){
+        setReviewVisible(false);
+      }
+
 
   return (
     <View>
 
         <TouchableOpacity style={styles.menuButton} onPress={openFeedback}>
+            <MaterialIcons name="feedback" size={25} color="#000000" />
             <Text style={styles.buttonText}>Leave Feedback</Text>
         </TouchableOpacity>
 
@@ -80,6 +87,11 @@ function AppSatisfactionFeedback({ navigation, access }) {
             }} >
             <View style={styles.modalWrapper}>
               <View style={styles.modalContainer}>
+
+              <TouchableOpacity style={styles.close} onPress={closeFeedback}>
+                <Icon name="close" size={25} color="#00000" />
+              </TouchableOpacity>
+
                 <View style={styles.stars}>
                   <StarRating
                     rating={rating}
@@ -97,7 +109,7 @@ function AppSatisfactionFeedback({ navigation, access }) {
                   style={styles.input}
                   value={review}
                   onChangeText={(text) => setReview(text)}
-                  placeholder="Leave feedback about your experience"
+                  placeholder="Tell us what you think of LowCalChow!"
                 />
 
                 <TouchableOpacity style={styles.button} onPress={subFeedback}>
@@ -179,7 +191,7 @@ const styles = StyleSheet.create({
     button: {
       backgroundColor: '#5CCD28',
       borderRadius: 8,
-      paddingVertical: 10,
+      paddingVertical: 15,
       paddingHorizontal: 15,
       alignItems: 'center',
       marginTop: 16,
@@ -191,7 +203,19 @@ const styles = StyleSheet.create({
     buttonText: {
       color: '#000000',
       fontWeight: 'bold',
-      fontSize: 16,
+      fontSize: 20,
+    },
+    close:{
+      backgroundColor: '#5CCD28',
+      borderRadius: 8,
+      paddingVertical: 5,
+      paddingHorizontal: 8,
+      alignItems: 'right',
+      marginTop: 16,
+      marginBottom: 12,
+      borderColor: '#000000',
+      borderWidth: 2,
+      borderRadius: 5,
     },
     error: {
       color: 'red',
