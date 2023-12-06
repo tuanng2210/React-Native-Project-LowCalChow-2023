@@ -251,6 +251,12 @@ const styles = StyleSheet.create({
   barChartContainer: {
     margin: 10,
   },
+  chartTitle: {
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 5,
+    fontWeight: "bold"
+  }
 });
 
 export default AnalyticsDashboard;
