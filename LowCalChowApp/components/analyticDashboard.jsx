@@ -105,7 +105,7 @@ const AnalyticsDashboard = ({ route }) => {
 
       return (
         <View style={styles.barChartContainer}>
-          <Text style={styles.chartTitle}>{title}</Text>
+          <Text style={styles.chartTitle}>Top 3 {title}</Text>
           <BarChart
             data={chartData}
             width={300}
@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
     marginBottom: 5,
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
 
 export default AnalyticsDashboard;
