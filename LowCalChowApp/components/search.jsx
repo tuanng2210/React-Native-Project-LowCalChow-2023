@@ -536,7 +536,7 @@ function Search({ navigation, route }) {
             </View>
 
             <TextInput
-              style={styles.input}
+              style={styles.calorieInput}
               placeholder="Calorie Limit"
               value={calorieLimit}
               onChangeText={(text) => setCalorieLimit(text)}
@@ -623,7 +623,7 @@ function Search({ navigation, route }) {
             )}
 
             {/* Toggle Switch */}
-            <View style={styles.toggleContainer}>
+            <View>
               <Text>Advanced Search</Text>
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -720,7 +720,7 @@ const styles = StyleSheet.create({
   searchBar__unclicked: {
     padding: 10,
     flexDirection: "row",
-    width: "100%",
+    width: "60%",
     backgroundColor: "#f0f8ff",
     borderRadius: 15,
     alignItems: "center",
@@ -752,57 +752,67 @@ const styles = StyleSheet.create({
   inputSearch: {
     fontSize: 20,
     marginLeft: 10,
-    width: "100%",
+    width: "60%",
   },
+  calorieInput: {
+    width: "60%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginTop: 12,
+    marginBottom: 12,
+},
   modalContainer: {
-    flex: 1,
-    justifyContent: "left",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    height: 200,
-  },
+  flex: 1,
+  justifyContent: "left",
+  alignItems: "center",
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  height: 200,
+},
   resultsContainer: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 10,
-  },
+  marginTop: 20,
+  padding: 10,
+  backgroundColor: "#f0f0f0",
+  borderRadius: 10,
+},
   resultsTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
+  fontSize: 20,
+  fontWeight: "bold",
+  marginBottom: 10,
+},
   resultItem: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
-  },
+  backgroundColor: "#ffffff",
+  borderRadius: 8,
+  padding: 10,
+  marginBottom: 10,
+},
   resultText: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
+  fontSize: 16,
+  marginBottom: 5,
+},
   buttonContainer: {
-    flex: "end",
-    flexDirection: "row",
-    backgroundColor: "#FFA500",
-    width: "100%",
-    justifyContent: "space-around",
-    padding: 10,
-  },
+  flex: "end",
+  flexDirection: "row",
+  backgroundColor: "#FFA500",
+  width: "100%",
+  justifyContent: "space-around",
+  padding: 10,
+},
   modalSelectTag: {
-    fontSize: 15,
-  },
+  fontSize: 15,
+},
   tasteTagsButton: {
-    backgroundColor: "rgba(255, 165, 0, 0.5)",
-    borderRadius: 8,
-    padding: 10,
-    marginVertical: 10,
-  },
+  backgroundColor: "rgba(255, 165, 0, 0.5)",
+  borderRadius: 8,
+  padding: 10,
+  marginVertical: 10,
+},
   modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-  },
+  backgroundColor: "#fff",
+  padding: 20,
+  borderRadius: 10,
+},
 });
 export default Search;

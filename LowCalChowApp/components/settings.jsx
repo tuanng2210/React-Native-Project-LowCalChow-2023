@@ -4,6 +4,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useIsFocused } from "@react-navigation/native";
+import AppSatisfactionFeedback from "./appSatisfactionFeedback";
 
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -172,9 +173,14 @@ function Settings({ route, navigation }) {
             >
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
+           
           </View>
+          <TouchableOpacity style={styles.feedbackButton}>
+          <AppSatisfactionFeedback navigation={navigation} access={access}/>
+        </TouchableOpacity>
         </View>
       )}
+      
     </View>
   );
 }
@@ -187,9 +193,13 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#fff",
   },
+  feedbackButton:{
+    justifyContent: "center",
+    
+  },
   restaurantInfo: {
     marginTop: 40,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     marginBottom: 20,
@@ -228,7 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     alignItems: "center",
-    width: "20%",
+    width: "26%",
     alignSelf: "center",
   },
   buttonText: {

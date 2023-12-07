@@ -71,10 +71,9 @@ function AppSatisfactionFeedback({ navigation, access }) {
 
 
   return (
-    <View>
+    <View style={styles.mainContent}>
 
-        <TouchableOpacity style={styles.menuButton} onPress={openFeedback}>
-            <MaterialIcons name="feedback" size={25} color="#000000" />
+        <TouchableOpacity style={styles.button1} onPress={openFeedback}>
             <Text style={styles.buttonText}>Leave Feedback</Text>
         </TouchableOpacity>
 
@@ -155,6 +154,17 @@ const styles = StyleSheet.create({
       width: '48%',
   
     },
+    button1: {
+      backgroundColor: "#FFA500",
+      borderRadius: 8,
+      paddingVertical: 10,
+      marginTop: 8,
+      marginBottom: 8,
+      width: "30%",
+      padding: 10,
+      justifyContent: "center",
+      alignItems: "center"
+    },
     menuButton: {
       marginLeft: 25,
     },
@@ -188,23 +198,23 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#FFFFFF'
     },
-    button: {
-      backgroundColor: '#5CCD28',
-      borderRadius: 8,
-      paddingVertical: 15,
-      paddingHorizontal: 15,
-      alignItems: 'center',
-      marginTop: 16,
-      marginBottom: 12,
-      borderColor: '#000000',
-      borderWidth: 2,
-      borderRadius: 5,
-    },
+   
     buttonText: {
       color: '#000000',
       fontWeight: 'bold',
-      fontSize: 20,
+      fontSize: 16,
     },
+    button: {
+    
+      backgroundColor: '#5CCD28',
+      borderRadius: 8,
+      paddingVertical: 10,
+      alignItems: "center",
+      marginTop: 12,
+      marginBottom: 12,
+      width: "20%",
+    
+  },
     close:{
       backgroundColor: '#5CCD28',
       borderRadius: 8,
