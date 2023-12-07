@@ -112,6 +112,7 @@ const AnalyticsDashboard = ({ route }) => {
             height={200}
             yAxisLabel=""
             chartConfig={chartConfig}
+            fromZero={true}
           />
         </View>
       );
