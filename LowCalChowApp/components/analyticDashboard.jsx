@@ -39,6 +39,7 @@ const AnalyticsDashboard = ({ route }) => {
 
       const jsonData = await response.json();
       setData(jsonData);
+      console.log(jsonData);
     } catch (error) {
       console.error("Fetch Error:", error);
       setError(error.message);
@@ -96,11 +97,16 @@ const AnalyticsDashboard = ({ route }) => {
       };
 
       const chartConfig = {
-        backgroundColor: "#f0f0f0",
-        backgroundGradientFrom: "#f0f0f0",
-        backgroundGradientTo: "#f0f0f0",
+        // backgroundColor: "#f0f0f0",
+        // backgroundGradientFrom: "#f0f0f0",
+        // backgroundGradientTo: "#f0f0f0",
+        // decimalPlaces: 0,
+        // color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        backgroundColor: "#black",
+        backgroundGradientFrom: "#392F5A",
+        backgroundGradientTo: "#ffa726",
         decimalPlaces: 0,
-        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       };
 
       return (
@@ -112,6 +118,7 @@ const AnalyticsDashboard = ({ route }) => {
             height={200}
             yAxisLabel=""
             chartConfig={chartConfig}
+            fromZero={true}
           />
         </View>
       );
