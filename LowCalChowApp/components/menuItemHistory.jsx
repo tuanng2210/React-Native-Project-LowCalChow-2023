@@ -98,21 +98,6 @@ useEffect (() => {
     </View>
   );
 };
-{/*{
-		{
-		"id": 1,
-		"menu_item": {
-			"id": 2,
-			"item_name": "Chocolate Ice Cream Cone with Nuts",
-			"calories": 300,
-			"average_rating": "1.00",
-			"price": "4.75",
-			"restaurant": {
-				"id": 1,
-				"name": "Monarch Wings and Things",
-				"price_level": "$"
-			}
-} */}
 
 const styles = StyleSheet.create({
   container: {
