@@ -59,6 +59,10 @@ function Search({ navigation, route }) {
         const responseData = await response.json();
         console.log(responseData);
 
+        if (!calorieLimit) setCalorieLimit(responseData[0].calorie_limit);
+        if (!priceMin) setPriceMin(0.02);
+        if (!priceMax) setPriceMax(responseData[0].price_max);
+
         const patronRestrictionTags =
           responseData[0].patron_restriction_tag.map((tag) => ({
             key: tag.id,
@@ -143,72 +147,6 @@ function Search({ navigation, route }) {
   const closeIngredientTagsModal = () => {
     setIsIngredientTagsModalVisible(false);
   };
-
-  // const handleTasteTagSelect = (selectedTasteTag) => {
-  //   const isSelected = selectedTasteTags.some(
-  //     (tag) => tag.key === selectedTasteTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedTasteTags(
-  //       selectedTasteTags.filter((tag) => tag.key !== selectedTasteTag.key)
-  //     );
-  //   } else {
-  //     setSelectedTasteTags([...selectedTasteTags, selectedTasteTag]);
-  //   }
-  // };
-
-  // const handleRestrictionTagSelect = (selectedRestrictionTag) => {
-  //   const isSelected = selectedRestrictionTags.some(
-  //     (tag) => tag.key === selectedRestrictionTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedRestrictionTags(
-  //       selectedRestrictionTags.filter(
-  //         (tag) => tag.key !== selectedRestrictionTag.key
-  //       )
-  //     );
-  //   } else {
-  //     setSelectedRestrictionTags([
-  //       ...selectedRestrictionTags,
-  //       selectedRestrictionTag,
-  //     ]);
-  //   }
-  // };
-
-  // const handleAllergyTagSelect = (selectedAllergyTag) => {
-  //   const isSelected = selectedAllergyTags.some(
-  //     (tag) => tag.key === selectedAllergyTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedAllergyTags(
-  //       selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
-  //     );
-  //   } else {
-  //     setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
-  //   }
-  // };
-
-  // const handleIngredientSelect = (selectedIngredientTag) => {
-  //   const isSelected = selectedIngredientTags.some(
-  //     (tag) => tag.key === selectedIngredientTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedIngredientTags(
-  //       selectedIngredientTags.filter(
-  //         (tag) => tag.key !== selectedIngredientTag.key
-  //       )
-  //     );
-  //   } else {
-  //     setSelectedIngredientTags([
-  //       ...selectedIngredientTags,
-  //       selectedIngredientTag,
-  //     ]);
-  //   }
-  // };
 
   const handleTasteTagSelect = (selectedTasteTag) => {
     const isSelected = selectedTasteTags.includes(selectedTasteTag.key);
@@ -311,14 +249,14 @@ function Search({ navigation, route }) {
           searchResults: responseData.results,
         });
         console.log("Data received from the server:", responseData);
-        setQuery("");
-        setCalorieLimit("");
-        setSelectedRestrictionTags([]);
-        setSelectedAllergyTags([]);
-        setSelectedIngredientTags([]);
-        setSelectedTasteTags([]);
-        setPriceMax("");
-        setPriceMin("");
+        // setQuery("");
+        // setCalorieLimit("");
+        // setSelectedRestrictionTags([]);
+        // setSelectedAllergyTags([]);
+        // setSelectedIngredientTags([]);
+        // setSelectedTasteTags([]);
+        // setPriceMax("");
+        // setPriceMin("");
       } else {
         console.error(response.json());
       }
@@ -392,122 +330,7 @@ function Search({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
-      {/* 
-      <ScrollView>
-        <View style={styles.mainContent}>
-          <View style={styles.root}>
-            <Text style={styles.title}>Search for a Menu Item</Text>
-            <View style={styles.container}>
-              <View
-                style={
-                  !clicked
-                    ? styles.searchBar__unclicked
-                    : styles.searchBar__clicked
-                }
-              >
-                <Feather
-                  name="search"
-                  size={20}
-                  color="black"
-                  style={{ marginLeft: 1 }}
-                />
-                <TextInput
-                  style={styles.inputSearch}
-                  placeholder="Search"
-                  value={query}
-                  onChangeText={(text) => setQuery(text)}
-                />
-              </View>
 
-              <TextInput
-                style={styles.input}
-                placeholder="Calorie Limit"
-                value={calorieLimit}
-                onChangeText={(text) => setCalorieLimit(text)}
-              />
-
-              <TouchableOpacity
-                onPress={openRestrictionTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>
-                  Select Restriction Tags
-                </Text>
-              </TouchableOpacity>
-
-              <TagModal
-                visible={isRestrictionTagsModalVisible}
-                tags={dietaryRestrictionTags}
-                selectedTags={selectedRestrictionTags}
-                onSelect={handleRestrictionTagSelect}
-                onClose={closeRestrictionTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openTasteTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-              </TouchableOpacity>
-              <TagModal
-                visible={isTasteTagsModalVisible}
-                tags={patronTasteTags}
-                selectedTags={selectedTasteTags}
-                onSelect={handleTasteTagSelect}
-                onClose={closeTasteTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openAllergyTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
-              </TouchableOpacity>
-              <TagModal
-                visible={isAllergyTagsModalVisible}
-                tags={allergyTags}
-                selectedTags={selectedAllergyTags}
-                onSelect={handleAllergyTagSelect}
-                onClose={closeAllergyTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openIngredientTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>
-                  Select Disliked Ingredients{" "}
-                </Text>
-              </TouchableOpacity>
-
-              <TagModal
-                visible={isIngredientTagsModalVisible}
-                tags={dislikedIngredients}
-                selectedTags={selectedIngredientTags}
-                onSelect={handleIngredientSelect}
-                onClose={closeIngredientTagsModal}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Min Price"
-                value={priceMin}
-                onChangeText={(text) => setPriceMin(text)}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Max Price"
-                value={priceMax}
-                onChangeText={(text) => setPriceMax(text)}
-              />
-            </View>
-          </View>
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView> */}
       <ScrollView>
         <View style={styles.mainContent}>
           <View style={styles.root}>
@@ -763,56 +586,56 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginTop: 12,
     marginBottom: 12,
-},
+  },
   modalContainer: {
-  flex: 1,
-  justifyContent: "left",
-  alignItems: "center",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  height: 200,
-},
+    flex: 1,
+    justifyContent: "left",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    height: 200,
+  },
   resultsContainer: {
-  marginTop: 20,
-  padding: 10,
-  backgroundColor: "#f0f0f0",
-  borderRadius: 10,
-},
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+  },
   resultsTitle: {
-  fontSize: 20,
-  fontWeight: "bold",
-  marginBottom: 10,
-},
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   resultItem: {
-  backgroundColor: "#ffffff",
-  borderRadius: 8,
-  padding: 10,
-  marginBottom: 10,
-},
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+  },
   resultText: {
-  fontSize: 16,
-  marginBottom: 5,
-},
+    fontSize: 16,
+    marginBottom: 5,
+  },
   buttonContainer: {
-  flex: "end",
-  flexDirection: "row",
-  backgroundColor: "#FFA500",
-  width: "100%",
-  justifyContent: "space-around",
-  padding: 10,
-},
+    flex: "end",
+    flexDirection: "row",
+    backgroundColor: "#FFA500",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 10,
+  },
   modalSelectTag: {
-  fontSize: 15,
-},
+    fontSize: 15,
+  },
   tasteTagsButton: {
-  backgroundColor: "rgba(255, 165, 0, 0.5)",
-  borderRadius: 8,
-  padding: 10,
-  marginVertical: 10,
-},
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
+  },
   modalContent: {
-  backgroundColor: "#fff",
-  padding: 20,
-  borderRadius: 10,
-},
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+  },
 });
 export default Search;
