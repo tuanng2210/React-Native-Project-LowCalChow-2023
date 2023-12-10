@@ -311,14 +311,14 @@ function Search({ navigation, route }) {
           searchResults: responseData.results,
         });
         console.log("Data received from the server:", responseData);
-        setQuery("");
-        setCalorieLimit("");
-        setSelectedRestrictionTags([]);
-        setSelectedAllergyTags([]);
-        setSelectedIngredientTags([]);
-        setSelectedTasteTags([]);
-        setPriceMax("");
-        setPriceMin("");
+        // setQuery("");
+        // setCalorieLimit("");
+        // setSelectedRestrictionTags([]);
+        // setSelectedAllergyTags([]);
+        // setSelectedIngredientTags([]);
+        // setSelectedTasteTags([]);
+        // setPriceMax("");
+        // setPriceMin("");
       } else {
         console.error(response.json());
       }
