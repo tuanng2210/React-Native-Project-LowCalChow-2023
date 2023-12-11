@@ -358,6 +358,7 @@ function Search({ navigation, route }) {
               />
             </View>
 
+            <Text style={styles.labelInput}> Select Calorie Level: </Text>
             <TextInput
               style={styles.calorieInput}
               placeholder="Calorie Limit"
@@ -368,6 +369,7 @@ function Search({ navigation, route }) {
             {/* Additional Fields */}
             {isAdvancedSearch && (
               <View style={styles.additionalFieldsContainer}>
+                <Text style={styles.labelInput}> Select Tags: </Text>
                 <TouchableOpacity
                   onPress={openRestrictionTagsModal}
                   style={styles.tasteTagsButton}
@@ -418,7 +420,7 @@ function Search({ navigation, route }) {
                   style={styles.tasteTagsButton}
                 >
                   <Text style={styles.modalSelectTag}>
-                    Select Disliked Ingredients{" "}
+                    Select Disliked Ingredients
                   </Text>
                 </TouchableOpacity>
 
@@ -429,6 +431,8 @@ function Search({ navigation, route }) {
                   onSelect={handleIngredientSelect}
                   onClose={closeIngredientTagsModal}
                 />
+
+                <Text style={styles.labelInput}> Select Price Min: </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Min Price"
@@ -436,6 +440,7 @@ function Search({ navigation, route }) {
                   onChangeText={(text) => setPriceMin(text)}
                 />
 
+                <Text style={styles.labelInput}> Select Price Max: </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Max Price"
@@ -504,6 +509,12 @@ const styles = StyleSheet.create({
     justifyContent: "top",
     alignItems: "center",
   },
+  labelInput: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
   title: {
     fontSize: 30,
     fontWeight: "bold",
@@ -566,11 +577,12 @@ const styles = StyleSheet.create({
   searchBar__clicked: {
     padding: 10,
     flexDirection: "row",
-    width: "80%",
-    backgroundColor: "#b0c4de",
+    width: "60%",
+    backgroundColor: "#f0f8ff",
     borderRadius: 15,
     alignItems: "center",
-    justifyContent: "space-evenly",
+    marginTop: 16,
+    marginBottom: 12,
   },
   inputSearch: {
     fontSize: 20,
