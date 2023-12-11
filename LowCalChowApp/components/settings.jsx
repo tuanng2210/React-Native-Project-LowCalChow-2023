@@ -175,7 +175,7 @@ function Settings({ route, navigation }) {
           </View>
         </View>
       )}
-      
+
       <TouchableOpacity
         style={styles.updateInfoButton}
         onPress={navigateToUpdateInfo}
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   },
   feedbackButton: {
     justifyContent: "center",
-    width: "30%"
+    width: "30%",
   },
   restaurantInfo: {
     marginTop: 40,
@@ -238,12 +238,11 @@ const styles = StyleSheet.create({
   updateInfoButton: {
     backgroundColor: "#FFA500",
     padding: 10,
-    borderRadius: 5,
     marginTop: 20,
-    marginBottom: 20,
     alignItems: "center",
     width: "8.5%",
     alignSelf: "center",
+    borderRadius: 8,
   },
   buttonText: {
     color: "#black",
