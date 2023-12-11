@@ -387,6 +387,7 @@ function UpdateInfo({ route, navigation }) {
       </View>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Update Your Restaurant Information: </Text>
+        <Text style={styles.labelInput}> Restaurant Name: </Text>
         <TextInput
           style={styles.input}
           placeholder="Restaurant Name"
@@ -394,6 +395,7 @@ function UpdateInfo({ route, navigation }) {
           value={newRestaurantName}
         />
 
+        <Text style={styles.labelInput}> Rating: </Text>
         <TextInput
           style={styles.input}
           placeholder="Rating"
@@ -401,6 +403,7 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
+        <Text style={styles.labelInput}> Tags: </Text>
         <TouchableOpacity onPress={openRestTagsModal} style={styles.tagsButton}>
           <Text style={styles.modalSelectTag}>Select Tags</Text>
         </TouchableOpacity>
@@ -412,6 +415,7 @@ function UpdateInfo({ route, navigation }) {
           onClose={closeRestTagsModal}
         />
 
+        <Text style={styles.labelInput}> Price Level: </Text>
         <Picker
           selectedValue={priceLevel}
           onValueChange={(itemValue) => setPriceLevel(itemValue)}
@@ -424,6 +428,7 @@ function UpdateInfo({ route, navigation }) {
           <Picker.Item label="$$$$" value="$$$$" />
         </Picker>
 
+        <Text style={styles.labelInput}> Phone Number: </Text>
         <TextInput
           style={styles.input}
           value={phoneNumber}
@@ -431,6 +436,7 @@ function UpdateInfo({ route, navigation }) {
           placeholder="Phone Number"
         />
 
+        <Text style={styles.labelInput}> Website: </Text>
         <TextInput
           style={styles.input}
           placeholder="Website"
@@ -438,6 +444,7 @@ function UpdateInfo({ route, navigation }) {
           value={website}
         />
 
+        <Text style={styles.labelInput}> Street Name: </Text>
         <TextInput
           style={styles.input}
           placeholder="Street Name"
@@ -445,6 +452,7 @@ function UpdateInfo({ route, navigation }) {
           value={streetName}
         />
 
+        <Text style={styles.labelInput}> City: </Text>
         <TextInput
           style={styles.input}
           placeholder="City"
@@ -452,6 +460,7 @@ function UpdateInfo({ route, navigation }) {
           value={city}
         />
 
+        <Text style={styles.labelInput}> State: </Text>
         <Picker
           selectedValue={selectedState}
           onValueChange={(itemValue) => setSelectedState(itemValue)}
@@ -463,6 +472,7 @@ function UpdateInfo({ route, navigation }) {
           ))}
         </Picker>
 
+        <Text style={styles.labelInput}> Zip Code: </Text>
         <TextInput
           style={styles.input}
           placeholder="Zip Code"
@@ -470,6 +480,7 @@ function UpdateInfo({ route, navigation }) {
           value={zipCode}
         />
 
+        <Text style={styles.labelInput}> Opening Hours: </Text>
         {Object.keys(openingHours).map((day) => (
           <View key={day}>
             <Text style={styles.dayTitle}>{capitalizeFirstLetter(day)}</Text>
@@ -672,6 +683,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  labelInput: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 2,
+  }
 });
 
 export default UpdateInfo;
