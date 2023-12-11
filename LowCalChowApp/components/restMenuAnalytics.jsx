@@ -2,20 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { BarChart} from 'react-native-chart-kit';
-import StarRating from 'react-native-star-svg-rating';
+import {BarChart} from 'react-native-chart-kit';
 import logo from "../assets/icons8-carrot-94.png";
 import { StarRatingDisplay } from 'react-native-star-svg-rating';
+import TrendComponent from "./TrendComponent";
 
 function RestMenuAnalytics() {
     const route = useRoute();
     const navigation = useNavigation();
-    //const { access, restaurantId, mealAnalyticID } = route.params;
-    const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxODQ3MDkyLCJpYXQiOjE3MDE4Mzk4OTIsImp0aSI6ImY0NjQ0M2UyZWRhYTQ5MzVhOGFiMmFiMDY4Nzc3MWZmIiwidXNlcl9pZCI6M30.VUkOHta-jwcX76e_1mcR_WSCc36ez7k4-HSMlJhvhkk';
-    const restaurantId = 1;
-    const mealAnalyticID = 1;
+    const access = route.params.access;
+    const restaurantId = route.params.restaurantId;
+    const  mealAnalyticID = route.params.menuItemId;
+    //const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxODQ3MDkyLCJpYXQiOjE3MDE4Mzk4OTIsImp0aSI6ImY0NjQ0M2UyZWRhYTQ5MzVhOGFiMmFiMDY4Nzc3MWZmIiwidXNlcl9pZCI6M30.VUkOHta-jwcX76e_1mcR_WSCc36ez7k4-HSMlJhvhkk';
+    //const restaurantId = 1;
+    //const mealAnalyticID = 1;
 
     const [analyticData, setAnalyticData] = useState([]);
+    const [trendData, setTrendData] = useState([]);
     const [adSet, setAdSet] = useState(false);
 
     const [dateStamp, setDateStamp] = useState('');
@@ -88,7 +91,7 @@ function RestMenuAnalytics() {
     const handleGetTrends = async () => {
       try {
         /* TODO MODIFY LINK TO WORK LATER */
-        const response = await fetch(`localhost:8000/trends/${restaurantId}/menuitems/${mealAnalyticID}/`, {
+        const response = await fetch(`http://localhost:8000/trends/${restaurantId}/menuitems/${mealID}/`, {
           method: "GET",
   
           headers: {
@@ -99,14 +102,84 @@ function RestMenuAnalytics() {
         if (response.status === 200) {
           const newdata = await response.json();
           console.log(newdata);
+          setTrendData(newdata);
         }
       } catch (error) {
         console.error("Error:", error);
       }
     } 
-    useEffect(() => {
-      handleGetTrends();
+    useEffect(() => { 
+        handleGetTrends();
     }, [mealID]);
+    
+    const renderChart = (entry) => {
+      console.log('RENDERS CHART');
+      const renderBarChart = (data, title) => {
+        if (!data) {
+          console.log("NOT DATA");
+          return (
+            
+            <View style={styles.barChartContainer}>
+              <Text style={styles.chartTitle}>{`${title}: None`}</Text>
+            </View>
+          );
+        }
+  
+        const labels = Object.values(data).map((item) => item.title);
+        const values = Object.values(data).map((item) => item.count);
+  
+        const chartData = {
+          labels,
+          datasets: [
+            {
+              data: values,
+            },
+          ],
+          
+        };
+        console.log(chartData);
+        const chartConfig = {
+          backgroundGradientFrom: "#00000",
+          backgroundGradientFromOpacity: .9,
+          backgroundGradientTo: "#3D3D3D",
+          backgroundGradientToOpacity: 1,
+         color: (opacity = 1) => `rgba(214, 112, 0, 100)`,
+          strokeWidth: 4,
+          barPercentage: 2,
+          useShadowColorFromDataset: false,
+          style: {
+            padding: 5,
+            flex: 1,
+          }
+          
+        };
+  
+        return (
+          <View style={styles.barChartContainer}>
+            <Text style={styles.chartTitle}>{title}</Text>
+            <BarChart
+              data={chartData}
+              width={300}
+              height={200}
+              yAxisLabel=""
+              verticalLabelRotation={30}
+              chartConfig={chartConfig}
+              fromZero='true'
+              showValuesOnTopOfBars='true'
+            />
+          </View>
+        );
+      };
+  
+      return (
+        <View>
+          {renderBarChart(entry.top_3_allergy, "Allergy Exclusions")}
+          {renderBarChart(entry.top_3_ingredients, "Ingredient Exclusions")}
+          {renderBarChart(entry.top_3_restrictions, "Restriction Exclusions")}
+          {renderBarChart(entry.top_3_taste, "Restriction Exclusions")}
+        </View>
+      );
+    };
 
     useEffect(() => {
       if (adSet==true){
@@ -161,9 +234,9 @@ function RestMenuAnalytics() {
         ]
       });
 
-
     }
     }, [analyticData]);
+
     /*Styling for chart */
     const chartConfig = {
       backgroundGradientFrom: "#00000",
@@ -177,9 +250,8 @@ function RestMenuAnalytics() {
       style: {
         padding: 5,
         flex: 1,
-      }
-      
-    }
+      }}
+    
     const renderFeedbackItem = ({ item }) => (
       <View style={styles.feedbackItem}>
         <StarRatingDisplay
@@ -227,10 +299,22 @@ return (
           <Text style={styles.AnalysisSubText}>Based on {analyticData.number_of_ratings} ratings</Text>
         </View>
         {/*Search Exclusions */}
+        {/*{analyticData?.map((entry) => (
+          <View key={entry.id} style={styles.entryContainer}>
+            <Text style={styles.date}>
+            Date: {new Date(entry.date_stamp).toLocaleDateString()}
+            </Text>
+            {renderChart(entry)}
+          </View>
+        ))}*/}
         {/*Top 3 Allergy Exclusions */}
         <Text style={styles.AnalysisSubText}>Top 3 Allergy Exclusions</Text>
+
+       
+
         {allergyData!=null && (
         <View style={styles.graphStyle}>
+
         <BarChart
           data={allergyData}
           width={500}
@@ -296,7 +380,18 @@ return (
           )}
         {/*Number of Add to History */}
        
-        {/*Date Range MAYBE*/}
+       {/*Trends Here */}
+       {(trendData[2]) && (
+        <View style={styles.graphStyle}>
+      <Text style={styles.AnalysisSubText}>Exclusion Trends</Text>
+       <TrendComponent xCoefficients={[trendData[0].coeff0, trendData[0].coeff1, trendData[0].coeff2, trendData[0].coeff3, trendData[0].coeff4, trendData[0].coeff5]}/>
+       <Text style={styles.AnalysisSubText}>History Trends</Text>
+       <TrendComponent xCoefficients={[trendData[1].coeff0, trendData[1].coeff1, trendData[1].coeff2, trendData[1].coeff3, trendData[1].coeff4, trendData[1].coeff5]}/>
+       <Text style={styles.AnalysisSubText}>Average Rating Trends</Text>
+       <TrendComponent xCoefficients={[trendData[2].coeff0, trendData[2].coeff1, trendData[2].coeff2, trendData[2].coeff3, trendData[2].coeff4, trendData[2].coeff5]}/>
+       </View>
+       )}
+        {/*Date Range*/}
         {dateStampThree!='' && ( <Text style={styles.AnalysisSubText}>Analytics TimeStamp: {dateStampThree} to {dateStamp}</Text> )}
         <FlatList
               data={feedbackData}
@@ -382,6 +477,12 @@ return (
         feedbackRating: {
           fontSize: 12,
           color: '#888888',
+        },
+        entryContainer: {
+          marginBottom: 20,
+          padding: 16,
+          backgroundColor: "#ffffff",
+          borderRadius: 8,
         },
       });
       export default RestMenuAnalytics;
