@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
-const AnalyticsDashboard = ({ route }) => {
+const AnalyticsDashboard = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,9 +48,9 @@ const AnalyticsDashboard = ({ route }) => {
     }
   };
 
-  const handleFilterOptionClick = (analyticsType, id) => {
+  const handleFilterOptionClick = (id) => {
     navigation.navigate("Filtered Data", {
-      analyticsType: analyticsType,
+      analyticsType: route.params.analyticsType,
       filterOptionId: id,
       accessToken: route.params.access,
     });
@@ -176,11 +176,17 @@ const AnalyticsDashboard = ({ route }) => {
             filterOptions.map((option) => (
               <TouchableOpacity
                 key={option.id}
-                onPress={() => handleFilterOptionClick(option.title, option.id)}
+                onPress={() => {
+                  handleFilterOptionClick(
+                    option.calorie_level !== undefined
+                      ? option.calorie_level
+                      : option.tag_id.id
+                  );
+                }}
                 style={styles.button}
               >
                 {option.calorie_level !== undefined ? (
-                  <Text style={styles.buttonText}>{option.calorie_level}</Text>
+                  <Text style={styles.buttonText}>{option.calorie_name}</Text>
                 ) : (
                   <Text key={option.id} style={styles.buttonText}>
                     {option.tag_id.title}

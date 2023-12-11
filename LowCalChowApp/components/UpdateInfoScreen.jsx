@@ -382,8 +382,11 @@ function UpdateInfo({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.updateTitle}>
+        <Text style={styles.titleText}>Update Restaurant Information</Text>
+      </View>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Update Restaurant Information</Text>
+        <Text style={styles.title}>Update Your Restaurant Information: </Text>
         <TextInput
           style={styles.input}
           placeholder="Restaurant Name"
@@ -552,14 +555,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    padding: 20,
-    // justifyContent: "center",
     alignContent: "center",
     width: "100%",
     height: "100%",
   },
-  title: {
+  updateTitle: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "left",
+    backgroundColor: "#FFA500",
+    padding: 10,
+  },
+  titleText: {
     fontSize: 24,
+    fontWeight: "bold",
+  },
+  title: {
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
@@ -567,9 +579,13 @@ const styles = StyleSheet.create({
   formContainer: {
     margin: 30,
     justifyItems: "center",
+    backgroundColor: "#E0E0E0",
     alignItems: "center",
     justifyContent: "center",
     padding: 30,
+    width: "40%",
+    alignSelf: "center",
+    borderRadius: 10,
   },
   input: {
     height: 40,
@@ -577,7 +593,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     borderRadius: 5,
-    width: "20%",
+    width: "50%",
+    backgroundColor: "#FFFFFF",
   },
   button: {
     backgroundColor: "#FFA500",
@@ -586,7 +603,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: "10%",
+    width: "20%",
   },
   buttonText: {
     color: "#black",
@@ -627,7 +644,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
-    width: "20%",
+    width: "50%",
     marginBottom: 20,
     marginTop: 0,
   },
