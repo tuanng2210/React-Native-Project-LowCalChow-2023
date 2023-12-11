@@ -269,7 +269,8 @@ function RestMenuAnalytics() {
 
 return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>  
+      <View style={styles.titleContainer}> 
+      <View style={styles.iconContainer}>
       <TouchableOpacity
           onPress={() => navigation.navigate("Restaurant Dashboard", {access, restaurantId} )}
           style={styles.navItem}
@@ -277,14 +278,18 @@ return (
           <Icon name="chevron-left" size={30} color="black" />
           
         </TouchableOpacity>
+        </View>
+        <View style={styles.title}>
         <Text style={styles.titleText}>Menu Item Analytics</Text>
+        </View>
       </View> 
+      <View style={styles.mainContent}>
       {analyticData.menuItem_id && ( // Check if menuItem_id exists
                 <Text style={styles.AnalysisTitle}>{analyticData.menuItem_id.item_name}</Text>
             )}
       <ScrollView>
 
-        <View style={styles.middleBox}> {/*Rating */}
+        <View style={styles.mainContent}> {/*Rating */}
           <Text style={styles.AnalysisTitle}>Average Rating: {analyticData.average_rating}</Text>
 
           <StarRatingDisplay
@@ -401,7 +406,9 @@ return (
               showsHorizontalScrollIndicator={true}
               contentContainerStyle={styles.feedbackList}
             />
+            
       </ScrollView>
+      </View>
       </View>
       )
 }
@@ -410,9 +417,10 @@ return (
       const styles = StyleSheet.create({
         container: {
           flex: 1,
+          backgroundColor: "#fff",
         },
         mainContent: {
-          padding: 20,
+          padding: 10,
           backgroundColor: "#fff",
           justifyContent: "top",
           alignItems: "center",
@@ -421,10 +429,15 @@ return (
         AnalysisTitle: {
           padding: 10,
           fontSize: 30,
+
+        },
+        middleBox: {
+          paddingLeft: 30,
+          marginLeft: 90,
         },
         AnalysisSubText: {
           padding: 10,
-          fontSize: 12,
+          fontSize: 20,
         },
       
         button: {
@@ -442,17 +455,25 @@ return (
           fontSize: 16,
         },
         titleContainer: {
-            
           flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "left",
           backgroundColor: "#FFA500",
           padding: 10,
+         alignItems: "center"
+        },
+        iconContainer: {
+          backgroundColor: "#FFA500",
+          padding: 10,
+          justifyContent: "left",
+        },
+        title: {
+          backgroundColor: "#FFA500",
+          padding: 10,
+          justifyContent: "center",
         },
         titleText: {
           color: "#000000",
           fontSize: 18,
-          marginLeft: 10,
+          marginLeft: 300,
         },
         graphStyle: {
           padding: 30,
