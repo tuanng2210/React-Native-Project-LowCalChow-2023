@@ -2,9 +2,51 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import logo from "../assets/icons8-carrot-94.png";
+import MenuComponent from "./menuItemComponent";
+import {useIsFocused} from '@react-navigation/native';
 
 function PatronHomepage({ navigation, route }) {
+  const isFocused = useIsFocused();
   const { access } = route.params;
+  const [sfItems, setSfItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
+  const ScreenName = "View Menu Item";
+
+  const handlegetMenuItems = async () => {
+    try{
+
+      const response = await fetch(`http://localhost:8000/patrons/suggestions/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + access,
+      },
+    });
+    
+   
+    if (response.ok) 
+    {
+      const data = await response.json();
+      setSfItems(data);
+      console.log(menuItems);
+    } 
+
+  }catch (error) {
+    console.error("Error:", error);
+  }
+} 
+useEffect (() => {
+  if(isFocused)
+  {
+    handlegetMenuItems();
+  }
+
+}, [isFocused]); 
+  console.log(menuItems);
+
+ 
+
+
   return (
 
     <View style={styles.container}>
@@ -25,32 +67,16 @@ function PatronHomepage({ navigation, route }) {
         >
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
-{/*
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Patron Homepage", { access })}
-        >
-          <Icon name="home" size={26} color="#000000" />
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Search", { access })}
-        >
-          <Icon name="search" size={24} color="#000000" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.navbarItem}
-          onPress={() => navigation.navigate("Menu Item History", { access })}
-        >
-          <Icon name="book" size={24} color="#000000" />
-        </TouchableOpacity>*/}
       </View>
       <ScrollView> 
       <View style={styles.mainContent}>
 
         <Text style={styles.title}>Suggestion Feed</Text>
+       
+        {sfItems.length > 0 && (
+      <MenuComponent menuItems={sfItems} accessToken={access} screenName={ScreenName}/>
+      )}
       </View>
       </ScrollView> 
       <View style={styles.buttonContainer}>
@@ -117,6 +143,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
+    marginBottom: 20,
   },
   buttonText: {
     color: "#000000",
