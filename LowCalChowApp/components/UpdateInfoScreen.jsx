@@ -553,7 +553,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     padding: 20,
-    // justifyContent: "center",
     alignContent: "center",
     width: "100%",
     height: "100%",
@@ -567,9 +566,13 @@ const styles = StyleSheet.create({
   formContainer: {
     margin: 30,
     justifyItems: "center",
+    backgroundColor: "#E0E0E0",
     alignItems: "center",
     justifyContent: "center",
     padding: 30,
+    width: "40%",
+    alignSelf: "center",
+    borderRadius: 10,
   },
   input: {
     height: 40,
@@ -577,7 +580,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     borderRadius: 5,
-    width: "20%",
+    width: "50%",
+    backgroundColor: "#FFFFFF", 
   },
   button: {
     backgroundColor: "#FFA500",
@@ -586,7 +590,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: "10%",
+    width: "20%",
   },
   buttonText: {
     color: "#black",
