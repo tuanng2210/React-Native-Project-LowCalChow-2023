@@ -59,6 +59,10 @@ function Search({ navigation, route }) {
         const responseData = await response.json();
         console.log(responseData);
 
+        if (!calorieLimit) setCalorieLimit(responseData[0].calorie_limit);
+        if (!priceMin) setPriceMin(0.02);
+        if (!priceMax) setPriceMax(responseData[0].price_max);
+
         const patronRestrictionTags =
           responseData[0].patron_restriction_tag.map((tag) => ({
             key: tag.id,
@@ -143,72 +147,6 @@ function Search({ navigation, route }) {
   const closeIngredientTagsModal = () => {
     setIsIngredientTagsModalVisible(false);
   };
-
-  // const handleTasteTagSelect = (selectedTasteTag) => {
-  //   const isSelected = selectedTasteTags.some(
-  //     (tag) => tag.key === selectedTasteTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedTasteTags(
-  //       selectedTasteTags.filter((tag) => tag.key !== selectedTasteTag.key)
-  //     );
-  //   } else {
-  //     setSelectedTasteTags([...selectedTasteTags, selectedTasteTag]);
-  //   }
-  // };
-
-  // const handleRestrictionTagSelect = (selectedRestrictionTag) => {
-  //   const isSelected = selectedRestrictionTags.some(
-  //     (tag) => tag.key === selectedRestrictionTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedRestrictionTags(
-  //       selectedRestrictionTags.filter(
-  //         (tag) => tag.key !== selectedRestrictionTag.key
-  //       )
-  //     );
-  //   } else {
-  //     setSelectedRestrictionTags([
-  //       ...selectedRestrictionTags,
-  //       selectedRestrictionTag,
-  //     ]);
-  //   }
-  // };
-
-  // const handleAllergyTagSelect = (selectedAllergyTag) => {
-  //   const isSelected = selectedAllergyTags.some(
-  //     (tag) => tag.key === selectedAllergyTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedAllergyTags(
-  //       selectedAllergyTags.filter((tag) => tag.key !== selectedAllergyTag.key)
-  //     );
-  //   } else {
-  //     setSelectedAllergyTags([...selectedAllergyTags, selectedAllergyTag]);
-  //   }
-  // };
-
-  // const handleIngredientSelect = (selectedIngredientTag) => {
-  //   const isSelected = selectedIngredientTags.some(
-  //     (tag) => tag.key === selectedIngredientTag.key
-  //   );
-
-  //   if (isSelected) {
-  //     setSelectedIngredientTags(
-  //       selectedIngredientTags.filter(
-  //         (tag) => tag.key !== selectedIngredientTag.key
-  //       )
-  //     );
-  //   } else {
-  //     setSelectedIngredientTags([
-  //       ...selectedIngredientTags,
-  //       selectedIngredientTag,
-  //     ]);
-  //   }
-  // };
 
   const handleTasteTagSelect = (selectedTasteTag) => {
     const isSelected = selectedTasteTags.includes(selectedTasteTag.key);
@@ -311,14 +249,14 @@ function Search({ navigation, route }) {
           searchResults: responseData.results,
         });
         console.log("Data received from the server:", responseData);
-        setQuery("");
-        setCalorieLimit("");
-        setSelectedRestrictionTags([]);
-        setSelectedAllergyTags([]);
-        setSelectedIngredientTags([]);
-        setSelectedTasteTags([]);
-        setPriceMax("");
-        setPriceMin("");
+        // setQuery("");
+        // setCalorieLimit("");
+        // setSelectedRestrictionTags([]);
+        // setSelectedAllergyTags([]);
+        // setSelectedIngredientTags([]);
+        // setSelectedTasteTags([]);
+        // setPriceMax("");
+        // setPriceMin("");
       } else {
         console.error(response.json());
       }
@@ -392,122 +330,7 @@ function Search({ navigation, route }) {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
-      {/* 
-      <ScrollView>
-        <View style={styles.mainContent}>
-          <View style={styles.root}>
-            <Text style={styles.title}>Search for a Menu Item</Text>
-            <View style={styles.container}>
-              <View
-                style={
-                  !clicked
-                    ? styles.searchBar__unclicked
-                    : styles.searchBar__clicked
-                }
-              >
-                <Feather
-                  name="search"
-                  size={20}
-                  color="black"
-                  style={{ marginLeft: 1 }}
-                />
-                <TextInput
-                  style={styles.inputSearch}
-                  placeholder="Search"
-                  value={query}
-                  onChangeText={(text) => setQuery(text)}
-                />
-              </View>
 
-              <TextInput
-                style={styles.input}
-                placeholder="Calorie Limit"
-                value={calorieLimit}
-                onChangeText={(text) => setCalorieLimit(text)}
-              />
-
-              <TouchableOpacity
-                onPress={openRestrictionTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>
-                  Select Restriction Tags
-                </Text>
-              </TouchableOpacity>
-
-              <TagModal
-                visible={isRestrictionTagsModalVisible}
-                tags={dietaryRestrictionTags}
-                selectedTags={selectedRestrictionTags}
-                onSelect={handleRestrictionTagSelect}
-                onClose={closeRestrictionTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openTasteTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>Select Taste Tags</Text>
-              </TouchableOpacity>
-              <TagModal
-                visible={isTasteTagsModalVisible}
-                tags={patronTasteTags}
-                selectedTags={selectedTasteTags}
-                onSelect={handleTasteTagSelect}
-                onClose={closeTasteTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openAllergyTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>Select Allergy Tags</Text>
-              </TouchableOpacity>
-              <TagModal
-                visible={isAllergyTagsModalVisible}
-                tags={allergyTags}
-                selectedTags={selectedAllergyTags}
-                onSelect={handleAllergyTagSelect}
-                onClose={closeAllergyTagsModal}
-              />
-
-              <TouchableOpacity
-                onPress={openIngredientTagsModal}
-                style={styles.tasteTagsButton}
-              >
-                <Text style={styles.modalSelectTag}>
-                  Select Disliked Ingredients{" "}
-                </Text>
-              </TouchableOpacity>
-
-              <TagModal
-                visible={isIngredientTagsModalVisible}
-                tags={dislikedIngredients}
-                selectedTags={selectedIngredientTags}
-                onSelect={handleIngredientSelect}
-                onClose={closeIngredientTagsModal}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Min Price"
-                value={priceMin}
-                onChangeText={(text) => setPriceMin(text)}
-              />
-
-              <TextInput
-                style={styles.input}
-                placeholder="Max Price"
-                value={priceMax}
-                onChangeText={(text) => setPriceMax(text)}
-              />
-            </View>
-          </View>
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView> */}
       <ScrollView>
         <View style={styles.mainContent}>
           <View style={styles.root}>
@@ -536,7 +359,7 @@ function Search({ navigation, route }) {
             </View>
 
             <TextInput
-              style={styles.input}
+              style={styles.calorieInput}
               placeholder="Calorie Limit"
               value={calorieLimit}
               onChangeText={(text) => setCalorieLimit(text)}
@@ -623,7 +446,7 @@ function Search({ navigation, route }) {
             )}
 
             {/* Toggle Switch */}
-            <View style={styles.toggleContainer}>
+            <View>
               <Text>Advanced Search</Text>
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -720,7 +543,7 @@ const styles = StyleSheet.create({
   searchBar__unclicked: {
     padding: 10,
     flexDirection: "row",
-    width: "100%",
+    width: "60%",
     backgroundColor: "#f0f8ff",
     borderRadius: 15,
     alignItems: "center",
@@ -752,7 +575,17 @@ const styles = StyleSheet.create({
   inputSearch: {
     fontSize: 20,
     marginLeft: 10,
-    width: "100%",
+    width: "60%",
+  },
+  calorieInput: {
+    width: "60%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginTop: 12,
+    marginBottom: 12,
   },
   modalContainer: {
     flex: 1,

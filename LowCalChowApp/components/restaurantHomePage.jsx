@@ -363,9 +363,7 @@ function RestaurantHomepage({ navigation, route }) {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sidebarItem}>
-          <AppSatisfactionFeedback navigation={navigation} access={access}/>
-        </TouchableOpacity>
+        
       
       </View>
 

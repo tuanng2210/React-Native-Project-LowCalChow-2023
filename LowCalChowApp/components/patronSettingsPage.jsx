@@ -72,7 +72,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
 
-        {/* <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+         <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
       </Text>
       <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
       </Text>
@@ -92,7 +92,7 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Date of Birth: {profile.dob}
       </Text>
       <Text style={styles.mainText}>Calorie Limit: {profile.calorie_limit}
-      </Text>  */}
+      </Text>  
       </View>
       <TouchableOpacity
           style={styles.logoutButton}
@@ -100,14 +100,19 @@ function PatronSettingsPage({ navigation, route }) {
           {/*<Icon style= {styles.buttonIcon} name="edit" size={20} color="#000000" paddingLeft="15"  />*/}
           <Text style={styles.buttonText}> Edit Profile</Text>
         </TouchableOpacity>
-      
+</View>
+
+<View style={styles.feedbackButton}>
+        <AppSatisfactionFeedback navigation={navigation} access={access}/>
+        </View>
+        <View style={styles.mainContent}>
       <TouchableOpacity
         style={styles.logoutButton}
         onPress={() => navigation.navigate(("Login"))}>
         <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
 
-        <AppSatisfactionFeedback navigation={navigation} access={access}/>
+        
 
     </View>
     </ScrollView> 
@@ -144,6 +149,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#fff",
+    justifyContent: "center"
+  },
+  feedbackButton:{
+    justifyContent: "center",
+    
   },
   navbar: {
     flexDirection: "row",
@@ -203,7 +213,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginTop: 12,
     marginBottom: 12,
-    width: "20%",
+    width: "30%",
     flexDirection: "row",
     padding: 10,
   },
@@ -215,13 +225,13 @@ const styles = StyleSheet.create({
       alignItems: "center",
       marginTop: 12,
       marginBottom: 12,
-      width: "20%",
+      width: "30%",
     
   },
  
   buttonText: {
     color: "#000000",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     marginLeft: 10,
   },

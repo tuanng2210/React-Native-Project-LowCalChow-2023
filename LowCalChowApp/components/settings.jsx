@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { useIsFocused } from "@react-navigation/native";
+import AppSatisfactionFeedback from "./appSatisfactionFeedback";
 
 function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
@@ -59,7 +60,12 @@ function Settings({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.navBar}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Restaurant Dashboard", {access, restaurantId})}
+          onPress={() =>
+            navigation.navigate("Restaurant Dashboard", {
+              access,
+              restaurantId,
+            })
+          }
           style={styles.navItem}
         >
           <Icon name="home" size={30} color="black" />
@@ -166,15 +172,19 @@ function Settings({ route, navigation }) {
                   formatTime(restaurantData.sun_close)}
               </Text>
             </View>
-            <TouchableOpacity
-              style={styles.updateInfoButton}
-              onPress={navigateToUpdateInfo}
-            >
-              <Text style={styles.buttonText}>Edit Profile</Text>
-            </TouchableOpacity>
           </View>
         </View>
       )}
+
+      <TouchableOpacity
+        style={styles.updateInfoButton}
+        onPress={navigateToUpdateInfo}
+      >
+        <Text style={styles.buttonText}>Edit Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.feedbackButton}>
+        <AppSatisfactionFeedback navigation={navigation} access={access} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -187,9 +197,13 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#fff",
   },
+  feedbackButton: {
+    justifyContent: "center",
+    width: "30%",
+  },
   restaurantInfo: {
     marginTop: 40,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#E0E0E0",
     padding: 20,
     borderRadius: 10,
     marginBottom: 20,
@@ -224,12 +238,11 @@ const styles = StyleSheet.create({
   updateInfoButton: {
     backgroundColor: "#FFA500",
     padding: 10,
-    borderRadius: 5,
     marginTop: 20,
-    marginBottom: 20,
     alignItems: "center",
-    width: "20%",
+    width: "8.5%",
     alignSelf: "center",
+    borderRadius: 8,
   },
   buttonText: {
     color: "#black",

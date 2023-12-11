@@ -21,7 +21,7 @@ const MenuAnalyticsComponent = ({menuItems, accessToken, restIDToken, screenName
       <TouchableOpacity onPress={() => navigation.navigate(`${ScreenName}`, {menuItemId: item.menuItem_id.id, access: access, restaurantId: RestID })}>
         <View style={styles.menuItem}>
           <Text style={styles.itemName}>{item.menuItem_id.item_name}</Text>
-          <Text style={styles.itemName}>{item.average_rating}</Text>
+          <Text style={styles.itemName}>Average Rating: {item.average_rating}</Text>
         </View>
       </TouchableOpacity>
     );

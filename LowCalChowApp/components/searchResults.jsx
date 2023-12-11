@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import logo from "../assets/icons8-carrot-94.png";
-
+import MenuComponent from './menuItemComponent';
 
 
 const SearchResultsScreen = ({navigation, route }) => {
   const { searchResults } = route.params;
   const { access } = route.params;
-  const [bookmarkItem, setBookmarkItem] = useState ("");
+  const [bookmarkItem, setBookmarkItem] = useState ([]);
+  const ScreenName = "View Menu Item";
 
   const handleSubmit = async () => {
     try {
@@ -68,8 +69,14 @@ const SearchResultsScreen = ({navigation, route }) => {
       </View>
       <ScrollView>
       <View style={styles.mainContent}>
-      {searchResults.map((result) => (
-        <View style={styles.resultItem} key={result.id}>
+     {/* {searchResults.map((result) => (
+        <View style={styles.mainContent}>*/}
+      {searchResults.length > 0 && (
+      <MenuComponent menuItems={searchResults} accessToken={access} screenName={ScreenName}/>
+      )}
+    </View>
+
+      ),{/*<View style={styles.resultItem} key={result.id}>
           <Text style={styles.itemName}>{result.item_name}</Text>
           <Text>Calories: {result.calories}</Text>
           <Text>Price: ${result.price}</Text>
@@ -77,10 +84,10 @@ const SearchResultsScreen = ({navigation, route }) => {
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
       <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
-        </View>
-        
-      ))}
-      </View>
+        </View>*/}
+      
+      )
+      
       </ScrollView>
 
       <View style={styles.buttonContainer}>
@@ -131,6 +138,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
+    width: "40%",
+    alignItems: "center", 
   },
   itemName: {
     fontSize: 18,

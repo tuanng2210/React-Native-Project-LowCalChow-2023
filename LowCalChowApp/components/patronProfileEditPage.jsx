@@ -597,6 +597,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 30,
@@ -681,6 +682,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
+    width: "40%",
   },
   modalSelectTag: {
     fontSize: 15,
