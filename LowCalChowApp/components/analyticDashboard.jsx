@@ -48,6 +48,14 @@ const AnalyticsDashboard = ({ route }) => {
     }
   };
 
+  const handleFilterOptionClick = (analyticsType, id) => {
+    navigation.navigate("Filtered Data", {
+      analyticsType: analyticsType,
+      filterOptionId: id,
+      accessToken: route.params.access,
+    });
+  };
+
   const fetchFilterOptions = async (analyticsType, adminAccessToken) => {
     try {
       const response = await fetch(
@@ -97,11 +105,6 @@ const AnalyticsDashboard = ({ route }) => {
       };
 
       const chartConfig = {
-        // backgroundColor: "#f0f0f0",
-        // backgroundGradientFrom: "#f0f0f0",
-        // backgroundGradientTo: "#f0f0f0",
-        // decimalPlaces: 0,
-        // color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         backgroundColor: "#black",
         backgroundGradientFrom: "#392F5A",
         backgroundGradientTo: "#ffa726",
@@ -173,7 +176,7 @@ const AnalyticsDashboard = ({ route }) => {
             filterOptions.map((option) => (
               <TouchableOpacity
                 key={option.id}
-                onPress={() => handleFilterOptionClick(option.title)}
+                onPress={() => handleFilterOptionClick(option.title, option.id)}
                 style={styles.button}
               >
                 {option.calorie_level !== undefined ? (
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 16,
     borderRadius: 8,
-    backgroundColor: "#E0E0E0"
+    backgroundColor: "#E0E0E0",
   },
   date: {
     fontSize: 16,
