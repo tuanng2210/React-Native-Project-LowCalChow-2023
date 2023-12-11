@@ -382,8 +382,12 @@ function UpdateInfo({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.updateTitle}>
+        <Text style={styles.titleText}>Update Restaurant Information</Text>
+      </View>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Update Restaurant Information</Text>
+        <Text style={styles.title}>Update Your Restaurant Information: </Text>
+        <Text style={styles.labelInput}> Restaurant Name: </Text>
         <TextInput
           style={styles.input}
           placeholder="Restaurant Name"
@@ -391,6 +395,7 @@ function UpdateInfo({ route, navigation }) {
           value={newRestaurantName}
         />
 
+        <Text style={styles.labelInput}> Rating: </Text>
         <TextInput
           style={styles.input}
           placeholder="Rating"
@@ -398,6 +403,7 @@ function UpdateInfo({ route, navigation }) {
           value={rating}
         />
 
+        <Text style={styles.labelInput}> Tags: </Text>
         <TouchableOpacity onPress={openRestTagsModal} style={styles.tagsButton}>
           <Text style={styles.modalSelectTag}>Select Tags</Text>
         </TouchableOpacity>
@@ -409,6 +415,7 @@ function UpdateInfo({ route, navigation }) {
           onClose={closeRestTagsModal}
         />
 
+        <Text style={styles.labelInput}> Price Level: </Text>
         <Picker
           selectedValue={priceLevel}
           onValueChange={(itemValue) => setPriceLevel(itemValue)}
@@ -421,6 +428,7 @@ function UpdateInfo({ route, navigation }) {
           <Picker.Item label="$$$$" value="$$$$" />
         </Picker>
 
+        <Text style={styles.labelInput}> Phone Number: </Text>
         <TextInput
           style={styles.input}
           value={phoneNumber}
@@ -428,6 +436,7 @@ function UpdateInfo({ route, navigation }) {
           placeholder="Phone Number"
         />
 
+        <Text style={styles.labelInput}> Website: </Text>
         <TextInput
           style={styles.input}
           placeholder="Website"
@@ -435,6 +444,7 @@ function UpdateInfo({ route, navigation }) {
           value={website}
         />
 
+        <Text style={styles.labelInput}> Street Name: </Text>
         <TextInput
           style={styles.input}
           placeholder="Street Name"
@@ -442,6 +452,7 @@ function UpdateInfo({ route, navigation }) {
           value={streetName}
         />
 
+        <Text style={styles.labelInput}> City: </Text>
         <TextInput
           style={styles.input}
           placeholder="City"
@@ -449,6 +460,7 @@ function UpdateInfo({ route, navigation }) {
           value={city}
         />
 
+        <Text style={styles.labelInput}> State: </Text>
         <Picker
           selectedValue={selectedState}
           onValueChange={(itemValue) => setSelectedState(itemValue)}
@@ -460,6 +472,7 @@ function UpdateInfo({ route, navigation }) {
           ))}
         </Picker>
 
+        <Text style={styles.labelInput}> Zip Code: </Text>
         <TextInput
           style={styles.input}
           placeholder="Zip Code"
@@ -467,6 +480,7 @@ function UpdateInfo({ route, navigation }) {
           value={zipCode}
         />
 
+        <Text style={styles.labelInput}> Opening Hours: </Text>
         {Object.keys(openingHours).map((day) => (
           <View key={day}>
             <Text style={styles.dayTitle}>{capitalizeFirstLetter(day)}</Text>
@@ -552,14 +566,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    padding: 20,
-    // justifyContent: "center",
     alignContent: "center",
     width: "100%",
     height: "100%",
   },
-  title: {
+  updateTitle: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "left",
+    backgroundColor: "#FFA500",
+    padding: 10,
+  },
+  titleText: {
     fontSize: 24,
+    fontWeight: "bold",
+  },
+  title: {
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
@@ -567,9 +590,13 @@ const styles = StyleSheet.create({
   formContainer: {
     margin: 30,
     justifyItems: "center",
+    backgroundColor: "#E0E0E0",
     alignItems: "center",
     justifyContent: "center",
     padding: 30,
+    width: "40%",
+    alignSelf: "center",
+    borderRadius: 10,
   },
   input: {
     height: 40,
@@ -577,7 +604,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     borderRadius: 5,
-    width: "20%",
+    width: "50%",
+    backgroundColor: "#FFFFFF",
   },
   button: {
     backgroundColor: "#FFA500",
@@ -586,7 +614,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     alignSelf: "center",
-    width: "10%",
+    width: "20%",
   },
   buttonText: {
     color: "#black",
@@ -627,7 +655,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
-    width: "20%",
+    width: "50%",
     marginBottom: 20,
     marginTop: 0,
   },
@@ -655,6 +683,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  labelInput: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 2,
+  }
 });
 
 export default UpdateInfo;
