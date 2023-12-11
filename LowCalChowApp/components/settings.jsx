@@ -10,6 +10,7 @@ function Settings({ route, navigation }) {
   const { access, restaurantId } = route.params;
   const [restaurantData, setRestaurantData] = useState(null);
   const isFocused = useIsFocused();
+  const currentRoute = useRoute().name;
   const navigateToUpdateInfo = () => {
     navigation.navigate("Update Info", { access, restaurantId });
   };
@@ -66,26 +67,70 @@ function Settings({ route, navigation }) {
               restaurantId,
             })
           }
-          style={styles.navItem}
+          style={[
+            styles.navItem,
+            currentRoute === "Restaurant Dashboard" && styles.activeNavItem,
+          ]}
         >
-          <Icon name="home" size={30} color="black" />
-          <Text style={styles.navText}>Home</Text>
+          <Icon
+            name="home"
+            size={30}
+            color={currentRoute === "Home" ? "white" : "black"}
+          />
+          <Text
+            style={[
+              styles.navText,
+              currentRoute === "Home" && styles.activeNavText,
+            ]}
+          >
+            Home
+          </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => navigation.navigate("Menu", { access, restaurantId })}
-          style={styles.navItem}
+          style={[
+            styles.navItem,
+            currentRoute === "Menu" && styles.activeNavItem,
+          ]}
         >
-          <Icon name="restaurant-menu" size={30} color="black" />
-          <Text style={styles.navText}>Menu</Text>
+          <Icon
+            name="restaurant-menu"
+            size={30}
+            color={currentRoute === "Menu" ? "white" : "black"}
+          />
+          <Text
+            style={[
+              styles.navText,
+              currentRoute === "Menu" && styles.activeNavText,
+            ]}
+          >
+            Menu
+          </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("Settings", { access, restaurantId })
           }
-          style={styles.navItem}
+          style={[
+            styles.navItem,
+            currentRoute === "Settings" && styles.activeNavItem,
+          ]}
         >
-          <Icon name="settings" size={30} color="black" />
-          <Text style={styles.navText}>Settings</Text>
+          <Icon
+            name="settings"
+            size={30}
+            color={currentRoute === "Settings" ? "white" : "black"}
+          />
+          <Text
+            style={[
+              styles.navText,
+              currentRoute === "Settings" && styles.activeNavText,
+            ]}
+          >
+            Settings
+          </Text>
         </TouchableOpacity>
       </View>
       {restaurantData && (
@@ -274,7 +319,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     flexDirection: "row",
-    backgroundColor: "#FFA500", // Orange color
+    backgroundColor: "#FFA500",
     padding: 10,
     justifyContent: "space-around",
     alignItems: "center",
@@ -288,6 +333,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 18,
     color: "black",
+  },
+  activeNavText: {
+    color: "white",
   },
 });
 

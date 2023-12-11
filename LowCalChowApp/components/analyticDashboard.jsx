@@ -177,8 +177,11 @@ const AnalyticsDashboard = ({ navigation, route }) => {
               <TouchableOpacity
                 key={option.id}
                 onPress={() => {
-                  // console.log(route.params.analyticsType);
-                  handleFilterOptionClick(option.id);
+                  handleFilterOptionClick(
+                    option.calorie_level !== undefined
+                      ? option.calorie_level
+                      : option.tag_id.id
+                  );
                 }}
                 style={styles.button}
               >
