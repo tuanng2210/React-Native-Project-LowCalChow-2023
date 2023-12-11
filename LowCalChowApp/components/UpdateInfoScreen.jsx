@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Picker,
+  ScrollView,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
@@ -380,7 +381,7 @@ function UpdateInfo({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Update Restaurant Information</Text>
         <TextInput
@@ -543,7 +544,7 @@ function UpdateInfo({ route, navigation }) {
           </View>
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -552,7 +553,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     padding: 20,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignContent: "center",
     width: "100%",
     height: "100%",
@@ -567,8 +568,7 @@ const styles = StyleSheet.create({
     margin: 30,
     justifyItems: "center",
     alignItems: "center",
-    width: "100%",
-    height: "100%",
+    justifyContent: "center",
     padding: 30,
   },
   input: {
@@ -621,9 +621,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     padding: 10,
-  },
-  modalSelectTag: {
-    fontSize: 15,
   },
   tagsButton: {
     backgroundColor: "#FFA500",
