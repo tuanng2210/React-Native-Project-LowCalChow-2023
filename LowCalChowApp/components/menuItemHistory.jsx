@@ -65,6 +65,7 @@ useEffect (() => {
           <Icon name="bookmark" size={25} color="#000000" />
         </TouchableOpacity>
       </View>
+
       <ScrollView>
       <View style={styles.mainContent}>
       {menuItems.length > 0 && (
@@ -72,6 +73,8 @@ useEffect (() => {
       )}
     </View>
     </ScrollView>
+
+    
     <View style={styles.buttonContainer}>
        
         <TouchableOpacity
