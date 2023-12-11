@@ -622,9 +622,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 10,
   },
-  modalSelectTag: {
-    fontSize: 15,
-  },
   tagsButton: {
     backgroundColor: "#FFA500",
     borderRadius: 8,
