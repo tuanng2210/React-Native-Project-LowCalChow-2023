@@ -10,7 +10,7 @@ function viewMenuItem({ route, navigation }) {
   const access = route.params.access;
   const mealID = route.params.id;
 
-  const [showBookmarkButton, setShowBookmarkButton] = useState(false);
+  const [showBookmarkButton, setShowBookmarkButton] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkID, setBookmarkID] = useState('null');
   if (route.params.bookmarkID) { 
@@ -20,7 +20,7 @@ function viewMenuItem({ route, navigation }) {
   }
 
   //const mealID = 1;
-  //const bookmarkID = 149;
+  //const bookmarkID = 288;
   //const access = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAxNzI1OTEwLCJpYXQiOjE3MDE3MTg3MTAsImp0aSI6ImJlOWNiYTg2NjAzNzQ5MGZiOTI1ZjVmNGY3ZDFhMzVmIiwidXNlcl9pZCI6NH0.qrGsGZ6H7320hDfQLgmXAZOWTzFQ6a5K7xsTzMjGb6E';
   
 
@@ -136,7 +136,7 @@ function viewMenuItem({ route, navigation }) {
   const handleRemoveBookmark = async () => {
 
     try {
-      const response = await fetch(`localhost:8000/patrons/bookmarks/${bookmarkID}/`, {
+      const response = await fetch(`http://localhost:8000/patrons/bookmarks/${bookmarkID}/`, {
         method: "DELETE",
 
         headers: {
@@ -146,7 +146,7 @@ function viewMenuItem({ route, navigation }) {
       });
       if (response.status === 204) {
         setIsBookmarked(false);
-        const data = await response.json();
+        
       }
     } catch (error) {
       console.error("Error:", error);

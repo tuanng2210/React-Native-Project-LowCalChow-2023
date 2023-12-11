@@ -383,9 +383,9 @@ return (
        {/*Trends Here */}
        {(trendData[2]) && (
         <View style={styles.graphStyle}>
-      <Text style={styles.AnalysisSubText}>Exclusion Trends</Text>
+      <Text style={styles.AnalysisSubText}>Menu Item Exclusion Trends</Text>
        <TrendComponent xCoefficients={[trendData[0].coeff0, trendData[0].coeff1, trendData[0].coeff2, trendData[0].coeff3, trendData[0].coeff4, trendData[0].coeff5]}/>
-       <Text style={styles.AnalysisSubText}>History Trends</Text>
+       <Text style={styles.AnalysisSubText}>Added to Menu Item History Trends</Text>
        <TrendComponent xCoefficients={[trendData[1].coeff0, trendData[1].coeff1, trendData[1].coeff2, trendData[1].coeff3, trendData[1].coeff4, trendData[1].coeff5]}/>
        <Text style={styles.AnalysisSubText}>Average Rating Trends</Text>
        <TrendComponent xCoefficients={[trendData[2].coeff0, trendData[2].coeff1, trendData[2].coeff2, trendData[2].coeff3, trendData[2].coeff4, trendData[2].coeff5]}/>
