@@ -228,8 +228,8 @@ const styles = StyleSheet.create({
   entryContainer: {
     marginBottom: 20,
     padding: 16,
-    backgroundColor: "#ffffff",
     borderRadius: 8,
+    backgroundColor: "#E0E0E0"
   },
   date: {
     fontSize: 16,
