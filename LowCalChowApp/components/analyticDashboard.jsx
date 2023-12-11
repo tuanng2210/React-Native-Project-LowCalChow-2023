@@ -186,7 +186,7 @@ const AnalyticsDashboard = ({ navigation, route }) => {
                 style={styles.button}
               >
                 {option.calorie_level !== undefined ? (
-                  <Text style={styles.buttonText}>{option.calorie_level}</Text>
+                  <Text style={styles.buttonText}>{option.calorie_name}</Text>
                 ) : (
                   <Text key={option.id} style={styles.buttonText}>
                     {option.tag_id.title}
