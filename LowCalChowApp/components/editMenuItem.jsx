@@ -508,13 +508,13 @@ function EditMenu({route, navigation}){
     return (
       <View style={styles.container}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Update Meal</Text>
+          <Text style={styles.titleText}>Update Menu Item</Text>
           </View>
 
           <View style={styles.mainContainer}>
           {/*Meal Name*/}
           <ScrollView >
-          <Text style={styles.label}>Meal Name:</Text>
+          <Text style={styles.label}>Menu Item Name:</Text>
           
           <TextInput
             style={styles.input}
@@ -532,7 +532,7 @@ function EditMenu({route, navigation}){
           /> */}
 
           {/*Meal Price*/}
-          <Text style={styles.label}>Price of meal:</Text>
+          <Text style={styles.label}>Price of Menu Item:</Text>
 
           <TextInput
             style={styles.input}
@@ -542,7 +542,7 @@ function EditMenu({route, navigation}){
           />
 
           {/*Meal Calories*/}
-          <Text style={styles.label}>Meal's Calories:</Text>
+          <Text style={styles.label}>Menu Item's Calories:</Text>
           <TextInput
             style={styles.input}
             placeholder="{mealCalories}"
@@ -552,7 +552,7 @@ function EditMenu({route, navigation}){
           
     
           {/*Ingredients*/}
-          <Text style={styles.normText}>Ingredients</Text>
+          <Text style={styles.label}>Ingredients</Text>
 
           {/*<MultipleSelectList 
             setSelected={(val) => setIngredSelect(val)} 
@@ -584,7 +584,7 @@ function EditMenu({route, navigation}){
         
 
           {/*Food Type*/}
-          <Text style={styles.normText}>Type of food</Text>
+          <Text style={styles.label}>Type of food</Text>
 
          {/*} <SelectList 
             setSelected={(val) => setfoodTypeSelect(val)} 
@@ -612,7 +612,7 @@ function EditMenu({route, navigation}){
           
 
           {/*Cook Style*/}
-          <Text style={styles.normText}>Cooking Style</Text>
+          <Text style={styles.label}>Cooking Style</Text>
 
           <TouchableOpacity
               onPress={openCookStyleModal}
@@ -632,7 +632,7 @@ function EditMenu({route, navigation}){
           />
 
           {/*Allergies*/}
-          <Text style={styles.normText}>Allergies</Text>
+          <Text style={styles.label}>Allergies</Text>
 
           {/*<MultipleSelectList 
             setSelected={(val) => setallergiesSelect(val)} 
@@ -658,7 +658,7 @@ function EditMenu({route, navigation}){
             />
 
           {/*Taste*/}
-          <Text style={styles.normText}>Taste Tags</Text>
+          <Text style={styles.label}>Taste Tags</Text>
 
           {/*<MultipleSelectList 
             setSelected={(val) => settasteSelect(val)} 
@@ -689,7 +689,7 @@ function EditMenu({route, navigation}){
 
       
           {/*Restrictions*/}
-          <Text style={styles.normText}>Dietary Restrictions</Text>
+          <Text style={styles.label}>Dietary Restrictions</Text>
 
           {/*<MultipleSelectList 
             setSelected={(val) => setrestrictionSelect(val)} 
@@ -717,7 +717,7 @@ function EditMenu({route, navigation}){
           onClose={closeRestrictionTagsModal}
         />
           {/*Time Of Day Available*/}
-          <Text style={styles.normText}>When is this Meal Available?</Text>
+          <Text style={styles.label}>When is the Menu Item Available?</Text>
 
           {/*<SelectList 
             setSelected={(val) => setTOD(val)} 

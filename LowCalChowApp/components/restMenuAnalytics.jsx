@@ -313,6 +313,8 @@ return (
           </View>
         ))}*/}
         {/*Top 3 Allergy Exclusions */}
+        <View style={styles.middleBox}>
+        <View style={styles.chartContainer}>
         <Text style={styles.AnalysisSubText}>Top 3 Allergy Exclusions</Text>
 
        
@@ -332,8 +334,9 @@ return (
         />
         </View>
        )}
-
+</View> 
         {/*Top 3 Ingredient Exclusions */}
+        <View style={styles.chartContainer}>
         <Text style={styles.AnalysisSubText}>Top 3 Ingredient Exclusions</Text>
         {ingredientData!=null && (
         <View style={styles.graphStyle}>
@@ -350,7 +353,11 @@ return (
         />
         </View>
         )}
+        </View>
+        </View>
+        <View style={styles.middleBox}>
         {/*Top 3 Restriction Exclusions */}
+        <View style={styles.chartContainer}>
         <Text style={styles.AnalysisSubText}>Top 3 Restriction Exclusions</Text>
         {restrictionData!=null && (
           <View style={styles.graphStyle}>
@@ -367,7 +374,9 @@ return (
           />
           </View>
         )}
+        </View>
         {/*Top 3 Taste Exclusions */}
+        <View style={styles.chartContainer}>
         <Text style={styles.AnalysisSubText}>Top 3 Taste Exclusions</Text>
         {tasteData!=null && (
           <View style={styles.graphStyle}>
@@ -382,7 +391,10 @@ return (
             showValuesOnTopOfBars='true'
           />
           </View>
+          
           )}
+          </View>
+          </View>
         {/*Number of Add to History */}
        
        {/*Trends Here */}
@@ -432,14 +444,22 @@ return (
 
         },
         middleBox: {
-          paddingLeft: 30,
-          marginLeft: 90,
+          flexDirection: "row",
+          padding: 10,
+          backgroundColor: "#fff",
+          justifyContent: "top",
+          alignItems: "center",
+          alignContent: "center",
         },
         AnalysisSubText: {
           padding: 10,
           fontSize: 20,
         },
-      
+        chartContainer: {
+          flexDirection: "column",
+          alignItems: "center"
+
+        },
         button: {
           backgroundColor: "#FFA500",
           borderRadius: 8,
