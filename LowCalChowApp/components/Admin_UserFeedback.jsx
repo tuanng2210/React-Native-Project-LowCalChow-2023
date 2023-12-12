@@ -96,7 +96,7 @@ function AdminHomepage() {
       {/* App Satisfaction Setting */}
       <View style={styles.mainContent}>
         <View style={styles.sectionTitleContainer}>
-          <Text style={styles.sectionTitle}>App Satisfaction Analytics </Text>
+          <Text style={styles.sectionTitle}>User Feedback </Text>
              </View>
         <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
         The User Feedback page offers comprehensive insights for administrators, showcasing app ratings, reviews, and detailed analytics on overall user logins. It provides a holistic view of user sentiments and engagement, amalgamating app performance with login analytics for informed decision-making. </Text>
