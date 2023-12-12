@@ -18,6 +18,46 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
   const windowWidth = Dimensions.get("window").width;
   const { access } = route.params;
 
+  /*
+  
+  THIS IS FOR TESTING, REMOVE LATER
+  
+  */
+
+  const [trendBody, setTrendBody] = useState([]);
+
+  const handleGetReviewTrend = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/trends/calories/5/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+
+        setTrendBody(data[0]);
+
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  useEffect(() => {
+    handleGetReviewTrend();
+  }, []);
+
+  /*
+  
+  THIS IS FOR TESTING, REMOVE LATER
+  
+  */
+
+
+
   return (
     <View style={styles.container}>
       {/* Sidebar */}
@@ -91,7 +131,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
           </View>
         </TouchableOpacity> */}
 
-        {/* <TrendComponent xCoefficients={[-1.00, 2.30, 0.50, 0.10, 2.00, 1.00]}/> */}
+        <TrendComponent trendObject={trendBody}/>
 
         <TouchableOpacity
           onPress={() =>
