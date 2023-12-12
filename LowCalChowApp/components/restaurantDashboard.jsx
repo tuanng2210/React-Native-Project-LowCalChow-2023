@@ -224,8 +224,8 @@ function RestaurantDashboard() {
                 </Text>
                 <Text style={styles.label}>  {" "} </Text>
                 <Text style={styles.label}>Allergy Tags:  {" "}
-                  {data.allergies_tags_most_eliminations.tag}
-                  ({data.allergies_tags_most_eliminations.eliminations} Exclusions)
+                  {data.allergies_tags_most_eliminations ? data.allergies_tags_most_eliminations.tag: 'N/A'}
+                  ({data.allergies_tags_most_eliminations ? data.allergies_tags_most_eliminations.eliminations : 0} Exclusions)
                 </Text>
               </View>
               
@@ -233,15 +233,15 @@ function RestaurantDashboard() {
              <Text style={styles.label}>  {" "} </Text>
               <View style={styles.analytics}>
                 <Text style={styles.label}>First: {" "}
-                  {data.top_three_items.first.title}
+                  {data.top_three_items ?  data.top_three_items.first.title : 0}
                 </Text>
                 <Text style={styles.label}>  {" "} </Text>
                 <Text style={styles.label}>Second:{" "} 
-                  {data.top_three_items.second.title}
+                  {data.top_three_items ? data.top_three_items.second.title : 0}
                 </Text>
                 <Text style={styles.label}>  {" "} </Text>
                 <Text style={styles.label}>Third:{" "}   
-                  {data.top_three_items.third.title}
+                  {data.top_three_items ? data.top_three_items.third.title: 0}
                 </Text>
                 <Text style={styles.label}>  {" "} </Text>
               </View>
