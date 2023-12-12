@@ -3,6 +3,7 @@
     "react-native-dotenv": "^3.4.9"
   },
   "dependencies": {
+    "react-native-svg": "^14.1.0",
     "react-native-web": "^0.19.9"
   }
 }

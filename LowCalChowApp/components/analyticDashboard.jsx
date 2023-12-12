@@ -105,7 +105,7 @@ const AnalyticsDashboard = ({ navigation, route }) => {
       };
 
       const chartConfig = {
-        backgroundColor: "#black",
+        backgroundColor: "black",
         backgroundGradientFrom: "#392F5A",
         backgroundGradientTo: "#ffa726",
         decimalPlaces: 0,
