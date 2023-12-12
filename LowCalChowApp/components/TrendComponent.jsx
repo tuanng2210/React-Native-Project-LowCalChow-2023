@@ -7,6 +7,9 @@ import * as shape from 'd3-shape'
 
 const TrendComponent = ({xCoefficients}) => {
 
+    
+
+
     var data = []
 
     for(var i = 0; i < xCoefficients.length; i++){
@@ -22,7 +25,7 @@ const TrendComponent = ({xCoefficients}) => {
                 data={data}
                 contentInset={{ top: 30, bottom: 30 }}
                 curve={shape.curveNatural}
-                svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                svg={{ fill: 'rgba(255, 165, 0, 0.5)' }}
             >
                 <Grid />
         </AreaChart>

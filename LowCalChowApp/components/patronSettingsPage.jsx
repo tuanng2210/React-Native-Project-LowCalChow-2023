@@ -11,6 +11,9 @@ function PatronSettingsPage({ navigation, route }) {
   const [profile, setProfile] = useState([]);
   const isFocused = useIsFocused();
   const [tasteTags, setTasteTags] = useState([]);
+  const [allergyTags, setAllergyTags] = useState([]);
+  const [restrictionTags, setRestrictionTags] = useState([]);
+  const [dislikedIngredients, setDislikedIngredients] = useState([]);
 
   const fetchProfile = async () => {
     try {
@@ -23,8 +26,13 @@ function PatronSettingsPage({ navigation, route }) {
 
       if (response.ok) {
         const data = await response.json();
+
         setProfile(data.length > 0 ? data[0] : {}); // Update profile with fetched data
         setTasteTags(data.length > 0 ? data[0].patron_taste_tag : []);
+        setAllergyTags(data.length > 0 ? data[0].patron_allergy_tag : []);
+        setRestrictionTags(data.length > 0 ? data[0].patron_restriction_tag : []);
+        setDislikedIngredients(data.length > 0 ? data[0].disliked_ingredients : []);
+        
       } else {
         setError("Error fetching data");
       }
@@ -72,19 +80,34 @@ function PatronSettingsPage({ navigation, route }) {
       <Text style={styles.mainText}>Zip Code: {profile.zipcode}
       </Text>
 
-         <Text style={styles.mainText}>Restrictions: {profile.patron_restriction_tag}
+      <Text style={styles.mainText}>Restrictions:
+          {restrictionTags.map(tag => (
+            <View style={styles.tagBubble} key={tag.id}>
+              <Text style={styles.tagText}> {tag.title}</Text>
+              </View> ))}
       </Text>
-      <Text style={styles.mainText}>Allergies: {profile.patron_allergy_tag}
+
+      <Text style={styles.mainText}>Allergies:
+          {allergyTags.map(tag => (
+            <View style={styles.tagBubble} key={tag.id}>
+              <Text style={styles.tagText}> {tag.title}</Text>
+              </View> ))}
       </Text>
 
       <Text style={styles.mainText}>Desired Taste Tags:
           {tasteTags.map(tag => (
-            <View key={tag.id}>
-              <Text> {tag.title}</Text>
+           <View style={styles.tagBubble} key={tag.id}>
+              <Text style={styles.tagText}> {tag.title}</Text>
               </View> ))}
       </Text>
-      <Text style={styles.mainText}>Disliked Ingredients: {profile.disliked_ingredients}
-      </Text> 
+
+      <Text style={styles.mainText}>Disliked Ingredients:
+          {dislikedIngredients.map(tag => (
+           <View style={styles.tagBubble} key={tag.id}>
+              <Text style={styles.tagText}> {tag.title}</Text>
+              </View> ))}
+      </Text>
+      
       <Text style={styles.mainText}>Max Price: {profile.price_max}
       </Text>
       <Text style={styles.mainText}>Zipcode: {profile.zipcode}
@@ -243,6 +266,17 @@ const styles = StyleSheet.create({
     width:"40%",
     justifyContent: "left",
     marginBottom: 20
+  },
+  tagBubble: {
+    backgroundColor: '#44E342', // Background color for the tag bubble
+    borderRadius: 20, // Border radius to create a circular shape
+    paddingHorizontal: 10, // Horizontal padding to provide some space around the text
+    paddingVertical: 5, // Vertical padding to provide some space around the text
+    margin: 5, // Margin between tag bubbles
+  },
+  tagText: {
+    fontSize: 14,
+    color: 'black',
   },
 },
 );

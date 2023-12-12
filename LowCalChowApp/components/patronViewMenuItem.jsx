@@ -229,6 +229,10 @@ function viewMenuItem({ route, navigation }) {
     setReviewVisible(true);
   }
 
+  function closeFeedback(){
+    setReviewVisible(false);
+  }
+
   function subFeedback() {
     setReviewVisible(false);
     handleSubmitFeedback();
@@ -419,6 +423,10 @@ function viewMenuItem({ route, navigation }) {
             }} >
             <View style={styles.modalWrapper}>
               <View style={styles.modalContainer}>
+
+              <TouchableOpacity style={styles.close} onPress={closeFeedback}>
+                <Icon name="close" size={25} color="#00000" />
+              </TouchableOpacity>
 
                 <Text style={styles.title}>Review: {mealName}</Text>
                 <View style={styles.stars}>
@@ -702,6 +710,18 @@ const styles = StyleSheet.create({
   feedbackRating: {
     fontSize: 12,
     color: '#888888',
+  },
+  close:{
+    backgroundColor: '#5CCD28',
+    borderRadius: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    alignItems: 'right',
+    marginTop: 16,
+    marginBottom: 12,
+    borderColor: '#000000',
+    borderWidth: 2,
+    borderRadius: 5,
   },
 });
 export default viewMenuItem;
