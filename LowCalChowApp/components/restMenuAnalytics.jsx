@@ -244,9 +244,11 @@ function RestMenuAnalytics() {
       backgroundGradientTo: "#3D3D3D",
       backgroundGradientToOpacity: 1,
      color: (opacity = 1) => `rgba(214, 112, 0, 100)`,
-      strokeWidth: 4,
+      strokeWidth: 1,
       barPercentage: 2,
       useShadowColorFromDataset: false,
+      horizontalLabelRotation: 60,
+
       style: {
         padding: 5,
         flex: 1,
@@ -327,7 +329,6 @@ return (
           width={500}
           height= {250}
           chartConfig={chartConfig}
-          verticalLabelRotation={30}
           fromZero='true'
           showValuesOnTopOfBars='true'
           
@@ -399,7 +400,7 @@ return (
        
        {/*Trends Here */}
        {(trendData[2]) && (
-        <View style={styles.graphStyle}>
+        <View style={styles.trendStyle}>
       <Text style={styles.AnalysisSubText}>Menu Item Exclusion Trends</Text>
        <TrendComponent xCoefficients={[trendData[0].coeff0, trendData[0].coeff1, trendData[0].coeff2, trendData[0].coeff3, trendData[0].coeff4, trendData[0].coeff5]}/>
        <Text style={styles.AnalysisSubText}>Added to Menu Item History Trends</Text>
@@ -524,6 +525,9 @@ return (
           padding: 16,
           backgroundColor: "#ffffff",
           borderRadius: 8,
+        },
+        trendStyle:{
+          maxWidth: '75%',
         },
       });
       export default RestMenuAnalytics;
