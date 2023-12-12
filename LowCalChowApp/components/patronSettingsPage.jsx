@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   },
   feedbackButton:{
     justifyContent: "center",
-    
   },
   navbar: {
     flexDirection: "row",
@@ -223,10 +222,7 @@ const styles = StyleSheet.create({
       borderRadius: 8,
       paddingVertical: 10,
       alignItems: "center",
-      marginTop: 12,
-      marginBottom: 12,
       width: "30%",
-    
   },
  
   buttonText: {
@@ -244,8 +240,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   resultItem: {
-    width:"100%",
+    width:"40%",
     justifyContent: "left",
+    marginBottom: 20
   },
 },
 );
