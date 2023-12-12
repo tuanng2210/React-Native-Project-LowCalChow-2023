@@ -15,6 +15,7 @@ import { useIsFocused } from "@react-navigation/native";
 function RestaurantDashboard() {
   const isFocused = useIsFocused();
   const [menuItems, setMenuItems] = useState([]);
+  const [data, setData] = useState({});
   const [alItems, setAlItems] = useState([]);
   const ScreenName = "Restaurant Menu Analytics";
   const route = useRoute();
@@ -47,12 +48,38 @@ function RestaurantDashboard() {
       console.error("Error:", error);
     }
   };
+  const handlegetRestAnalytics = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/analytics/${restaurantId}/overall/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        setData(data[0]);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   useEffect(() => {
     if (isFocused) {
       handlegetMenuItems();
+      handlegetRestAnalytics();
     }
   }, [isFocused]);
   console.log(menuItems);
+
+
 
   /*useEffect (() => {
     setMenuItems(alItems.map(item => item.menuItem_id));
@@ -173,15 +200,67 @@ function RestaurantDashboard() {
 
       <ScrollView>
         <View style={styles.mainContent}>
-          {menuItems.length > 0 && (
-            <MenuAnalyticsComponent
-              menuItems={menuItems}
-              accessToken={access}
-              restIDToken={restaurantId}
-              screenName={ScreenName}
-            />
-          )}
-        </View>
+          <View style={styles.twoPane}>
+            <View style={styles.titlePane}>
+              <Text style={styles.label}>Top Tags Leading To Menu Item Exclusions</Text>{" "}
+              <Text style={styles.label}>  {" "} </Text>
+              <View style={styles.analytics}>
+                <Text style={styles.label}>Taste Tags:  {" "}
+                  {data.taste_tags_most_eliminations ? data.taste_tags_most_eliminations.tag : 'N/A'}
+                  ({data.taste_tags_most_eliminations ? data.taste_tags_most_eliminations.eliminations : 0} Exclusions)
+                </Text>
+                <Text style={styles.label}>  {" "} </Text>
+                <Text style={styles.label}>Restriction Tags:  {" "}
+                <Text style={styles.label}>Restriction Tags: {" "}
+  {data.restriction_tags_most_eliminations ? data.restriction_tags_most_eliminations.tag : 'N/A'} 
+  ({data.restriction_tags_most_eliminations ? data.restriction_tags_most_eliminations.eliminations : 0} Exclusions) 
+</Text>
+</Text>
+               
+                <Text style={styles.label}>  {" "} </Text>
+                <Text style={styles.label}>Ingredient Tags:  {" "}
+                  {data.ingredient_tags_most_eliminations ? data.ingredient_tags_most_eliminations.tag: 'N/A'}
+                  ({data.ingredient_tags_most_eliminations ? data.ingredient_tags_most_eliminations.eliminations : 0} Exclusions)
+                </Text>
+                <Text style={styles.label}>  {" "} </Text>
+                <Text style={styles.label}>Allergy Tags:  {" "}
+                  {data.allergies_tags_most_eliminations.tag}
+                  ({data.allergies_tags_most_eliminations.eliminations} Exclusions)
+                </Text>
+              </View>
+              
+              <Text style={styles.label}>Top Menu Items</Text>{" "}
+             <Text style={styles.label}>  {" "} </Text>
+              <View style={styles.analytics}>
+                <Text style={styles.label}>First: {" "}
+                  {data.top_three_items.first.title}
+                </Text>
+                <Text style={styles.label}>  {" "} </Text>
+                <Text style={styles.label}>Second:{" "} 
+                  {data.top_three_items.second.title}
+                </Text>
+                <Text style={styles.label}>  {" "} </Text>
+                <Text style={styles.label}>Third:{" "}   
+                  {data.top_three_items.third.title}
+                </Text>
+                <Text style={styles.label}>  {" "} </Text>
+              </View>
+              </View>
+              <View style={styles.titlePane}>
+                <Text style={styles.label}>Menu Items</Text>{" "}
+                <Text style={styles.label}>  {" "} </Text>
+                {menuItems.length > 0 && (
+                  <MenuAnalyticsComponent
+                    menuItems={menuItems}
+                    accessToken={access}
+                    restIDToken={restaurantId}
+                    screenName={ScreenName}
+                  />
+                )}
+              </View>
+            </View>
+          </View>
+
       </ScrollView>
     </View>
   );
@@ -190,7 +269,7 @@ function RestaurantDashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   navBar: {
     flexDirection: "row",
@@ -212,12 +291,32 @@ const styles = StyleSheet.create({
   activeNavText: {
     color: "white",
   },
+  twoPane: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  analytics: {
+    backgroundColor: "rgba(255, 165, 0, 0.5)",
+    borderRadius: 8,
+    padding: 15,
+    marginRight: 100,
+    marginBottom: 20,
+  },
+  titlePane: {
+    flexDirection: "column"
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
   mainContent: {
+    flex: 1,
     padding: 20,
-    flex: 2,
     backgroundColor: "#fff",
     justifyContent: "top",
     alignItems: "center",
+    alignContent: "center",
   },
 });
 
