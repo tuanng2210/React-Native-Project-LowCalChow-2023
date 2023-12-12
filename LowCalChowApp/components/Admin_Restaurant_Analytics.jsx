@@ -60,16 +60,6 @@ function AdminHomepage() {
 
     return (
      <View style={styles.container}>
-      {/* Header in an orange box */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Admin Homepage</Text>
-        <Text style={styles.welcomeText}>Welcome Admin!</Text>
-        <Text style={styles.descriptionText}>
-          This dashboard provides insights into user analytics and tag management.
-          Explore different tag categories or view analytics on user demographics
-          and restaurant statistics.
-        </Text>
-      </View>
 
        {/* Navigation Bar */}
       <View style={styles.navigationBar}>
@@ -91,97 +81,104 @@ function AdminHomepage() {
       </View>
 
 
-      {/* Display Analytics Data */}
-      <View style={styles.analyticsContainer}>
-        <ImageBackground
-          source={require('../assets/SuperOrange_HoneyComb_Background.png')}
-          style={styles.analyticsBackgroundImage}>
-          <View style={styles.analyticsContent}>
-            <Text style={styles.analyticsHeader}> Global Analytics</Text>
-            <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
-        The Analytics section offers comprehensive insights into user demographics and restaurant statistics. Explore data on user age demographics, total users, restaurant patrons, and menu item statistics through informative charts and figures, providing a holistic view of platform engagement and usage.
-      </Text>
-            {/* Render the analytics data here */}
-            {analyticsData.map((dataPoint) => (
-              <View key={dataPoint.id}>
-                {/* Fix the placement of styles.analyticsDataContainer here */}
-                <Text style={styles.totalUsersLabel}>Total Users</Text>
-                <Text style={styles.totalUsers}>{dataPoint.total_users}</Text>
+       <View style={styles.tagManagementContainer}>
+        {/* Restaurant Analytics Overview*/}
+        <View style={styles.tagManagementHeader}>
+          <Text style={styles.tagManagementHeaderText}>Restaurant Analytics Overview</Text>
+        </View>
 
-                {/* Render Pie Chart */}
-                <View style={styles.pieChartContainer}>
-                  <PieChart
-                    style={styles.pieChart}
-                    data={[
-                      {
-                        key: 1,
-                        value: dataPoint.total_patrons,
-                        svg: { fill: "#FFF8F0" },
-                      },
-                      {
-                        key: 2,
-                        value: dataPoint.total_restaurants,
-                        svg: { fill: "#9DD9D2" },
-                      },
-                    ]}
-                    innerRadius="0%"
-                    outerRadius="80%"
-                  />
-                  <View style={styles.pieChartLabels}>
-                    <Text style={styles.chartLabel}>
-                      Total Patrons:{" "}
-                      <Text style={styles.chartLabelBold}>{dataPoint.total_patrons}</Text>
-                    </Text>
-                    <Text style={styles.chartLabel}>
-                      Total Restaurants:{" "}
-                      <Text style={styles.chartLabelBold}>{dataPoint.total_restaurants}</Text>
-                    </Text>
-                  </View>
-                </View>
+          <View style={styles.descriptionContainer}>
+      <Text style={styles.descriptionText}>
 
-            {/* Display Counts for Males, Females, and Others */}
-            <Text style={styles.totalUsersLabel}>
-             Total Males: {dataPoint.total_males} | Total Females: {dataPoint.total_females} | Total Others: {dataPoint.total_other}
-            </Text>
+Restaurant Analytics Overview provides a comprehensive breakdown of key restaurant performance metrics, including Calorie, Restriciton Tag, Allergy Tag, Ingredient Tag, Taste Tag, Cook Style Tag Analytics. </Text>
+    </View>
+        {/* Buttons for different tag categories */}
+   <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Calorie Analytics",
+              analyticsType: "calories",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Calorie Analytics</Text>
+          </View>
+        </TouchableOpacity>
 
-                 {/* Display Total Number of MenuItems */}
-            <Text style={styles.totalUsersLabel}>Total Number of Menu Items: {dataPoint.total_menu_items}</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Restriction Tag Analytics",
+              analyticsType: "restrictiontag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Restriction Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
 
-              </View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Allergy Tag Analytics",
+              analyticsType: "allergytag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Allergy Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
 
-            ))}
-              {/* Display User Age Demographics Bar Chart */}
-            <View style={styles.analyticsContainer}>
-              <Text style={styles.baranalyticsHeader}>User Age Demographics</Text>
-              <BarChart
-                style={styles.barChart}
-                data={{
-                  labels: ageData.map(item => item.label),
-                  datasets: [
-                    {
-                      data: ageData.map(item => item.value),
-                    },
-                  ],
-                }}
-                width={350}
-                height={200}
-                yAxisLabel=""
-                fromZero={true}
-                chartConfig={{
-                  backgroundColor: "#black",
-                  backgroundGradientFrom: "#392F5A",
-                  backgroundGradientTo: "#ffa726",
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                }}
-              />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Ingredient Tag Analytics",
+              analyticsType: "ingredienttag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Ingredient Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
 
-              </View>
-            </View>
-                </ImageBackground>
-              </View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Taste Tag Analytics",
+              analyticsType: "tastetag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Taste Tag Analytics</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Analytic Dashboard", {
+              access,
+              title: "Cook Style Analytics",
+              analyticsType: "cookstyletag",
+            })
+          }
+        >
+          <View style={styles.restaurantItem}>
+            <Text style={styles.restaurantName}>Cook Style Analytics</Text>
+          </View>
+        </TouchableOpacity>
+          {/* ... Add other buttons for different tag categories */}
+      </View>
          </View>
-
   );
 }
 

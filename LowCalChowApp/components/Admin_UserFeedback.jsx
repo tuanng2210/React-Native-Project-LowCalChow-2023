@@ -2,18 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  FlatList,
+
   StyleSheet,
-  TextInput,
-  Button,
-  Alert,
-  ImageBackground, TouchableOpacity,
+ TouchableOpacity,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { PieChart } from "react-native-svg-charts";
 import { BarChart } from "react-native-chart-kit";
-import logo from "../assets/icons8-carrot-94.png";
-import TrendComponent from "./TrendComponent";
 
 
 function AdminHomepage() {
@@ -21,11 +15,14 @@ function AdminHomepage() {
   const navigation = useNavigation();
   const { access, adminId } = route.params;
   const [analyticsData, setAnalyticsData] = useState([]);
+  const [averageRating, setAverageRating] = useState([]);
+  const [totalNumberOfRatings, setTotalNumberOfRatings] = useState([]);
+
 
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/analytics/global/', {
+        const response = await fetch('http://localhost:8000/analytics/overall/login/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${access}`,
@@ -43,33 +40,39 @@ function AdminHomepage() {
         console.error('Network Error:', error);
       }
     };
+  const fetchAppSatisfactionData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/analytics/satisfaction/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
 
+        if (response.ok) {
+          const data = await response.json();
+          setAverageRating(data);
+        } else {
+          console.error('API Error:', response.status);
+          console.error(await response.text()); // Log the response content
+        }
+      } catch (error) {
+        console.error('Network Error:', error);
+      }
+    };
     fetchAnalyticsData();
+    fetchAppSatisfactionData();
   }, [access]);
- // Extracting age demographic data
-  const ageDemographics = analyticsData.length > 0 ? analyticsData[0] : {};
 
-  const ageData = [
-    { label: "18-24", value: ageDemographics.users_18_24 || 0 },
-    { label: "25-34", value: ageDemographics.users_25_34 || 0 },
-    { label: "35-44", value: ageDemographics.users_35_44 || 0 },
-    { label: "45-54", value: ageDemographics.users_45_54 || 0 },
-    { label: "55-64", value: ageDemographics.users_55_64 || 0 },
-    { label: "65+", value: ageDemographics.users_65_and_up || 0 },
-  ];
+
+ const total_logins = [
+  { label: "Patrons Total Logins", value: analyticsData.patron_total_logins || 0 },
+  { label: "Restaurant Total Logins", value: analyticsData.rest_total_logins || 0 }
+];
 
     return (
      <View style={styles.container}>
       {/* Header in an orange box */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Admin Homepage</Text>
-        <Text style={styles.welcomeText}>Welcome Admin!</Text>
-        <Text style={styles.descriptionText}>
-          This dashboard provides insights into user analytics and tag management.
-          Explore different tag categories or view analytics on user demographics
-          and restaurant statistics.
-        </Text>
-      </View>
 
        {/* Navigation Bar */}
       <View style={styles.navigationBar}>
@@ -90,76 +93,35 @@ function AdminHomepage() {
         </TouchableOpacity>
       </View>
 
+      {/* App Satisfaction Setting */}
+      <View style={styles.mainContent}>
+        <View style={styles.sectionTitleContainer}>
+          <Text style={styles.sectionTitle}>App Satisfaction Analytics </Text>
+             </View>
+        <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
+        The User Feedback page offers comprehensive insights for administrators, showcasing app ratings, reviews, and detailed analytics on overall user logins. It provides a holistic view of user sentiments and engagement, amalgamating app performance with login analytics for informed decision-making. </Text>
 
-      {/* Display Analytics Data */}
-      <View style={styles.analyticsContainer}>
-        <ImageBackground
-          source={require('../assets/SuperOrange_HoneyComb_Background.png')}
-          style={styles.analyticsBackgroundImage}>
-          <View style={styles.analyticsContent}>
-            <Text style={styles.analyticsHeader}> Global Analytics</Text>
-            <Text style={[styles.analyticsDescription, { textAlign: 'center' }]}>
-        The Analytics section offers comprehensive insights into user demographics and restaurant statistics. Explore data on user age demographics, total users, restaurant patrons, and menu item statistics through informative charts and figures, providing a holistic view of platform engagement and usage.
-      </Text>
-            {/* Render the analytics data here */}
-            {analyticsData.map((dataPoint) => (
+
+         {averageRating.map((dataPoint) => (
               <View key={dataPoint.id}>
-                {/* Fix the placement of styles.analyticsDataContainer here */}
-                <Text style={styles.totalUsersLabel}>Total Users</Text>
-                <Text style={styles.totalUsers}>{dataPoint.total_users}</Text>
-
-                {/* Render Pie Chart */}
-                <View style={styles.pieChartContainer}>
-                  <PieChart
-                    style={styles.pieChart}
-                    data={[
-                      {
-                        key: 1,
-                        value: dataPoint.total_patrons,
-                        svg: { fill: "#FFF8F0" },
-                      },
-                      {
-                        key: 2,
-                        value: dataPoint.total_restaurants,
-                        svg: { fill: "#9DD9D2" },
-                      },
-                    ]}
-                    innerRadius="0%"
-                    outerRadius="80%"
-                  />
-                  <View style={styles.pieChartLabels}>
-                    <Text style={styles.chartLabel}>
-                      Total Patrons:{" "}
-                      <Text style={styles.chartLabelBold}>{dataPoint.total_patrons}</Text>
-                    </Text>
-                    <Text style={styles.chartLabel}>
-                      Total Restaurants:{" "}
-                      <Text style={styles.chartLabelBold}>{dataPoint.total_restaurants}</Text>
-                    </Text>
-                  </View>
-                </View>
-
-            {/* Display Counts for Males, Females, and Others */}
-            <Text style={styles.totalUsersLabel}>
-             Total Males: {dataPoint.total_males} | Total Females: {dataPoint.total_females} | Total Others: {dataPoint.total_other}
+                 <Text style={styles.totalUsersLabel}>
+             Average Rating: {dataPoint.average_rating} | Total Number of Ratings: {dataPoint.number_of_rating_total}
             </Text>
+      </View>
+         ))}
 
-                 {/* Display Total Number of MenuItems */}
-            <Text style={styles.totalUsersLabel}>Total Number of Menu Items: {dataPoint.total_menu_items}</Text>
 
-              </View>
-
-            ))}
-              {/* Display User Age Demographics Bar Chart */}
             <View style={styles.analyticsContainer}>
-              <Text style={styles.baranalyticsHeader}>User Age Demographics</Text>
+              <Text style={styles.baranalyticsHeader}>Login Analytics</Text>
+               <View style={styles.chartBackground}>
               <BarChart
                 style={styles.barChart}
                 data={{
-                  labels: ageData.map(item => item.label),
+                  labels: total_logins.map(item => item.label),
                   datasets: [
                     {
-                      data: ageData.map(item => item.value),
+                      data: total_logins.map(item => item.value),
+
                     },
                   ],
                 }}
@@ -167,21 +129,38 @@ function AdminHomepage() {
                 height={200}
                 yAxisLabel=""
                 fromZero={true}
-                chartConfig={{
-                  backgroundColor: "#black",
-                  backgroundGradientFrom: "#392F5A",
-                  backgroundGradientTo: "#ffa726",
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                }}
+      chartConfig={{
+        backgroundGradientFrom: "#392F5A",
+        backgroundGradientTo: "#ffa726",
+        decimalPlaces: 0,
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+        barPercentage: 2.0,
+        propsForBackgroundLines: {
+          strokeWidth: 0,
+        },
+        propsForLabels: {
+          fontSize: 14,
+        },
+        barRadius: 5,
+        propsForVerticalLabels: {
+          fontSize: 14,
+        },
+        propsForHorizontalLabels: {
+          fontSize: 14,
+        },
+      }}
+      bezier
               />
-
-              </View>
+               </View>
+                                         <Text style={styles.totalUsersLabel}>
+    Patron Logins Since: {analyticsData?.patron_logins_since || 0}
+  </Text>
+  <Text style={styles.totalUsersLabel}>
+    Restaurant Logins Since: {analyticsData?.rest_logins_since || 0}
+  </Text>
             </View>
-                </ImageBackground>
-              </View>
-         </View>
-
+      </View>
+   </View>
   );
 }
 
@@ -226,7 +205,7 @@ const styles = StyleSheet.create({
   },
   baranalyticsHeader: {
   marginTop: 16,
-  fontSize: 32,
+  fontSize: 24,
   fontWeight: 'bold',
   marginBottom: 8,
   textAlign: 'center',
@@ -440,7 +419,7 @@ totalUsers: {
   },
   totalUsersLabel: {
     color: 'black',
-    fontSize: 32,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center', // Center the text horizontally
     textShadowColor: '#000',
@@ -461,7 +440,7 @@ totalUsers: {
     marginBottom: 20,
   },
   mainContent: {
-    backgroundColor: '#BAD4AA',
+    backgroundColor: 'orange',
     borderRadius: 8,
     marginTop: 20,
     padding: 16,
@@ -469,7 +448,7 @@ totalUsers: {
   },
   sectionTitle: {
   alignItems: 'center',
-    color: 'black',
+    color: 'white',
     fontSize: 32,
     fontWeight: 'bold',
   },
@@ -509,6 +488,11 @@ totalUsers: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333', // Set your desired text color
+  },
+  chartBackground: {
+    backgroundColor: "#BAD4AA", // Add your desired background color here
+    borderRadius: 8,
+    padding: 10,
   },
 });
 

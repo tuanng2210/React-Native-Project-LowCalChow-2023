@@ -37,6 +37,10 @@ import Admin_RestrictionTags from "./components/Admin_RestrictionTags";
 import Admin_AllergyTags from "./components/Admin_AllergyTags";
 import Admin_IngredientTags from "./components/Admin_IngredientTags";
 import FilteredDataScreen from './components/individualFilteringOption';
+import Admin_TagManagement from './components/Admin_TagManagement';
+import Admin_Restaurant_Analytics from "./components/Admin_Restaurant_Analytics";
+import Admin_UserFeedback from "./components/Admin_UserFeedback";
+
 
 
 
@@ -82,6 +86,9 @@ const App = () => {
         <Stack.Screen name="Admin Allergy Tags" component={Admin_AllergyTags} />
         <Stack.Screen name="Admin Ingredient Tags" component={Admin_IngredientTags} />
         <Stack.Screen name="Filtered Data" component={FilteredDataScreen} />
+        <Stack.Screen name="Admin Tag Management" component={Admin_TagManagement} />
+        <Stack.Screen name="Admin Restaurant Analytics" component={Admin_Restaurant_Analytics} />
+        <Stack.Screen name="Admin User Feedback" component={Admin_UserFeedback} />
       </Stack.Navigator>
     </NavigationContainer>
   );

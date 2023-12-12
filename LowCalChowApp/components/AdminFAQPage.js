@@ -1,11 +1,13 @@
-import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+
+
 
 const faqData = [
   {
     question: "What is LowCalChow, and how does it work?", //check
-    answer: "LowCalChow is a mobile application designed to enhance your dining experience. It connects restaurants with health-conscious patrons by providing tailored menu recommendations based on your caloric needs, dietary restrictions, and palate preferences. Restaurants benefit from insights into patron trends, enabling them to refine their menus and attract more customers.",
+    answer: "LowCalChow is a mobile application designed to enhance your dining research experience. It connects restaurants with health-conscious patrons by providing tailored menu recommendations based on your caloric needs, dietary restrictions, and palate preferences. Restaurants benefit from insights into patron trends, enabling them to refine their menus and attract more customers.",
   },
   {
     question: "Is LowCalChow available for both restaurants and patrons?",
@@ -46,6 +48,11 @@ const faqData = [
 ];
 
 function AdminFAQ() {
+
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { access, adminId } = route.params;
+  const [analyticsData, setAnalyticsData] = useState([]);
   const renderItem = ({ item }) => (
     <View style={styles.faqItem}>
       <Text style={styles.question}>{item.question}</Text>
@@ -54,7 +61,27 @@ function AdminFAQ() {
   );
 
   return (
+
     <View style={styles.container}>
+     <View style={styles.navigationBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('Admin Homepage', { access })}>
+          <Text style={styles.navItem}>Global Analytics</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Admin FAQ Page', { access })}>
+          <Text style={styles.navItem}>FAQ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Admin Tag Management', { access })}>
+          <Text style={styles.navItem}>Tag Management</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Admin Restaurant Analytics', { access })}>
+          <Text style={styles.navItem}>Restaurant Analytics Overview</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Admin User Feedback', { access })}>
+          <Text style={styles.navItem}>User Feedback</Text>
+        </TouchableOpacity>
+      </View>
+
+
       <Text style={styles.title}>FAQs</Text>
       <FlatList
         data={faqData}
@@ -86,6 +113,21 @@ const styles = StyleSheet.create({
   answer: {
     fontSize: 16,
   },
+  navigationBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#BAD4AA', // Set your desired background color
+    paddingVertical: 10,
+  },
+  navItem: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333', // Set your desired text color
+  },
 });
 
 export default AdminFAQ;
+
+
+
