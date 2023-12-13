@@ -131,7 +131,7 @@ function RestaurantAnalyticsOverview({ navigation, route }) {
           </View>
         </TouchableOpacity> */}
 
-        <TrendComponent trendObject={trendBody}/>
+        {/* <TrendComponent trendObject={trendBody}/> */}
 
         <TouchableOpacity
           onPress={() =>
