@@ -597,6 +597,10 @@ return (
           width: '80%',
           marginBottom: 20,
         },
+        chartTitle: {
+          margin: 10,
+          fontWeight: "bold"
+        },
         feedbackItem: {
           backgroundColor: '#EFEFEF',
           borderRadius: 10,
