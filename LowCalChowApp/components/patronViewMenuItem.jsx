@@ -6,7 +6,7 @@ import StarRating from 'react-native-star-svg-rating';
 import {StarRatingDisplay} from 'react-native-star-svg-rating';
 import logo from "../assets/icons8-carrot-94.png";
 
-function viewMenuItem({ route, navigation }) {
+function ViewMenuItem({ route, navigation }) {
   const access = route.params.access;
   const mealID = route.params.id;
 
@@ -724,4 +724,4 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-export default viewMenuItem;
+export default ViewMenuItem;

@@ -34,7 +34,7 @@ function PatronSettingsPage({ navigation, route }) {
         setDislikedIngredients(data.length > 0 ? data[0].disliked_ingredients : []);
         
       } else {
-        setError("Error fetching data");
+        //setError("Error fetching data");
       }
     } catch (error) {
       setError("Error fetching data");

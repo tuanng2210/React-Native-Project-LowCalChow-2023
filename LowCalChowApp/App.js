@@ -25,7 +25,7 @@ import Settings from './components/settings';
 import MenuItemHistory from "./components/menuItemHistory";
 import UpdateInfo from './components/UpdateInfoScreen';
 import PatronPreferenceCreationPage from './components/patronPreferenceCreationPage';
-import viewMenuItem from './components/patronViewMenuItem';
+import ViewMenuItem from './components/patronViewMenuItem';
 import SearchResultsScreen from './components/searchResults';
 import RestMenuAnalytics from './components/restMenuAnalytics';
 import Admin_RestTags from "./components/Admin_Resttags";
@@ -71,7 +71,7 @@ const App = () => {
         <Stack.Screen name="Restaurant Dashboard" component={RestaurantDashboard}/>
         <Stack.Screen name="Admin Homepage" component={AdminHomepage} />
         <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="View Menu Item" component={viewMenuItem} />
+        <Stack.Screen name="View Menu Item" component={ViewMenuItem} />
         <Stack.Screen name="Update Info" component={UpdateInfo} />
         <Stack.Screen name="Search Results" component={SearchResultsScreen} />
         <Stack.Screen name="Menu Item History" component={MenuItemHistory} />
