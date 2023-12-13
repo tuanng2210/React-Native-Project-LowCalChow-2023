@@ -274,7 +274,7 @@ function RestaurantDashboard() {
                     Second:
                   </Text>{" "}
                   {data.top_three_items && data.top_three_items.second
-                    ? data.top_three_items.first.title
+                    ? data.top_three_items.second.title
                     : 0}
                 </Text>
                 <Text style={styles.label}>
@@ -282,7 +282,7 @@ function RestaurantDashboard() {
                     Third:
                   </Text>{" "}
                   {data.top_three_items && data.top_three_items.third
-                    ? data.top_three_items.first.title
+                    ? data.top_three_items.third.title
                     : 0}
                 </Text>
               </View>
