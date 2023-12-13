@@ -42,6 +42,15 @@ function RestaurantHomepage({ navigation, route }) {
     sat: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
     sun: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
   });
+  const initialOpeningHours = {
+    mon: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    tue: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    wed: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    thu: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    fri: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sat: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+    sun: { open: "", close: "", openAmPm: "AM", closeAmPm: "PM" },
+  };
   const [newRestaurantName, setNewRestaurantName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
@@ -271,6 +280,7 @@ function RestaurantHomepage({ navigation, route }) {
     setCity("");
     setState("");
     setZipCode("");
+    setOpeningHours(initialOpeningHours);
   };
 
   const handleViewRestaurant = (restaurant) => {
