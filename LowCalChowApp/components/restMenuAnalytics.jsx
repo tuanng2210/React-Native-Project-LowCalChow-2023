@@ -2,10 +2,87 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {BarChart} from 'react-native-chart-kit';
 import logo from "../assets/icons8-carrot-94.png";
 import { StarRatingDisplay } from 'react-native-star-svg-rating';
 import TrendComponent from "./TrendComponent";
+import { Svg, Rect, Text as SvgText } from "react-native-svg";
+
+const BarChart = ({ data, title }) => {
+  const chartWidth = 300;
+  const chartHeight = 200;
+  const barWidth = chartWidth / data.length;
+
+  const maxDataValue = Math.max(...data.map((entry) => entry.value));
+
+  const scale = chartHeight / maxDataValue;
+
+  return (
+    <View style={styles.chartContainer}>
+      <Text style={styles.chartTitle}>{title}</Text>
+      <Svg width={chartWidth} height={chartHeight + 40}>
+        {/* Y-axis scale */}
+        {[1, 0.75, 0.5, 0.25, 0].map((tick, idx) => (
+          <React.Fragment key={idx}>
+            {/* Tick marks along the y-axis */}
+            <Rect
+              x={-5}
+              y={chartHeight - chartHeight * tick}
+              width={5}
+              height={1}
+              fill="#000"
+            />
+            {/* Labels for each tick along the y-axis */}
+            <SvgText
+              x={-20}
+              y={chartHeight - chartHeight * tick}
+              fontSize="10"
+              fill="#000"
+              textAnchor="end"
+            >
+              {maxDataValue * tick}
+            </SvgText>
+          </React.Fragment>
+        ))}
+
+        {data.map((entry, index) => (
+          <React.Fragment key={entry.label}>
+            <Rect
+              x={index * barWidth}
+              y={chartHeight - entry.value * scale}
+              width={barWidth}
+              height={entry.value * scale}
+              fill="#3498db"
+            />
+
+            {/* Display the name of the bar below the bar */}
+            <SvgText
+              x={index * barWidth + barWidth / 2}
+              y={chartHeight + 16}
+              fontSize="12"
+              fill="#000"
+              textAnchor="middle"
+            >
+              {entry.name}
+            </SvgText>
+
+            {/* Conditionally display the value inside the bar if it's not zero */}
+            {entry.value > 0 && (
+              <SvgText
+                x={index * barWidth + barWidth / 2}
+                y={chartHeight - entry.value * scale + 16}
+                fontSize="12"
+                fill="black"
+                textAnchor="middle"
+              >
+                {entry.value}
+              </SvgText>
+            )}
+          </React.Fragment>
+        ))}
+      </Svg>
+    </View>
+  );
+};
 
 function RestMenuAnalytics() {
     const route = useRoute();
@@ -46,6 +123,10 @@ function RestMenuAnalytics() {
           setAnalyticData(data);
           setAdSet(true);
           setMealID(data.menuItem_id.id);
+          setAllergyData(data.top_3_allergy);
+          setIngredientData(data.top_3_ingredients);
+          setRestrictionData(data.top_3_restrictions);
+          setTasteData(data.top_3_taste);
           const dateObject = new Date(data.date_stamp);
           setDateStamp(dateObject.toLocaleString());
           const dateObject2 = new Date(data.date_stamp);
@@ -111,77 +192,8 @@ function RestMenuAnalytics() {
     useEffect(() => { 
         handleGetTrends();
     }, [mealID]);
-    
-    const renderChart = (entry) => {
-      console.log('RENDERS CHART');
-      const renderBarChart = (data, title) => {
-        if (!data) {
-          console.log("NOT DATA");
-          return (
-            
-            <View style={styles.barChartContainer}>
-              <Text style={styles.chartTitle}>{`${title}: None`}</Text>
-            </View>
-          );
-        }
-  
-        const labels = Object.values(data).map((item) => item.title);
-        const values = Object.values(data).map((item) => item.count);
-  
-        const chartData = {
-          labels,
-          datasets: [
-            {
-              data: values,
-            },
-          ],
-          
-        };
-        console.log(chartData);
-        const chartConfig = {
-          backgroundGradientFrom: "#00000",
-          backgroundGradientFromOpacity: .9,
-          backgroundGradientTo: "#3D3D3D",
-          backgroundGradientToOpacity: 1,
-         color: (opacity = 1) => `rgba(214, 112, 0, 100)`,
-          strokeWidth: 4,
-          barPercentage: 2,
-          useShadowColorFromDataset: false,
-          style: {
-            padding: 5,
-            flex: 1,
-          }
-          
-        };
-  
-        return (
-          <View style={styles.barChartContainer}>
-            <Text style={styles.chartTitle}>{title}</Text>
-            <BarChart
-              data={chartData}
-              width={300}
-              height={200}
-              yAxisLabel=""
-              verticalLabelRotation={30}
-              chartConfig={chartConfig}
-              fromZero='true'
-              showValuesOnTopOfBars='true'
-            />
-          </View>
-        );
-      };
-  
-      return (
-        <View>
-          {renderBarChart(entry.top_3_allergy, "Allergy Exclusions")}
-          {renderBarChart(entry.top_3_ingredients, "Ingredient Exclusions")}
-          {renderBarChart(entry.top_3_restrictions, "Restriction Exclusions")}
-          {renderBarChart(entry.top_3_taste, "Restriction Exclusions")}
-        </View>
-      );
-    };
 
-    useEffect(() => {
+    /*useEffect(() => {
       if (adSet==true){
       console.log(analyticData);
 
@@ -235,7 +247,7 @@ function RestMenuAnalytics() {
       });
 
     }
-    }, [analyticData]);
+    }, [analyticData]);*/
 
     /*Styling for chart */
     const chartConfig = {
@@ -314,34 +326,46 @@ return (
             {renderChart(entry)}
           </View>
         ))}*/}
+
         {/*Top 3 Allergy Exclusions */}
         <View style={styles.middleBox}>
         <View style={styles.chartContainer}>
-        <Text style={styles.AnalysisSubText}>Top 3 Allergy Exclusions</Text>
-
-       
-
+        {/*<Text style={styles.AnalysisSubText}>Top 3 Allergy Exclusions</Text>*/}
         {allergyData!=null && (
         <View style={styles.graphStyle}>
 
-        <BarChart
-          data={allergyData}
-          width={500}
-          height= {250}
-          chartConfig={chartConfig}
-          fromZero='true'
-          showValuesOnTopOfBars='true'
-          
-        />
+            <BarChart
+              title="Top 3 Allergy exclusions"
+              data={[
+                {
+                  label: `${allergyData.first != 'N/A' ? allergyData.first.title: "N/A"}`,
+                  name:  `${allergyData.first != 'N/A' ? allergyData.first.title: "N/A"}`,
+                  value: `${allergyData.first != 'N/A' ? allergyData.first.count: 0}`,
+                },
+                {
+                  label: `${allergyData.second != 'N/A' ? allergyData.second.title: "N/A"}`,
+                  name:  `${allergyData.second != 'N/A' ? allergyData.second.title: "N/A"}`,
+                  value: `${allergyData.second != 'N/A' ? allergyData.second.count: 0}`,
+                    
+                },
+                {
+                  label: `${allergyData.third != 'N/A' ? allergyData.third.title : "N/A"}`,
+                  name:  `${allergyData.third != 'N/A' ? allergyData.third.title : "N/A"}`,
+                  value: `${allergyData.third != 'N/A' ? allergyData.third.count: 0}`,
+                    
+                },
+              ]}
+            />
         </View>
        )}
 </View> 
+
         {/*Top 3 Ingredient Exclusions */}
         <View style={styles.chartContainer}>
-        <Text style={styles.AnalysisSubText}>Top 3 Ingredient Exclusions</Text>
+        {/*<Text style={styles.AnalysisSubText}>Top 3 Ingredient Exclusions</Text>*/}
         {ingredientData!=null && (
         <View style={styles.graphStyle}>
-        <BarChart
+       {/*} <BarChart
           data={ingredientData}
           width={500}
           height= {250}
@@ -351,18 +375,41 @@ return (
           fromZero='true'
           showValuesOnTopOfBars='true'
           
-        />
+        />*/}
+            <BarChart
+              title="Top 3 Ingredient Exclusions"
+              data={[
+                {
+                  label: `${ingredientData.first != 'N/A' ? ingredientData.first.title: "N/A"}`,
+                  name:  `${ingredientData.first != 'N/A' ? ingredientData.first.title : "N/A"}`,
+                  value: `${ingredientData.first != 'N/A' ? ingredientData.first.count: 0}`,
+                },
+                {
+                  label: `${ingredientData.second != 'N/A' ? ingredientData.second.title: "N/A"}`,
+                  name:  `${ingredientData.second != 'N/A' ? ingredientData.second.title : "N/A"}`,
+                  value: `${ingredientData.second != 'N/A' ? ingredientData.second.count: 0}`,
+                    
+                },
+                {
+                  label: `${ingredientData.third != 'N/A' ? ingredientData.third.title : "N/A"}`,
+                  name:  `${ingredientData.third != 'N/A' ? ingredientData.third.title : "N/A"}`,
+                  value: `${ingredientData.third != 'N/A' ? ingredientData.third.count: 0}`,
+                    
+                },
+              ]}
+            />
         </View>
         )}
         </View>
         </View>
         <View style={styles.middleBox}>
+
         {/*Top 3 Restriction Exclusions */}
         <View style={styles.chartContainer}>
-        <Text style={styles.AnalysisSubText}>Top 3 Restriction Exclusions</Text>
+        {/*<Text style={styles.AnalysisSubText}>Top 3 Restriction Exclusions</Text>*/}
         {restrictionData!=null && (
           <View style={styles.graphStyle}>
-          <BarChart
+         {/*} <BarChart
             data={restrictionData}
             width={500}
             height= {250}
@@ -372,16 +419,39 @@ return (
             fromZero='true'
             showValuesOnTopOfBars='true'
             
-          />
+        />*/}
+            <BarChart
+              title="Top 3 Restriction Exclusions"
+              data={[
+                {
+                  label: `${restrictionData.first != 'N/A' ? restrictionData.first.title: "N/A"}`,
+                  name:  `${restrictionData.first != 'N/A' ? restrictionData.first.title : "N/A"}`,
+                  value: `${restrictionData.first != 'N/A' ? restrictionData.first.count: 0}`,
+                },
+                {
+                  label: `${restrictionData.second != 'N/A' ? restrictionData.second.title: "N/A"}`,
+                  name:  `${restrictionData.second != 'N/A' ? restrictionData.second.title : "N/A"}`,
+                  value: `${restrictionData.second != 'N/A' ? restrictionData.second.count: 0}`,
+                    
+                },
+                {
+                  label: `${restrictionData.third != 'N/A' ? restrictionData.third.title : "N/A"}`,
+                  name:  `${restrictionData.third != 'N/A' ? restrictionData.third.title : "N/A"}`,
+                  value: `${restrictionData.third != 'N/A' ? restrictionData.third.count: 0}`,
+                    
+                },
+              ]}
+            />
           </View>
         )}
         </View>
+        
         {/*Top 3 Taste Exclusions */}
         <View style={styles.chartContainer}>
-        <Text style={styles.AnalysisSubText}>Top 3 Taste Exclusions</Text>
+        {/*<Text style={styles.AnalysisSubText}>Top 3 Taste Exclusions</Text>*/}
         {tasteData!=null && (
           <View style={styles.graphStyle}>
-          <BarChart
+          {/*<BarChart
             data={tasteData}
             width={500}
             height= {250}
@@ -390,7 +460,29 @@ return (
             verticalLabelRotation={30}
             fromZero='true'
             showValuesOnTopOfBars='true'
-          />
+        />*/}
+            <BarChart
+              title="Top 3 Taste Exclusions"
+              data={[
+                {
+                  label: `${tasteData.first != 'N/A' ? tasteData.first.title: "N/A"}`,
+                  name:  `${tasteData.first != 'N/A' ? tasteData.first.title: "N/A"}`,
+                  value: `${tasteData.first != 'N/A' ? tasteData.first.count: 0}`,
+                },
+                {
+                  label: `${tasteData.second != 'N/A' ? tasteData.second.title: "N/A"}`,
+                  name:  `${tasteData.second != 'N/A' ? tasteData.second.title: "N/A"}`,
+                  value: `${tasteData.second != 'N/A' ? tasteData.second.count: 0}`,
+                    
+                },
+                {
+                  label: `${tasteData.third != 'N/A' ? tasteData.third.title : "N/A"}`,
+                  name:  `${tasteData.third != 'N/A' ? tasteData.third.title: "N/A"}`,
+                  value: `${tasteData.third != 'N/A' ? tasteData.third.count: 0}`,
+                    
+                },
+              ]}
+            />
           </View>
           
           )}
@@ -399,16 +491,16 @@ return (
         {/*Number of Add to History */}
        
        {/*Trends Here */}
-       {(trendData[2]) && (
+       {/*{(trendData[2]) && (
         <View style={styles.trendStyle}>
-      <Text style={styles.AnalysisSubText}>Menu Item Exclusion Trends</Text>
-       <TrendComponent xCoefficients={[trendData[0].coeff0, trendData[0].coeff1, trendData[0].coeff2, trendData[0].coeff3, trendData[0].coeff4, trendData[0].coeff5]}/>
-       <Text style={styles.AnalysisSubText}>Added to Menu Item History Trends</Text>
-       <TrendComponent xCoefficients={[trendData[1].coeff0, trendData[1].coeff1, trendData[1].coeff2, trendData[1].coeff3, trendData[1].coeff4, trendData[1].coeff5]}/>
-       <Text style={styles.AnalysisSubText}>Average Rating Trends</Text>
-       <TrendComponent xCoefficients={[trendData[2].coeff0, trendData[2].coeff1, trendData[2].coeff2, trendData[2].coeff3, trendData[2].coeff4, trendData[2].coeff5]}/>
-       </View>
-       )}
+        <Text style={styles.AnalysisSubText}>Menu Item Exclusion Trends</Text>
+        <TrendComponent xCoefficients={[trendData[0]]}/>
+        <Text style={styles.AnalysisSubText}>Added to Menu Item History Trends</Text>
+        <TrendComponent xCoefficients={[trendData[1]]}/>
+        <Text style={styles.AnalysisSubText}>Average Rating Trends</Text>
+        <TrendComponent xCoefficients={[trendData[2]]}/>     
+        </View>
+       )}*/}
         {/*Date Range*/}
         {dateStampThree!='' && ( <Text style={styles.AnalysisSubText}>Analytics TimeStamp: {dateStampThree} to {dateStamp}</Text> )}
         <FlatList
