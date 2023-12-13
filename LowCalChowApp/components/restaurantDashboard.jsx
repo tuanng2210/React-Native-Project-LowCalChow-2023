@@ -118,6 +118,14 @@ function RestaurantDashboard() {
     );
   }
 
+  if (!data) {
+    return (
+      <View style={styles.container}>
+        <Text>No analytics data available</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.navBar}>

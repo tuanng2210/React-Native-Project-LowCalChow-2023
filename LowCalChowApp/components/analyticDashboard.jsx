@@ -19,7 +19,7 @@ const AnalyticsDashboard = ({ navigation, route }) => {
   useEffect(() => {
     fetchData(route.params.analyticsType, route.params.access);
     fetchFilterOptions(route.params.analyticsType, route.params.access);
-  }, [route.params.analyticsType]);
+  }, [route.params.analyticsType, route.params.access]);
 
   const fetchData = async (analyticsType, adminAccessToken) => {
     try {
