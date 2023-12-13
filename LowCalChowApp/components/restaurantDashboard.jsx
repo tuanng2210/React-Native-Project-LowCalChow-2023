@@ -205,8 +205,9 @@ function RestaurantDashboard() {
               </Text>
               <View style={styles.analytics}>
                 <Text style={styles.label}>
-                  {/* Taste Tags:{" "}{" "} */}
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>Taste Tags:</Text>{" "}
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    Taste Tags:
+                  </Text>{" "}
                   {data.taste_tags_most_eliminations
                     ? data.taste_tags_most_eliminations.tag
                     : "N/A"}{" "}
@@ -216,11 +217,8 @@ function RestaurantDashboard() {
                     : 0}{" "}
                   Exclusions)
                 </Text>
-                {/* <Text style={styles.label}> </Text> */}
-                {/* <Text style={styles.label}>
-                  Restriction Tags: */}
+
                 <Text style={styles.label}>
-                  {/* Restriction Tags:{" "} */}
                   <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     Restriction Tags:
                   </Text>{" "}
@@ -233,11 +231,8 @@ function RestaurantDashboard() {
                     : 0}{" "}
                   Exclusions)
                 </Text>
-                {/* </Text> */}
 
-                {/* <Text style={styles.label}> </Text> */}
                 <Text style={styles.label}>
-                  {/* Ingredient Tags:{" "} */}
                   <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     Ingredient Tags:
                   </Text>{" "}
@@ -250,10 +245,10 @@ function RestaurantDashboard() {
                     : 0}{" "}
                   Exclusions)
                 </Text>
-                {/* <Text style={styles.label}> </Text> */}
                 <Text style={styles.label}>
-                  {/* Allergy Tags:{" "} */}
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>Allergy Tags:</Text>{" "}
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    Allergy Tags:
+                  </Text>{" "}
                   {data.allergies_tags_most_eliminations
                     ? data.allergies_tags_most_eliminations.tag
                     : "N/A"}{" "}
@@ -265,31 +260,29 @@ function RestaurantDashboard() {
                 </Text>
               </View>
               <Text style={styles.boxLabel2}>Top Menu Items</Text>
-              {/* <Text style={styles.label}> </Text> */}
               <View style={styles.analytics}>
                 <Text style={styles.label}>
-                  {/* First:{" "} */}
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>First:</Text>{" "}
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    First:
+                  </Text>{" "}
                   {data.top_three_items ? data.top_three_items.first.title : 0}
                 </Text>
-                {/* <Text style={styles.label}> </Text> */}
                 <Text style={styles.label}>
-                  {/* Second:{" "} */}
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>Second:</Text>{" "}
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    Second:
+                  </Text>{" "}
                   {data.top_three_items ? data.top_three_items.second.title : 0}
                 </Text>
-                {/* <Text style={styles.label}> </Text> */}
                 <Text style={styles.label}>
-                  {/* Third:{" "} */}
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>Third:</Text>{" "}
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    Third:
+                  </Text>{" "}
                   {data.top_three_items ? data.top_three_items.third.title : 0}
                 </Text>
-                {/* <Text style={styles.label}> </Text> */}
               </View>
             </View>
             <View style={styles.titlePane}>
               <Text style={styles.menuItemsLabel}>Menu Items</Text>
-              {/* <Text style={styles.label}> </Text> */}
               {menuItems.length > 0 && (
                 <MenuAnalyticsComponent
                   menuItems={menuItems}
@@ -335,11 +328,11 @@ const styles = StyleSheet.create({
   twoPane: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   analytics: {
     // backgroundColor: "rgba(255, 165, 0, 0.5)",
-    backgroundColor:"#E0E0E0",
+    backgroundColor: "#E0E0E0",
     borderRadius: 8,
     padding: 20,
     marginRight: 100,
@@ -356,20 +349,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 20
+    marginLeft: 20,
   },
   boxLabel2: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
     marginLeft: 120,
-    marginTop: 15
+    marginTop: 15,
   },
   menuItemsLabel: {
     fontSize: 20,
     fontWeight: "bold",
     alignSelf: "center",
-    marginBottom: 10
+    marginBottom: 10,
   },
   mainContent: {
     flex: 1,
