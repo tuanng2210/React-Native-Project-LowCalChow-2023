@@ -118,13 +118,91 @@ function RestaurantDashboard() {
     );
   }
 
-  if (!data) {
-    return (
-      <View style={styles.container}>
-        <Text>No analytics data available</Text>
-      </View>
-    );
-  }
+  // if (!data) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <View style={styles.navBar}>
+  //         <TouchableOpacity
+  //           onPress={() =>
+  //             navigation.navigate("Restaurant Dashboard", {
+  //               access,
+  //               restaurantId,
+  //             })
+  //           }
+  //           style={[
+  //             styles.navItem,
+  //             currentRoute === "Restaurant Dashboard" && styles.activeNavItem,
+  //           ]}
+  //         >
+  //           <Icon
+  //             name="home"
+  //             size={30}
+  //             color={
+  //               currentRoute === "Restaurant Dashboard" ? "white" : "black"
+  //             }
+  //           />
+  //           <Text
+  //             style={[
+  //               styles.navText,
+  //               currentRoute === "Restaurant Dashboard" && styles.activeNavText,
+  //             ]}
+  //           >
+  //             Home
+  //           </Text>
+  //         </TouchableOpacity>
+
+  //         <TouchableOpacity
+  //           onPress={() =>
+  //             navigation.navigate("Menu", { access, restaurantId })
+  //           }
+  //           style={[
+  //             styles.navItem,
+  //             currentRoute === "Menu" && styles.activeNavItem,
+  //           ]}
+  //         >
+  //           <Icon
+  //             name="restaurant-menu"
+  //             size={30}
+  //             color={currentRoute === "Menu" ? "white" : "black"}
+  //           />
+  //           <Text
+  //             style={[
+  //               styles.navText,
+  //               currentRoute === "Menu" && styles.activeNavText,
+  //             ]}
+  //           >
+  //             Menu
+  //           </Text>
+  //         </TouchableOpacity>
+
+  //         <TouchableOpacity
+  //           onPress={() =>
+  //             navigation.navigate("Settings", { access, restaurantId })
+  //           }
+  //           style={[
+  //             styles.navItem,
+  //             currentRoute === "Settings" && styles.activeNavItem,
+  //           ]}
+  //         >
+  //           <Icon
+  //             name="settings"
+  //             size={30}
+  //             color={currentRoute === "Settings" ? "white" : "black"}
+  //           />
+  //           <Text
+  //             style={[
+  //               styles.navText,
+  //               currentRoute === "Settings" && styles.activeNavText,
+  //             ]}
+  //           >
+  //             Settings
+  //           </Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //       <Text>No analytics data available</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
@@ -205,109 +283,115 @@ function RestaurantDashboard() {
       {/* Render other restaurant dashboard content */}
 
       <ScrollView>
-        <View style={styles.mainContent}>
-          <View style={styles.twoPane}>
-            <View style={styles.titlePane}>
-              <Text style={styles.boxLabel}>
-                Top Tags Leading To Menu Item Exclusions
-              </Text>
-              <View style={styles.analytics}>
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Taste Tags:
-                  </Text>{" "}
-                  {data.taste_tags_most_eliminations
-                    ? data.taste_tags_most_eliminations.tag
-                    : "N/A"}{" "}
-                  (
-                  {data.taste_tags_most_eliminations
-                    ? data.taste_tags_most_eliminations.eliminations
-                    : 0}{" "}
-                  Exclusions)
+        {data ? (
+          <View style={styles.mainContent}>
+            <View style={styles.twoPane}>
+              <View style={styles.titlePane}>
+                <Text style={styles.boxLabel}>
+                  Top Tags Leading To Menu Item Exclusions
                 </Text>
+                <View style={styles.analytics}>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Taste Tags:
+                    </Text>{" "}
+                    {data.taste_tags_most_eliminations
+                      ? data.taste_tags_most_eliminations.tag
+                      : "N/A"}{" "}
+                    (
+                    {data.taste_tags_most_eliminations
+                      ? data.taste_tags_most_eliminations.eliminations
+                      : 0}{" "}
+                    Exclusions)
+                  </Text>
 
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Restriction Tags:
-                  </Text>{" "}
-                  {data.restriction_tags_most_eliminations
-                    ? data.restriction_tags_most_eliminations.tag
-                    : "N/A"}{" "}
-                  (
-                  {data.restriction_tags_most_eliminations
-                    ? data.restriction_tags_most_eliminations.eliminations
-                    : 0}{" "}
-                  Exclusions)
-                </Text>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Restriction Tags:
+                    </Text>{" "}
+                    {data.restriction_tags_most_eliminations
+                      ? data.restriction_tags_most_eliminations.tag
+                      : "N/A"}{" "}
+                    (
+                    {data.restriction_tags_most_eliminations
+                      ? data.restriction_tags_most_eliminations.eliminations
+                      : 0}{" "}
+                    Exclusions)
+                  </Text>
 
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Ingredient Tags:
-                  </Text>{" "}
-                  {data.ingredient_tags_most_eliminations
-                    ? data.ingredient_tags_most_eliminations.tag
-                    : "N/A"}{" "}
-                  (
-                  {data.ingredient_tags_most_eliminations
-                    ? data.ingredient_tags_most_eliminations.eliminations
-                    : 0}{" "}
-                  Exclusions)
-                </Text>
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Allergy Tags:
-                  </Text>{" "}
-                  {data.allergies_tags_most_eliminations
-                    ? data.allergies_tags_most_eliminations.tag
-                    : "N/A"}{" "}
-                  (
-                  {data.allergies_tags_most_eliminations
-                    ? data.allergies_tags_most_eliminations.eliminations
-                    : 0}{" "}
-                  Exclusions)
-                </Text>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Ingredient Tags:
+                    </Text>{" "}
+                    {data.ingredient_tags_most_eliminations
+                      ? data.ingredient_tags_most_eliminations.tag
+                      : "N/A"}{" "}
+                    (
+                    {data.ingredient_tags_most_eliminations
+                      ? data.ingredient_tags_most_eliminations.eliminations
+                      : 0}{" "}
+                    Exclusions)
+                  </Text>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Allergy Tags:
+                    </Text>{" "}
+                    {data.allergies_tags_most_eliminations
+                      ? data.allergies_tags_most_eliminations.tag
+                      : "N/A"}{" "}
+                    (
+                    {data.allergies_tags_most_eliminations
+                      ? data.allergies_tags_most_eliminations.eliminations
+                      : 0}{" "}
+                    Exclusions)
+                  </Text>
+                </View>
+                <Text style={styles.boxLabel2}>Top Menu Items</Text>
+                <View style={styles.analytics}>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      First:
+                    </Text>{" "}
+                    {data.top_three_items && data.top_three_items.first
+                      ? data.top_three_items.first.title
+                      : 0}
+                  </Text>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Second:
+                    </Text>{" "}
+                    {data.top_three_items && data.top_three_items.second
+                      ? data.top_three_items.second.title
+                      : 0}
+                  </Text>
+                  <Text style={styles.label}>
+                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                      Third:
+                    </Text>{" "}
+                    {data.top_three_items && data.top_three_items.third
+                      ? data.top_three_items.third.title
+                      : 0}
+                  </Text>
+                </View>
               </View>
-              <Text style={styles.boxLabel2}>Top Menu Items</Text>
-              <View style={styles.analytics}>
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    First:
-                  </Text>{" "}
-                  {data.top_three_items && data.top_three_items.first
-                    ? data.top_three_items.first.title
-                    : 0}
-                </Text>
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Second:
-                  </Text>{" "}
-                  {data.top_three_items && data.top_three_items.second
-                    ? data.top_three_items.second.title
-                    : 0}
-                </Text>
-                <Text style={styles.label}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Third:
-                  </Text>{" "}
-                  {data.top_three_items && data.top_three_items.third
-                    ? data.top_three_items.third.title
-                    : 0}
-                </Text>
+              <View style={styles.titlePane}>
+                <Text style={styles.menuItemsLabel}>Menu Items</Text>
+                {menuItems.length > 0 && (
+                  <MenuAnalyticsComponent
+                    menuItems={menuItems}
+                    accessToken={access}
+                    restIDToken={restaurantId}
+                    screenName={ScreenName}
+                  />
+                )}
               </View>
-            </View>
-            <View style={styles.titlePane}>
-              <Text style={styles.menuItemsLabel}>Menu Items</Text>
-              {menuItems.length > 0 && (
-                <MenuAnalyticsComponent
-                  menuItems={menuItems}
-                  accessToken={access}
-                  restIDToken={restaurantId}
-                  screenName={ScreenName}
-                />
-              )}
             </View>
           </View>
-        </View>
+        ) : (
+          <View style={styles.container}>
+            <Text>No analytics data available</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
