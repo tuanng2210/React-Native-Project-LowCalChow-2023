@@ -11,70 +11,6 @@ const BarChart = ({ data, title }) => {
 
   const scale = chartHeight / maxDataValue;
 
-  // return (
-  //   <View style={styles.chartContainer}>
-  //     <Text style={styles.chartTitle}>{title}</Text>
-  //     <Svg width={chartWidth} height={chartHeight + 40}>
-  //       {/* Y-axis scale */}
-  //       {[1, 0.75, 0.5, 0.25, 0].map((tick, idx) => (
-  //         <React.Fragment key={idx}>
-  //           {/* Tick marks along the y-axis */}
-  //           <Rect
-  //             x={-5}
-  //             y={chartHeight - chartHeight * tick}
-  //             width={5}
-  //             height={1}
-  //             fill="#000"
-  //           />
-  //           {/* Labels for each tick along the y-axis */}
-  //           <SvgText
-  //             x={-20}
-  //             y={chartHeight - chartHeight * tick}
-  //             fontSize="10"
-  //             fill="#000"
-  //             textAnchor="end"
-  //           >
-  //             {maxDataValue * tick}
-  //           </SvgText>
-  //         </React.Fragment>
-  //       ))}
-
-  //       {data.map((entry, index) => (
-  //         <React.Fragment key={entry.label}>
-  //           <Rect
-  //             x={index * barWidth}
-  //             y={chartHeight - entry.value * scale}
-  //             width={barWidth}
-  //             height={entry.value * scale}
-  //             fill="#3498db"
-  //           />
-
-  //           {/* Display the name of the bar below the bar */}
-  //           <SvgText
-  //             x={index * barWidth + barWidth / 2}
-  //             y={chartHeight + 16}
-  //             fontSize="12"
-  //             fill="#000"
-  //             textAnchor="middle"
-  //           >
-  //             {entry.name}
-  //           </SvgText>
-
-  //           <SvgText
-  //             x={index * barWidth + barWidth / 2}
-  //             y={chartHeight - entry.value * scale - 8} // Adjust the position
-  //             fontSize="12"
-  //             fill="#000"
-  //             textAnchor="middle"
-  //           >
-  //             {entry.value}
-  //           </SvgText>
-  //         </React.Fragment>
-  //       ))}
-  //     </Svg>
-  //   </View>
-  // );
-
   return (
     <View style={styles.chartContainer}>
       <Text style={styles.chartTitle}>{title}</Text>
@@ -128,9 +64,9 @@ const BarChart = ({ data, title }) => {
             {entry.value > 0 && (
               <SvgText
                 x={index * barWidth + barWidth / 2}
-                y={chartHeight - entry.value * scale + 16} 
+                y={chartHeight - entry.value * scale + 16}
                 fontSize="12"
-                fill="black" 
+                fill="black"
                 textAnchor="middle"
               >
                 {entry.value}
@@ -250,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   chartWrapper: {
-    backgroundColor: "#E0E0E0", // Set the background color to gray
+    backgroundColor: "#E0E0E0", 
     borderRadius: 8,
     padding: 16,
   },
