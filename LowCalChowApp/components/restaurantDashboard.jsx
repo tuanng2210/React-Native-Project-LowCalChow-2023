@@ -265,19 +265,25 @@ function RestaurantDashboard() {
                   <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     First:
                   </Text>{" "}
-                  {data.top_three_items ? data.top_three_items.first.title : 0}
+                  {data.top_three_items && data.top_three_items.first
+                    ? data.top_three_items.first.title
+                    : 0}
                 </Text>
                 <Text style={styles.label}>
                   <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     Second:
                   </Text>{" "}
-                  {data.top_three_items ? data.top_three_items.second.title : 0}
+                  {data.top_three_items && data.top_three_items.second
+                    ? data.top_three_items.first.title
+                    : 0}
                 </Text>
                 <Text style={styles.label}>
                   <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     Third:
                   </Text>{" "}
-                  {data.top_three_items ? data.top_three_items.third.title : 0}
+                  {data.top_three_items && data.top_three_items.third
+                    ? data.top_three_items.first.title
+                    : 0}
                 </Text>
               </View>
             </View>
