@@ -123,10 +123,12 @@ function ViewMenuItem({ route, navigation }) {
       if (response.status === 201) {
         showSuccessPopup(`${mealName} bookmarked successfully!`);
         setIsBookmarked(true);
+        setShowBookmarkButton(false);
         const data = await response.json();
+        setBookmarkID(data.id);
 
       }else {
-        showFailPopup(`${mealname} bookmarking failed.`);
+        showFailPopup(`${mealName} bookmarking failed.`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -145,7 +147,10 @@ function ViewMenuItem({ route, navigation }) {
         },
       });
       if (response.status === 204) {
+        showSuccessPopup(`${mealName} removed from bookmarks!`);
         setIsBookmarked(false);
+        setShowBookmarkButton(true);
+        setBookmarkID('null');
         
       }
     } catch (error) {
@@ -153,6 +158,36 @@ function ViewMenuItem({ route, navigation }) {
     }
   }
 
+  const handleCheckBookmarked = async() => {
+    try{
+      const response = await fetch(`http://localhost:8000/patrons/bookmarks/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + access,
+        },
+      });
+      if (response.status === 200){
+        const data = await response.json();
+        const bookmarkMatch = data.find(item => item.menu_item.item_name === mealName);
+        console.log(data);
+        console.log(bookmarkMatch);
+        if (bookmarkMatch)
+        {
+          setBookmarkID(bookmarkMatch.id);
+          setIsBookmarked(true);
+          setShowBookmarkButton(false);
+        }
+
+      }
+    }catch(error){
+      console.log("Error: ", error);
+    }
+  }
+  useEffect(() => {
+    if (mealName != '')
+    handleCheckBookmarked();
+  }, [mealName]);
   const handleAddToMenuItemHistory = async () => {
     console.log(feedbackID);
     let data = {
