@@ -126,7 +126,7 @@ const FilteredDataScreen = ({ route }) => {
           {/* Add a container with gray background */}
           <View style={styles.chartWrapper}>
             <BarChart
-              title="Analytics Data"
+              title="Number of Tags"
               data={[
                 {
                   label: "Number of Patron Profiles",
