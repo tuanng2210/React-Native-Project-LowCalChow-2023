@@ -76,7 +76,7 @@ const SearchResultsScreen = ({navigation, route }) => {
       )}
     </View>
 
-      ),{/*<View style={styles.resultItem} key={result.id}>
+      ,{/*<View style={styles.resultItem} key={result.id}>
           <Text style={styles.itemName}>{result.item_name}</Text>
           <Text>Calories: {result.calories}</Text>
           <Text>Price: ${result.price}</Text>
@@ -86,7 +86,7 @@ const SearchResultsScreen = ({navigation, route }) => {
         </TouchableOpacity>
         </View>*/}
       
-      )
+    
       
       </ScrollView>
 
