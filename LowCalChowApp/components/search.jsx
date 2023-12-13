@@ -246,7 +246,7 @@ function Search({ navigation, route }) {
         const responseData = await response.json();
         setSearchResults(responseData.results);
         navigation.navigate("Search Results", {
-          searchResults: responseData.results,
+          searchResults: responseData.results, access: access,
         });
         console.log("Data received from the server:", responseData);
         // setQuery("");
