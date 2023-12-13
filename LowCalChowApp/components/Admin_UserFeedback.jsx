@@ -153,10 +153,10 @@ function AdminHomepage() {
               />
                </View>
                                          <Text style={styles.totalUsersLabel}>
-    Patron Logins Since: {analyticsData?.patron_logins_since || 0}
+    Patron Logins Since Past 3 Days: {analyticsData?.patron_logins_since || 0}
   </Text>
   <Text style={styles.totalUsersLabel}>
-    Restaurant Logins Since: {analyticsData?.rest_logins_since || 0}
+    Restaurant Logins Since Past 3 Days: {analyticsData?.rest_logins_since || 0}
   </Text>
             </View>
       </View>
