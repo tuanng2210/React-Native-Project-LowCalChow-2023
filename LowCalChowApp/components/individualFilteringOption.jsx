@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   chartWrapper: {
-    backgroundColor: "#E0E0E0", 
+    backgroundColor: "#E0E0E0",
     borderRadius: 8,
     padding: 16,
   },
