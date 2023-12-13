@@ -126,7 +126,7 @@ function ViewMenuItem({ route, navigation }) {
         const data = await response.json();
 
       }else {
-        showFailPopup(`${mealname} bookmarking failed.`);
+        showFailPopup(`${mealName} bookmarking failed.`);
       }
     } catch (error) {
       console.error("Error:", error);
