@@ -388,8 +388,8 @@ function RestaurantDashboard() {
             </View>
           </View>
         ) : (
-          <View style={styles.container}>
-            <Text>No analytics data available</Text>
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataText}>No analytics data available</Text>
           </View>
         )}
       </ScrollView>
@@ -455,6 +455,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 120,
     marginTop: 15,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noDataText: {
+    fontSize: 18,
+    color: "gray",
   },
   menuItemsLabel: {
     fontSize: 20,
